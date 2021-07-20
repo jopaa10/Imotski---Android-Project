@@ -5,17 +5,73 @@ import {
   StyleSheet,
   Text,
   StatusBar,
-  Dimensions,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
+import {faMapMarkerAlt, faHeart} from '@fortawesome/free-solid-svg-icons';
+
+const DATA = [
+  {
+    id: '1',
+    image: require('../images/blueLakeH.jpg'),
+    title: 'Imotski',
+  },
+  {
+    id: '2',
+    image: require('../images/biokovo.jpg'),
+    title: 'Biokovo',
+    marginLeft: 5,
+    backgroundColor: 'blue',
+  },
+  {
+    id: '3',
+    image: require('../images/dvaOkaH.jpg'),
+    title: 'Prolozac',
+    marginLeft: 10,
+  },
+  {
+    id: '4',
+    image: require('../images/greenLakeH.jpg'),
+    title: 'Ricice',
+  },
+];
+
+const Item = ({item}) => {
+  return (
+    <View style={[styles.container, {backgroundColor: item.backgroundColor}]}>
+      <Image style={styles.image} source={item.image} />
+      <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
+      <View style={styles.cityContainer}>
+        <FontAwesomeIcon
+          icon={faMapMarkerAlt}
+          style={styles.iconLocation}
+          size={12}
+        />
+        <Text style={[styles.cityTitle, {marginLeft: item.marginLeft}]}>
+          {item.title}
+        </Text>
+      </View>
+    </View>
+  );
+};
 
 const ListOfSights = () => {
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
+  const renderItem = ({item}) => {
+    return <Item item={item} />;
+  };
 
   return (
     <>
+      <SafeAreaView>
+        <FlatList
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
+      </SafeAreaView>
+      {/*
       <View style={styles.container}>
         <Image
           style={styles.imageImotski}
@@ -31,6 +87,7 @@ const ListOfSights = () => {
           <Text style={styles.cityTitle}>Imotski</Text>
         </View>
       </View>
+    */}
     </>
   );
 };
@@ -49,11 +106,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     shadowColor: '#000',
     overflow: 'hidden',
-    shadowOpacity: 0.1,
+    shadowOpacity: 1,
     shadowRadius: 10,
-    elevation: 8,
+    elevation: 10,
   },
-  imageImotski: {
+  image: {
     width: '100%',
     height: 'auto',
     borderTopLeftRadius: 10,
@@ -84,6 +141,12 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     left: 7,
+  },
+  iconHeart: {
+    position: 'absolute',
+    color: 'white',
+    left: 340,
+    top: 10,
   },
 });
 
