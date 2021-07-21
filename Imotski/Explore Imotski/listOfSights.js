@@ -7,7 +7,6 @@ import {
   StatusBar,
   FlatList,
   SafeAreaView,
-  TouchableOpacity,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt, faHeart} from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +39,7 @@ const DATA = [
 
 const Item = ({item}) => {
   return (
-    <View style={[styles.container, {backgroundColor: item.backgroundColor}]}>
+    <View style={styles.container}>
       <Image style={styles.image} source={item.image} />
       <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
       <View style={styles.cityContainer}>
@@ -63,32 +62,13 @@ const ListOfSights = () => {
   };
 
   return (
-    <>
-      <SafeAreaView>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-      {/*
-      <View style={styles.container}>
-        <Image
-          style={styles.imageImotski}
-          source={require('../images/blueLakeH.jpg')}
-          alt="Blue Lake"
-        />
-        <View style={styles.cityContainer}>
-          <FontAwesomeIcon
-            icon={faMapMarkerAlt}
-            style={styles.iconLocation}
-            size={12}
-          />
-          <Text style={styles.cityTitle}>Imotski</Text>
-        </View>
-      </View>
-    */}
-    </>
+    <SafeAreaView>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
+    </SafeAreaView>
   );
 };
 
