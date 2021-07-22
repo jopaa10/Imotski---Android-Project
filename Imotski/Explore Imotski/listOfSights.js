@@ -7,6 +7,7 @@ import {
   StatusBar,
   FlatList,
   SafeAreaView,
+  Dimensions,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt, faHeart} from '@fortawesome/free-solid-svg-icons';
@@ -36,6 +37,8 @@ const DATA = [
     title: 'Ricice',
   },
 ];
+
+const windowWidth = Dimensions.get('window').width;
 
 const Item = ({item}) => {
   return (
@@ -125,7 +128,8 @@ const styles = StyleSheet.create({
   iconHeart: {
     position: 'absolute',
     color: 'white',
-    left: 340,
+    left: windowWidth * 0.8,
+    right: windowWidth * 0.8,
     top: 10,
   },
 });

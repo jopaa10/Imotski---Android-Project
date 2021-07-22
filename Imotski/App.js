@@ -7,10 +7,20 @@
  */
 
 import React from 'react';
-import ExploreImotski from './Explore Imotski';
+
+import {SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+
+import BottomTabsNav from './BottomTabsNav';
 
 const App = () => {
-  return <ExploreImotski />;
+  return (
+    <>
+      <NavigationContainer>
+        <BottomTabsNav />
+      </NavigationContainer>
+    </>
+  );
 };
 
 export default App;
