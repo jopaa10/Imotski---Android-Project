@@ -8,7 +8,14 @@
 
 import {auto} from 'async';
 import React from 'react';
-import {ScrollView, Text, View, Image, StyleSheet} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {Dimensions} from 'react-native';
 import ListOfSights from './listOfSights';
@@ -30,13 +37,16 @@ const App = () => {
       fontWeight: 'bold',
       color: 'white',
     },
+    listContainer: {
+      flex: 4,
+    },
   });
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
   return (
-    <ScrollView style={[styles.container, {flexDirection: 'column'}]}>
+    <View style={[styles.container, {flexDirection: 'column'}]}>
       <View
         style={{
           flex: 1,
@@ -61,10 +71,10 @@ const App = () => {
           <Text style={styles.titleExploreIm}>EXPLORE IMOTSKI & REGION</Text>
         </Svg>
       </View>
-      <View>
+      <View style={styles.listContainer}>
         <ListOfSights />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
