@@ -5,15 +5,24 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  Dimensions,
   TouchableOpacity,
 } from 'react-native';
+
+//fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt, faHeart} from '@fortawesome/free-solid-svg-icons';
 
+//navigation hook
+import {useNavigation} from '@react-navigation/native';
+
+const windowWidth = Dimensions.get('window').width;
+
 const ListOfSights = () => {
+  const navigation = useNavigation();
   return (
     <>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Imotski')}>
         <View style={styles.container}>
           <Image
             style={styles.image}
@@ -30,7 +39,8 @@ const ListOfSights = () => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Biokovo')}>
         <View style={styles.container}>
           <Image
             style={styles.image}
@@ -47,7 +57,7 @@ const ListOfSights = () => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Prolozac')}>
         <View style={styles.container}>
           <Image
             style={styles.image}
@@ -64,7 +74,7 @@ const ListOfSights = () => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Ricice')}>
         <View style={styles.container}>
           <Image
             style={styles.image}
@@ -77,7 +87,7 @@ const ListOfSights = () => {
               style={styles.iconLocation}
               size={12}
             />
-            <Text style={[styles.cityTitle, {marginLeft: 0}]}>Ricice</Text>
+            <Text style={[styles.cityTitle, {marginRight: 12}]}>Ricice</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -138,7 +148,8 @@ const styles = StyleSheet.create({
   iconHeart: {
     position: 'absolute',
     color: 'white',
-    left: 340,
+    left: windowWidth * 0.8,
+    right: windowWidth * 0.8,
     top: 10,
   },
 });
