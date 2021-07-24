@@ -5,73 +5,93 @@ import {
   StyleSheet,
   Text,
   StatusBar,
-  FlatList,
-  SafeAreaView,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+
+//fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt, faHeart} from '@fortawesome/free-solid-svg-icons';
 
-const DATA = [
-  {
-    id: '1',
-    image: require('../images/blueLakeH.jpg'),
-    title: 'Imotski',
-  },
-  {
-    id: '2',
-    image: require('../images/biokovo.jpg'),
-    title: 'Biokovo',
-    marginLeft: 5,
-    backgroundColor: 'blue',
-  },
-  {
-    id: '3',
-    image: require('../images/dvaOkaH.jpg'),
-    title: 'Prolozac',
-    marginLeft: 10,
-  },
-  {
-    id: '4',
-    image: require('../images/greenLakeH.jpg'),
-    title: 'Ricice',
-  },
-];
+//navigation hook
+import {useNavigation} from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Item = ({item}) => {
-  return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={item.image} />
-      <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
-      <View style={styles.cityContainer}>
-        <FontAwesomeIcon
-          icon={faMapMarkerAlt}
-          style={styles.iconLocation}
-          size={12}
-        />
-        <Text style={[styles.cityTitle, {marginLeft: item.marginLeft}]}>
-          {item.title}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
 const ListOfSights = () => {
-  const renderItem = ({item}) => {
-    return <Item item={item} />;
-  };
-
+  const navigation = useNavigation();
   return (
-    <SafeAreaView>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </SafeAreaView>
+    <>
+      <TouchableOpacity onPress={() => navigation.navigate('Imotski')}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require('../images/blueLakeH.jpg')}
+          />
+          <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
+          <View style={styles.cityContainer}>
+            <FontAwesomeIcon
+              icon={faMapMarkerAlt}
+              style={styles.iconLocation}
+              size={12}
+            />
+            <Text style={[styles.cityTitle, {marginLeft: 0}]}>Imotski</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Biokovo')}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require('../images/biokovo.jpg')}
+          />
+          <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
+          <View style={styles.cityContainer}>
+            <FontAwesomeIcon
+              icon={faMapMarkerAlt}
+              style={styles.iconLocation}
+              size={12}
+            />
+            <Text style={[styles.cityTitle, {marginLeft: 0}]}>Biokovo</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Prolozac')}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require('../images/dvaOkaH.jpg')}
+          />
+          <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
+          <View style={styles.cityContainer}>
+            <FontAwesomeIcon
+              icon={faMapMarkerAlt}
+              style={styles.iconLocation}
+              size={12}
+            />
+            <Text style={[styles.cityTitle, {marginLeft: 5}]}>Prolozac</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Ricice')}>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={require('../images/greenLakeH.jpg')}
+          />
+          <FontAwesomeIcon icon={faHeart} style={styles.iconHeart} size={20} />
+          <View style={styles.cityContainer}>
+            <FontAwesomeIcon
+              icon={faMapMarkerAlt}
+              style={styles.iconLocation}
+              size={12}
+            />
+            <Text style={[styles.cityTitle, {marginRight: 12}]}>Ricice</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </>
   );
 };
 

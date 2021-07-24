@@ -8,33 +8,15 @@
 
 import {auto} from 'async';
 import React from 'react';
-import {ScrollView, Text, View, Image, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {Dimensions} from 'react-native';
 import ListOfSights from './listOfSights';
 
-const App = () => {
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    waves: {
-      width: windowWidth,
-      height: 109,
-      paddingTop: 0,
-    },
-    titleExploreIm: {
-      textAlign: 'center',
-      padding: 20,
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: 'white',
-    },
-  });
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
-
+export const ExploreImotski = () => {
   return (
     <>
       <ScrollView style={[styles.container, {flexDirection: 'column'}]}>
@@ -62,7 +44,7 @@ const App = () => {
             <Text style={styles.titleExploreIm}>EXPLORE IMOTSKI & REGION</Text>
           </Svg>
         </View>
-        <View>
+        <View style={styles.listContainer}>
           <ListOfSights />
         </View>
       </ScrollView>
@@ -70,4 +52,23 @@ const App = () => {
   );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  waves: {
+    width: windowWidth,
+    height: 109,
+    paddingTop: 0,
+  },
+  titleExploreIm: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  listContainer: {
+    flex: 4,
+  },
+});

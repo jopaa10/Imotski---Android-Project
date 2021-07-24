@@ -6,13 +6,34 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //svg
 import {Svg, Path} from 'react-native-svg';
 
-//Main page: Explore Imotski & region
-import ExploreImotski from '../Explore Imotski/index';
-
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBookmark, faHome, faUserAlt} from '@fortawesome/free-solid-svg-icons';
 
+import {createStackNavigator} from '@react-navigation/stack';
+
+//Main page: Explore Imotski & region
+import {ExploreImotski} from '../Explore Imotski/index';
+import {Imotski} from '../offlineScreens/imotski';
+import {Biokovo} from '../offlineScreens/biokovo';
+import {Prolozac} from '../offlineScreens/prolozac';
+import {Ricice} from '../offlineScreens/ricice';
+
+const ImotskiStack = createStackNavigator();
+
+const ImotskiStackScreen = () => (
+  <ImotskiStack.Navigator>
+    <ImotskiStack.Screen
+      name="Explore Imotski"
+      component={ExploreImotski}
+      options={{headerShown: false}}
+    />
+    <ImotskiStack.Screen name="Imotski" component={Imotski} />
+    <ImotskiStack.Screen name="Biokovo" component={Biokovo} />
+    <ImotskiStack.Screen name="Prolozac" component={Prolozac} />
+    <ImotskiStack.Screen name="Ricice" component={Ricice} />
+  </ImotskiStack.Navigator>
+);
 const Tab = createBottomTabNavigator();
 
 const windowWidth = Dimensions.get('window').width;
@@ -22,8 +43,8 @@ const BottomTabsNav = () => {
     <Tab.Navigator
       tabBarOptions={{showLabel: false, style: styles.tabContainer}}>
       <Tab.Screen
-        name="Home"
-        component={ExploreImotski}
+        name="Explore Imotski"
+        component={ImotskiStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -56,7 +77,7 @@ const BottomTabsNav = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={ExploreImotski}
+        component={ImotskiStackScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
