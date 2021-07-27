@@ -19,32 +19,37 @@ import {Biokovo} from '../offlineScreens/biokovo';
 import {Prolozac} from '../offlineScreens/prolozac';
 import {Ricice} from '../offlineScreens/ricice';
 
-const ImotskiStack = createStackNavigator();
+//blue lake info in Imotski screen
+import {BlueLakeInfo} from '../blueLakeInfo';
+//red lake info in Imotski screen
+import {RedLakeInfo} from '../redLakeInfo';
 
-const ImotskiStackScreen = () => (
-  <ImotskiStack.Navigator>
-    <ImotskiStack.Screen
+const Stack = createStackNavigator();
+const BlueLakeStack = createStackNavigator();
+
+const ImotskiInfo = () => (
+  <BlueLakeStack.Navigator>
+    <BlueLakeStack.Screen
       name="Explore Imotski"
-      component={ExploreImotski}
+      component={Imotski}
       options={{headerShown: false}}
     />
-    <ImotskiStack.Screen name="Imotski" component={Imotski} />
-    <ImotskiStack.Screen name="Biokovo" component={Biokovo} />
-    <ImotskiStack.Screen name="Prolozac" component={Prolozac} />
-    <ImotskiStack.Screen name="Ricice" component={Ricice} />
-  </ImotskiStack.Navigator>
+    <BlueLakeStack.Screen name="Blue Lake Info" component={BlueLakeInfo} />
+    <BlueLakeStack.Screen name="Red Lake Info" component={RedLakeInfo} />
+  </BlueLakeStack.Navigator>
 );
+
 const Tab = createBottomTabNavigator();
 
 const windowWidth = Dimensions.get('window').width;
 
-const BottomTabsNav = () => {
+const BottomTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{showLabel: false, style: styles.tabContainer}}>
       <Tab.Screen
         name="Explore Imotski"
-        component={ImotskiStackScreen}
+        component={ExploreImotski}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -77,7 +82,7 @@ const BottomTabsNav = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={ImotskiStackScreen}
+        component={ExploreImotski}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -145,6 +150,26 @@ const BottomTabsNav = () => {
   );
 };
 
+const ExploreImotskiNav = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Explore Imotski"
+        component={BottomTabs}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Imotski"
+        component={ImotskiInfo}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="Biokovo" component={Biokovo} />
+      <Stack.Screen name="Prolozac" component={Prolozac} />
+      <Stack.Screen name="Ricice" component={Ricice} />
+    </Stack.Navigator>
+  );
+};
+
 const styles = StyleSheet.create({
   tabContainer: {
     position: 'absolute',
@@ -163,4 +188,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomTabsNav;
+export default ExploreImotskiNav;

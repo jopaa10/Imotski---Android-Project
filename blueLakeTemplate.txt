@@ -1,0 +1,58 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+
+//fontawesome
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faMapMarkedAlt,
+  faMapMarkerAlt,
+} from '@fortawesome/free-solid-svg-icons';
+
+//Dimensions
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+export const BlueLakeInfo = () => {
+  return (
+    <ScrollView>
+      <View>
+        <Image
+          style={styles.image}
+          source={require('../images/blueLakeArticle.jpg')}
+        />
+        <Text style={styles.txtCity}>Imotski</Text>
+        <Text style={styles.txtBlueLake}>
+          <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} /> Blue Lake
+        </Text>
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  image: {
+    width: windowWidth,
+    height: 340,
+  },
+  txtCity: {
+    position: 'absolute',
+    bottom: windowWidth * 0.25,
+    marginLeft: windowWidth * 0.08,
+    color: 'white',
+    fontSize: 25,
+  },
+  txtBlueLake: {
+    position: 'absolute',
+    bottom: windowWidth * 0.18,
+    marginLeft: windowWidth * 0.06,
+    color: 'white',
+    fontSize: 15,
+  },
+});
