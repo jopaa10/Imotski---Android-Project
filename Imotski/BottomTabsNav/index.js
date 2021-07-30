@@ -8,7 +8,15 @@ import {Svg, Path} from 'react-native-svg';
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faBookmark, faHome, faUserAlt} from '@fortawesome/free-solid-svg-icons';
+import {
+  faBookmark,
+  faHome,
+  faUserAlt,
+  faHeart,
+  faComment,
+  faCloudSun,
+  faRoute,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -21,12 +29,101 @@ import {Ricice} from '../offlineScreens/ricice';
 
 //blue lake info in Imotski screen
 import {BlueLakeInfo} from '../blueLakeInfo';
+import {Gallery} from '../blueLakeInfo/gallery';
+
 //red lake info in Imotski screen
 import {RedLakeInfo} from '../redLakeInfo';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
+const BlueLakeHorNav = createStackNavigator();
+const BlueLakeInfoBottomNav = createBottomTabNavigator();
 
+//blue lake - details
+const BlueLakeNav = () => (
+  <BlueLakeInfoBottomNav.Navigator
+    tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+    <BlueLakeInfoBottomNav.Screen
+      name="Blue Lake More"
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View>
+            <FontAwesomeIcon
+              icon={faHeart}
+              color={'white'}
+              size={30}
+              style={styles.faHeartIcon}
+            />
+          </View>
+        ),
+      }}>
+      {() => (
+        <BlueLakeHorNav.Navigator>
+          <BlueLakeHorNav.Screen
+            name="Blue Lake Info"
+            options={{headerShown: false}}
+            component={BlueLakeInfo}
+          />
+          <BlueLakeHorNav.Screen
+            name="Gallery"
+            options={{headerShown: false}}
+            component={Gallery}
+          />
+        </BlueLakeHorNav.Navigator>
+      )}
+    </BlueLakeInfoBottomNav.Screen>
+    <BlueLakeInfoBottomNav.Screen
+      name="Comment"
+      component={RedLakeInfo}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View>
+            <FontAwesomeIcon
+              icon={faComment}
+              color={'white'}
+              size={30}
+              style={styles.faCommentIcon}
+            />
+          </View>
+        ),
+      }}
+    />
+    <BlueLakeInfoBottomNav.Screen
+      name="Weather"
+      component={RedLakeInfo}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View>
+            <FontAwesomeIcon
+              icon={faCloudSun}
+              color={'white'}
+              size={30}
+              style={styles.faCloudIcon}
+            />
+          </View>
+        ),
+      }}
+    />
+    <BlueLakeInfoBottomNav.Screen
+      name="Navigation"
+      component={RedLakeInfo}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View>
+            <FontAwesomeIcon
+              icon={faRoute}
+              color={'white'}
+              size={30}
+              style={styles.faRouteIcon}
+            />
+          </View>
+        ),
+      }}
+    />
+  </BlueLakeInfoBottomNav.Navigator>
+);
+
+//places what user can visited in imotski
 const ImotskiInfo = () => (
   <BlueLakeStack.Navigator>
     <BlueLakeStack.Screen
@@ -34,7 +131,11 @@ const ImotskiInfo = () => (
       component={Imotski}
       options={{headerShown: false}}
     />
-    <BlueLakeStack.Screen name="Blue Lake Info" component={BlueLakeInfo} />
+    <BlueLakeStack.Screen
+      name="Blue Lake Info"
+      component={BlueLakeNav}
+      options={{headerShown: false}}
+    />
     <BlueLakeStack.Screen name="Red Lake Info" component={RedLakeInfo} />
   </BlueLakeStack.Navigator>
 );
@@ -185,6 +286,28 @@ const styles = StyleSheet.create({
   },
   tabIconFocused: {
     color: '#0D2D5C',
+  },
+  blueLakeTab: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.9,
+    height: 50,
+    position: 'absolute',
+    left: windowWidth * 0.05,
+    right: windowWidth * 0.05,
+    marginBottom: 20,
+    borderRadius: 20,
+  },
+  faHeartIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCommentIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCloudIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faRouteIcon: {
+    marginRight: windowWidth * 0.01,
   },
 });
 
