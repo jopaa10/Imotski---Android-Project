@@ -30,6 +30,7 @@ import {Ricice} from '../offlineScreens/ricice';
 //blue lake info in Imotski screen
 import {BlueLakeInfo} from '../blueLakeInfo';
 import {Gallery} from '../blueLakeInfo/gallery';
+import {Weather} from '../blueLakeInfo/weather';
 
 //red lake info in Imotski screen
 import {RedLakeInfo} from '../redLakeInfo';
@@ -39,12 +40,29 @@ const BlueLakeStack = createStackNavigator();
 const BlueLakeHorNav = createStackNavigator();
 const BlueLakeInfoBottomNav = createBottomTabNavigator();
 
+const BlueLakeHorizontalNav = () => (
+  <BlueLakeHorNav.Navigator>
+    <BlueLakeHorNav.Screen
+      name="Blue Lake Info"
+      options={{headerShown: false}}
+      component={BlueLakeInfo}
+    />
+
+    <BlueLakeHorNav.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={Gallery}
+    />
+  </BlueLakeHorNav.Navigator>
+);
+
 //blue lake - details
-const BlueLakeNav = () => (
+const BlueLakeBottomNav = () => (
   <BlueLakeInfoBottomNav.Navigator
     tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
     <BlueLakeInfoBottomNav.Screen
-      name="Blue Lake More"
+      name="Blue Lake Info"
+      component={BlueLakeHorizontalNav}
       options={{
         tabBarIcon: ({focused}) => (
           <View>
@@ -56,22 +74,8 @@ const BlueLakeNav = () => (
             />
           </View>
         ),
-      }}>
-      {() => (
-        <BlueLakeHorNav.Navigator>
-          <BlueLakeHorNav.Screen
-            name="Blue Lake Info"
-            options={{headerShown: false}}
-            component={BlueLakeInfo}
-          />
-          <BlueLakeHorNav.Screen
-            name="Gallery"
-            options={{headerShown: false}}
-            component={Gallery}
-          />
-        </BlueLakeHorNav.Navigator>
-      )}
-    </BlueLakeInfoBottomNav.Screen>
+      }}
+    />
     <BlueLakeInfoBottomNav.Screen
       name="Comment"
       component={RedLakeInfo}
@@ -80,7 +84,7 @@ const BlueLakeNav = () => (
           <View>
             <FontAwesomeIcon
               icon={faComment}
-              color={'white'}
+              color={focused ? '#8E8E8E' : 'white'}
               size={30}
               style={styles.faCommentIcon}
             />
@@ -90,13 +94,13 @@ const BlueLakeNav = () => (
     />
     <BlueLakeInfoBottomNav.Screen
       name="Weather"
-      component={RedLakeInfo}
+      component={Weather}
       options={{
         tabBarIcon: ({focused}) => (
           <View>
             <FontAwesomeIcon
               icon={faCloudSun}
-              color={'white'}
+              color={focused ? '#8E8E8E' : 'white'}
               size={30}
               style={styles.faCloudIcon}
             />
@@ -133,7 +137,7 @@ const ImotskiInfo = () => (
     />
     <BlueLakeStack.Screen
       name="Blue Lake Info"
-      component={BlueLakeNav}
+      component={BlueLakeBottomNav}
       options={{headerShown: false}}
     />
     <BlueLakeStack.Screen name="Red Lake Info" component={RedLakeInfo} />
@@ -144,6 +148,7 @@ const Tab = createBottomTabNavigator();
 
 const windowWidth = Dimensions.get('window').width;
 
+//bottom navigation on first screen Explore Imotski and region
 const BottomTabs = () => {
   return (
     <Tab.Navigator
@@ -255,7 +260,7 @@ const ExploreImotskiNav = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Explore Imotski"
+        name="Bottom Navigation"
         component={BottomTabs}
         options={{headerShown: false}}
       />

@@ -15,7 +15,6 @@ import {faArrowLeft, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 
 //Dimensions
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
@@ -29,7 +28,7 @@ export const TemplateInfo = props => {
         <Image style={styles.image} source={props.image} />
         <Pressable
           style={styles.arrowLeftIcon}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.navigate('Explore Imotski')}>
           <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
         </Pressable>
         <Text style={styles.txtCity}>{props.city}</Text>
@@ -60,6 +59,7 @@ export const TemplateInfo = props => {
         <Text style={styles.txtInfoBL}>{props.details}</Text>
       </View>
       {props.gallery}
+      {props.weather}
     </ScrollView>
   );
 };
