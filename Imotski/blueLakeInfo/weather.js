@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  Pressable,
+} from 'react-native';
 
 //fontawesome icon
-import {
-  faSun,
-  faCloudSun,
-  faWater,
-  faCloud,
-} from '@fortawesome/free-solid-svg-icons';
+import {faSun, faCloudSun, faWater} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 //blue lake template
@@ -16,8 +18,8 @@ import {TemplateInfo} from '../infoTemplate';
 //moment converter
 import moment from 'moment-timezone';
 
-//kelvin to celsius
-import kelvinToCelsius from 'kelvin-to-celsius';
+//navigation
+import {useNavigation} from '@react-navigation/core';
 
 import {ScrollView} from 'react-native-gesture-handler';
 import FutureWeather from './futureWeather';
@@ -26,6 +28,8 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const Weather = () => {
+  const navigation = useNavigation();
+
   const [weatherData, setweatherData] = useState({
     uvIndex: null,
     humidity: null,
@@ -59,7 +63,6 @@ export const Weather = () => {
     },
   ];
 
-  const [weatherByHour, setWeatherByHour] = useState([]);
   const [data, setData] = useState([]);
 
   //weatherIcons.map(item => console.log(item.icon));
@@ -75,19 +78,6 @@ export const Weather = () => {
       .then(res => res.json())
       .then(data => {
         //console.log(moment(data.hourly[26].dt * 1000).format('HH:mm'));
-
-        for (let i = 0; i < data.hourly.length; i++) {
-          const storageData = [
-            ...data.hourly,
-            {
-              index: i,
-              dt: data.hourly[i].dt,
-              temp: data.hourly[i].temp,
-            },
-          ];
-
-          setWeatherByHour(storageData);
-        }
 
         setData(data.hourly);
 
@@ -126,7 +116,10 @@ export const Weather = () => {
             <View style={styles.containerWeatherByHour}>
               <Text style={styles.todayW}>Today</Text>
               <Text style={styles.tomorrowW}>Tomorrow</Text>
-              <Text style={styles.followingDaysW}>{'Next 7 days >'}</Text>
+              <Pressable
+                onPress={() => navigation.navigate('Next Days Forecast')}>
+                <Text style={styles.followingDaysW}>{'Next 7 days >'}</Text>
+              </Pressable>
             </View>
             <ScrollView horizontal={true} style={styles.hourWeatherView}>
               <FutureWeather weatherData={data} />

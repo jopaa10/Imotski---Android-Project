@@ -32,6 +32,9 @@ import {BlueLakeInfo} from '../blueLakeInfo';
 import {Gallery} from '../blueLakeInfo/gallery';
 import {Weather} from '../blueLakeInfo/weather';
 
+//next 7 days forecast
+import {NextDaysForecast} from '../blueLakeInfo/nextdaysforecast';
+
 //red lake info in Imotski screen
 import {RedLakeInfo} from '../redLakeInfo';
 
@@ -40,12 +43,31 @@ const BlueLakeStack = createStackNavigator();
 const BlueLakeHorNav = createStackNavigator();
 const BlueLakeInfoBottomNav = createBottomTabNavigator();
 
+//weather stack
+const WeatherStack = createStackNavigator();
+
+//next 7 days forecast
+const FutureDayForecast = () => (
+  <WeatherStack.Navigator>
+    <WeatherStack.Screen
+      name="Weather Data"
+      component={Weather}
+      options={{headerShown: false}}
+    />
+    <WeatherStack.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecast}
+      options={{headerShown: false}}
+    />
+  </WeatherStack.Navigator>
+);
+
 const BlueLakeHorizontalNav = () => (
   <BlueLakeHorNav.Navigator>
     <BlueLakeHorNav.Screen
       name="Blue Lake Info"
-      options={{headerShown: false}}
       component={BlueLakeInfo}
+      options={{headerShown: false}}
     />
 
     <BlueLakeHorNav.Screen
@@ -94,7 +116,7 @@ const BlueLakeBottomNav = () => (
     />
     <BlueLakeInfoBottomNav.Screen
       name="Weather"
-      component={Weather}
+      component={FutureDayForecast}
       options={{
         tabBarIcon: ({focused}) => (
           <View>
