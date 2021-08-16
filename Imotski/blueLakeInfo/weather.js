@@ -1,16 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  Pressable,
-} from 'react-native';
-
-//fontawesome icon
-import {faSun, faCloudSun, faWater} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {StyleSheet, Dimensions} from 'react-native';
 
 //blue lake template
 import {TemplateInfo} from '../infoTemplate';
@@ -18,50 +7,20 @@ import {TemplateInfo} from '../infoTemplate';
 //moment converter
 import moment from 'moment-timezone';
 
-//navigation
-import {useNavigation} from '@react-navigation/core';
-
 import {ScrollView} from 'react-native-gesture-handler';
 import FutureWeather from './futureWeather';
+import Next48Hours from '../weatherTemplate/next48hours';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const Weather = () => {
-  const navigation = useNavigation();
-
   const [weatherData, setweatherData] = useState({
     uvIndex: null,
     humidity: null,
     sunset: null,
     sunrise: null,
   });
-  const weatherDataArray = [
-    {
-      key: 1,
-      icon: faSun,
-      text: 'UV Index',
-      weatherD: weatherData.uvIndex,
-    },
-    {
-      key: 2,
-      icon: faCloudSun,
-      text: 'Sunrise',
-      weatherD: weatherData.sunrise,
-    },
-    {
-      key: 3,
-      icon: faWater,
-      text: 'Humidty',
-      weatherD: weatherData.humidity,
-    },
-    {
-      key: 4,
-      icon: faCloudSun,
-      text: 'Sunset',
-      weatherD: weatherData.sunset,
-    },
-  ];
 
   const [data, setData] = useState([]);
 
@@ -79,6 +38,7 @@ export const Weather = () => {
       .then(data => {
         //console.log(moment(data.hourly[26].dt * 1000).format('HH:mm'));
 
+        //hourly data
         setData(data.hourly);
 
         setweatherData({
@@ -102,7 +62,7 @@ export const Weather = () => {
         sight={'Blue Lake'}
         weather={
           <>
-            <View style={styles.container}>
+            {/*<View style={styles.container}>
               {weatherDataArray.map(item => (
                 <>
                   <View style={styles.viewWeatherInfo}>
@@ -114,13 +74,18 @@ export const Weather = () => {
               ))}
             </View>
             <View style={styles.containerWeatherByHour}>
-              <Text style={styles.todayW}>Today</Text>
-              <Text style={styles.tomorrowW}>Tomorrow</Text>
+              <Text style={styles.todayW}>Next 48 hours</Text>
               <Pressable
                 onPress={() => navigation.navigate('Next Days Forecast')}>
                 <Text style={styles.followingDaysW}>{'Next 7 days >'}</Text>
               </Pressable>
-            </View>
+            </View>*/}
+            <Next48Hours
+              navigate={'Next Days Forecast'}
+              today={'Next 48 hours'}
+              followingDays={'Next 7 days >'}
+              weatherData={weatherData}
+            />
             <ScrollView horizontal={true} style={styles.hourWeatherView}>
               <FutureWeather weatherData={data} />
             </ScrollView>
@@ -135,76 +100,9 @@ export const Weather = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: windowWidth,
-    height: 'auto',
-    flex: 1,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    bottom: windowWidth * 0.25,
-    alignItems: 'center',
-  },
-  containerWeatherByHour: {
-    flexDirection: 'row',
-    width: windowWidth,
-    height: 'auto',
-    bottom: windowWidth * 0.28,
-    marginLeft: windowWidth * 0.1,
-  },
-  viewWeatherInfo: {
-    width: windowWidth * 0.45,
-    right: windowWidth * 0.05,
-    alignItems: 'center',
-  },
-  textWeatherInfo: {
-    bottom: windowWidth * 0.1,
-    left: windowWidth * 0.15,
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  weatherInfo: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    left: windowWidth * 0.15,
-    bottom: windowWidth * 0.1,
-  },
-  todayW: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginRight: 20,
-  },
-  tomorrowW: {
-    fontSize: 15,
-    color: '#8E8E8E',
-  },
-  followingDaysW: {
-    fontSize: 15,
-    color: '#1F83BB',
-    fontWeight: 'bold',
-    marginLeft: windowWidth * 0.22,
-  },
   hourWeatherView: {
     width: windowWidth,
     height: windowHeight * 0.2,
     bottom: windowWidth * 0.2,
-  },
-  viewWeatherTemp: {
-    width: 50,
-    height: 200,
-    alignItems: 'center',
-    marginHorizontal: 15,
-  },
-  hour: {
-    marginTop: 20,
-    fontSize: 15,
-    bottom: windowWidth * 0.06,
-  },
-  temp: {
-    fontSize: 13,
-    marginTop: 20,
-  },
-  imageIcons: {
-    width: 100,
-    height: 50,
   },
 });
