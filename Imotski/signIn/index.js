@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     paddingLeft: 30,
+    marginBottom: 10,
   },
   viewEmailPass: {
     alignItems: 'center',
