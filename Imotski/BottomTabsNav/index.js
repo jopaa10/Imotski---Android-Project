@@ -38,6 +38,9 @@ import {NextDaysForecast} from '../blueLakeInfo/nextdaysforecast';
 //red lake info in Imotski screen
 import {RedLakeInfo} from '../redLakeInfo';
 
+//first page for user signIn or signUp
+import {SignInNav} from '../userPage';
+
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
 const BlueLakeHorNav = createStackNavigator();
@@ -210,7 +213,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={ExploreImotski}
+        component={RedLakeInfo}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -243,7 +246,7 @@ const BottomTabs = () => {
       />
       <Tab.Screen
         name="User"
-        component={ExploreImotski}
+        component={SignInNav}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
