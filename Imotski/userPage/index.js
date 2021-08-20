@@ -106,12 +106,10 @@ const styles = StyleSheet.create({
   textFeatures: {
     color: 'white',
     fontSize: 15,
-    paddingTop: 10,
   },
   iconInfo: {
-    position: 'absolute',
-    top: windowWidth * 0.08,
-    left: windowWidth * 0.16,
+    top: windowWidth * 0.05,
+    right: windowWidth * 0.35,
   },
   container: {
     flex: 1,
