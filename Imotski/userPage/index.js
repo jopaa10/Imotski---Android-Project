@@ -36,7 +36,11 @@ export const SignInNav = () => (
       component={SignIn}
       options={{headerShown: false}}
     />
-    <signInStack.Screen name="Sign Up" component={SignUp} />
+    <signInStack.Screen
+      name="Sign Up"
+      component={SignUp}
+      options={{headerShown: false}}
+    />
   </signInStack.Navigator>
 );
 
