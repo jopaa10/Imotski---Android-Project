@@ -45,6 +45,33 @@ export const SignUp = () => {
           <View style={styles.viewField}>
             <TextInput style={styles.inputField} secureTextEntry={true} />
           </View>
+          <Text
+            style={[styles.placeholder2in1Field, {top: windowWidth * 0.13}]}>
+            Days of staying
+          </Text>
+          <Text
+            style={[
+              styles.placeholder2in1Field,
+              {marginLeft: windowWidth * 0.57},
+            ]}>
+            Place of residence
+          </Text>
+          <View style={styles.view2in1Field}>
+            <TextInput
+              style={[
+                styles.inputField,
+                {width: windowWidth * 0.3, marginTop: windowWidth * 0.05},
+              ]}
+              keyboardType="number-pad"
+            />
+            <TextInput
+              style={[
+                styles.inputField,
+                {width: windowWidth * 0.3, marginTop: windowWidth * 0.05},
+              ]}
+              keyboardType="default"
+            />
+          </View>
           <View style={styles.proceed}>
             <Pressable>
               <Text style={styles.proceedButton}>Proceed</Text>
@@ -98,6 +125,11 @@ const styles = StyleSheet.create({
   viewField: {
     alignItems: 'center',
   },
+  view2in1Field: {
+    marginHorizontal: windowWidth * 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
   inputField: {
     backgroundColor: 'white',
     height: 56,
@@ -118,8 +150,16 @@ const styles = StyleSheet.create({
   placeholder: {
     textAlignVertical: 'top',
     fontSize: 10,
-    paddingLeft: windowWidth * 0.2,
+    marginLeft: windowWidth * 0.2,
     top: windowWidth * 0.15,
+    elevation: 10,
+    color: '#A8A8A8',
+  },
+  placeholder2in1Field: {
+    textAlignVertical: 'top',
+    fontSize: 10,
+    marginLeft: windowWidth * 0.2,
+    top: windowWidth * 0.1,
     elevation: 10,
     color: '#A8A8A8',
   },
