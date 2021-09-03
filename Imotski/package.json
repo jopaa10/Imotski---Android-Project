@@ -17,9 +17,14 @@
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "kelvin-to-celsius": "^1.1.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
+    "mongoose": "^6.0.2",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-dropdown-picker": "^5.1.23",
@@ -39,9 +44,14 @@
     "eslint": "7.14.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
+    "nodemon": "^2.0.12",
     "react-test-renderer": "17.0.1"
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

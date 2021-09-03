@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,34 @@ const windowWidth = Dimensions.get('window').width;
 
 export const SignIn = () => {
   const navigation = useNavigation();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = () => {
+    fetch('http://10.0.2.2:5000/signin', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        //console.log(data);
+        if (data.error) {
+          alert(data.error);
+          setEmail('');
+          setPassword('');
+        } else {
+          navigation.navigate('Explore Imotski');
+          setEmail('');
+          setPassword('');
+        }
+      });
+  };
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -30,14 +58,21 @@ export const SignIn = () => {
             <TextInput
               style={styles.inputEmailPass}
               keyboardType="email-address"
+              value={email}
+              onChangeText={text => setEmail(text)}
             />
           </View>
           <Text style={styles.placeholderPassword}>Password</Text>
           <View style={styles.viewEmailPass}>
-            <TextInput style={styles.inputEmailPass} secureTextEntry={true} />
+            <TextInput
+              style={styles.inputEmailPass}
+              secureTextEntry={true}
+              value={password}
+              onChangeText={text => setPassword(text)}
+            />
           </View>
           <View style={styles.proceed}>
-            <Pressable>
+            <Pressable onPress={handleSubmit}>
               <Text style={styles.proceedButton}>Proceed</Text>
             </Pressable>
           </View>
@@ -130,7 +165,7 @@ const styles = StyleSheet.create({
     height: 56,
     width: windowWidth * 0.7,
     borderRadius: 20,
-    marginTop: windowWidth * 0.2,
+    marginTop: windowWidth * 0.15,
     textAlign: 'center',
     fontSize: 26,
     color: 'white',
