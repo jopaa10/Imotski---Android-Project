@@ -10,6 +10,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //waves
 import Waves from '../wavesTemplate';
 
@@ -22,26 +24,33 @@ export const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     fetch('http://10.0.2.2:5000/signin', {
       method: 'post',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         email: email,
         password: password,
       }),
     })
       .then(res => res.json())
-      .then(data => {
+      .then(async data => {
         //console.log(data);
         if (data.error) {
           alert(data.error);
           setEmail('');
           setPassword('');
         } else {
-          navigation.navigate('Explore Imotski');
-          setEmail('');
-          setPassword('');
+          try {
+            await AsyncStorage.setItem('token', data.token);
+            navigation.navigate('Profile Page');
+            setEmail('');
+            setPassword('');
+          } catch (e) {
+            console.log(e);
+          }
         }
       });
   };
@@ -72,7 +81,7 @@ export const SignIn = () => {
             />
           </View>
           <View style={styles.proceed}>
-            <Pressable onPress={handleSubmit}>
+            <Pressable onPress={() => handleSubmit()}>
               <Text style={styles.proceedButton}>Proceed</Text>
             </Pressable>
           </View>

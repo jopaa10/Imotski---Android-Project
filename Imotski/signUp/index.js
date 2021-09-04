@@ -9,6 +9,8 @@ import {
   Pressable,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 //waves
 import Waves from '../wavesTemplate';
 
@@ -30,7 +32,7 @@ export const SignUp = () => {
   const [error, setError] = useState('');
   const [borderErrorColor, setBorderErrorColor] = useState('white');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         email,
@@ -53,14 +55,19 @@ export const SignUp = () => {
         }),
       })
         .then(res => res.json())
-        .then(data => {
+        .then(async data => {
           //console.log(data);
 
           if (data.error) {
             setError(data.error);
             setBorderErrorColor('red');
           } else {
-            navigation.navigate('Explore Imotski');
+            try {
+              await AsyncStorage.setItem('token', data.token);
+              navigation.navigate('Profile page');
+            } catch (e) {
+              console.log(e);
+            }
           }
         })
         .catch(error => {
@@ -157,7 +164,7 @@ export const SignUp = () => {
             <Text style={styles.error}>{error}</Text>
           </View>
           <View style={styles.proceed}>
-            <Pressable onPress={() => handleSubmit()}>
+            <Pressable onPress={handleSubmit}>
               <Text style={styles.proceedButton}>Proceed</Text>
             </Pressable>
           </View>
