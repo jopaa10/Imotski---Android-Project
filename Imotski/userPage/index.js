@@ -1,6 +1,6 @@
 import {faInfoCircle, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -21,28 +21,79 @@ import {useNavigation} from '@react-navigation/native';
 //sign in and sign up screens
 import {SignIn} from '../signIn';
 import {SignUp} from '../signUp';
+import {ProfilePage, ProfilePageNav} from '../profilePage';
+
+//storage for saving user token
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const signInStack = createStackNavigator();
 
-export const SignInNav = () => (
-  <signInStack.Navigator>
-    <signInStack.Screen
-      name="User"
-      component={UserFirstPage}
-      options={{headerShown: false}}
-    />
-    <signInStack.Screen
-      name="Sign In"
-      component={SignIn}
-      options={{headerShown: false}}
-    />
-    <signInStack.Screen
-      name="Sign Up"
-      component={SignUp}
-      options={{headerShown: false}}
-    />
-  </signInStack.Navigator>
-);
+export const SignInNav = () => {
+  const [isLogged, setIsLogged] = useState(null);
+
+  const detectLogin = () => {
+    const token = AsyncStorage.getItem('token');
+
+    if (token) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  };
+
+  useEffect(() => {
+    detectLogin();
+  }, []);
+
+  return (
+    <>
+      <signInStack.Navigator>
+        {isLogged === true ? (
+          <>
+            <signInStack.Screen
+              name="Profile Page"
+              component={ProfilePage}
+              options={{headerShown: false}}
+            />
+            <signInStack.Screen
+              name="User"
+              component={UserFirstPage}
+              options={{headerShown: false}}
+            />
+            <signInStack.Screen
+              name="Sign In"
+              component={SignIn}
+              options={{headerShown: false}}
+            />
+            <signInStack.Screen
+              name="Sign Up"
+              component={SignUp}
+              options={{headerShown: false}}
+            />
+          </>
+        ) : (
+          <>
+            <signInStack.Screen
+              name="User"
+              component={UserFirstPage}
+              options={{headerShown: false}}
+            />
+            <signInStack.Screen
+              name="Sign In"
+              component={SignIn}
+              options={{headerShown: false}}
+            />
+            <signInStack.Screen
+              name="Sign Up"
+              component={SignUp}
+              options={{headerShown: false}}
+            />
+          </>
+        )}
+      </signInStack.Navigator>
+    </>
+  );
+};
 
 export const UserFirstPage = () => {
   const navigation = useNavigation();

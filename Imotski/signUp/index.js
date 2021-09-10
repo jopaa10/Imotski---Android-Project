@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   Dimensions,
   Pressable,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //waves
 import Waves from '../wavesTemplate';
@@ -20,6 +22,60 @@ import {useNavigation} from '@react-navigation/native';
 
 export const SignUp = () => {
   const navigation = useNavigation();
+
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [daysOfStaying, setDaysOfStaying] = useState(null);
+  const [placeOfResidence, setPlaceOfResidence] = useState('');
+  const [error, setError] = useState('');
+  const [borderErrorColor, setBorderErrorColor] = useState('white');
+
+  const handleSubmit = async () => {
+    if (
+      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email,
+      )
+    ) {
+      alert('Invalid email address.');
+    } else {
+      fetch('http://10.0.2.2:5000/signup', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          email: email,
+          password: password,
+          placeOfResidence: placeOfResidence,
+          daysOfStaying: daysOfStaying,
+        }),
+      })
+        .then(res => res.json())
+        .then(async data => {
+          //console.log(data);
+
+          if (data.error) {
+            setError(data.error);
+            setBorderErrorColor('red');
+          } else {
+            try {
+              await AsyncStorage.setItem('token', data.token);
+              navigation.navigate('Profile page');
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -31,19 +87,39 @@ export const SignUp = () => {
           </Text>
           <Text style={styles.placeholder}>Name</Text>
           <View style={styles.viewField}>
-            <TextInput style={styles.inputField} keyboardType="ascii-capable" />
+            <TextInput
+              style={[styles.inputField, {borderColor: borderErrorColor}]}
+              keyboardType="ascii-capable"
+              value={name}
+              onChangeText={text => setName(text)}
+            />
           </View>
           <Text style={styles.placeholder}>Surname</Text>
           <View style={styles.viewField}>
-            <TextInput style={styles.inputField} keyboardType="ascii-capable" />
+            <TextInput
+              style={[styles.inputField, {borderColor: borderErrorColor}]}
+              keyboardType="ascii-capable"
+              value={surname}
+              onChangeText={text => setSurname(text)}
+            />
           </View>
           <Text style={styles.placeholder}>Email</Text>
           <View style={styles.viewField}>
-            <TextInput style={styles.inputField} keyboardType="email-address" />
+            <TextInput
+              style={[styles.inputField, {borderColor: borderErrorColor}]}
+              keyboardType="email-address"
+              value={email}
+              onChangeText={text => setEmail(text)}
+            />
           </View>
           <Text style={styles.placeholder}>Password</Text>
           <View style={styles.viewField}>
-            <TextInput style={styles.inputField} secureTextEntry={true} />
+            <TextInput
+              style={[styles.inputField, {borderColor: borderErrorColor}]}
+              secureTextEntry={true}
+              value={password}
+              onChangeText={text => setPassword(text)}
+            />
           </View>
           <Text
             style={[styles.placeholder2in1Field, {top: windowWidth * 0.13}]}>
@@ -60,20 +136,35 @@ export const SignUp = () => {
             <TextInput
               style={[
                 styles.inputField,
-                {width: windowWidth * 0.3, marginTop: windowWidth * 0.05},
+                {
+                  width: windowWidth * 0.3,
+                  marginTop: windowWidth * 0.05,
+                  borderColor: borderErrorColor,
+                },
               ]}
               keyboardType="number-pad"
+              value={placeOfResidence}
+              onChangeText={text => setPlaceOfResidence(text)}
             />
             <TextInput
               style={[
                 styles.inputField,
-                {width: windowWidth * 0.3, marginTop: windowWidth * 0.05},
+                {
+                  width: windowWidth * 0.3,
+                  marginTop: windowWidth * 0.05,
+                  borderColor: borderErrorColor,
+                },
               ]}
               keyboardType="default"
+              value={daysOfStaying}
+              onChangeText={text => setDaysOfStaying(text)}
             />
           </View>
+          <View>
+            <Text style={styles.error}>{error}</Text>
+          </View>
           <View style={styles.proceed}>
-            <Pressable>
+            <Pressable onPress={handleSubmit}>
               <Text style={styles.proceedButton}>Proceed</Text>
             </Pressable>
           </View>
@@ -134,6 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 56,
     width: windowWidth * 0.7,
+    borderWidth: 1,
     borderRadius: 20,
     marginTop: windowWidth * 0.1,
     fontWeight: 'bold',
@@ -171,7 +263,7 @@ const styles = StyleSheet.create({
     height: 56,
     width: windowWidth * 0.7,
     borderRadius: 20,
-    marginTop: windowWidth * 0.2,
+    marginTop: windowWidth * 0.1,
     textAlign: 'center',
     fontSize: 26,
     color: 'white',
@@ -183,5 +275,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     elevation: 5,
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: windowWidth * 0.05,
   },
 });
