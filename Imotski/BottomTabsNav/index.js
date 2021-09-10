@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Dimensions, View, Text, Modal} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 //svg
@@ -40,6 +40,13 @@ import {RedLakeInfo} from '../redLakeInfo';
 
 //first page for user signIn or signUp
 import {SignInNav} from '../userPage';
+import {ProfilePageNav} from '../profilePage';
+
+//async storage for getting token
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//alert modal for users who are not logged in
+import {AlertModal, AlertModalNav} from '../alertModal';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -82,75 +89,120 @@ const BlueLakeHorizontalNav = () => (
 );
 
 //blue lake - details
-const BlueLakeBottomNav = () => (
-  <BlueLakeInfoBottomNav.Navigator
-    tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
-    <BlueLakeInfoBottomNav.Screen
-      name="Blue Lake Info"
-      component={BlueLakeHorizontalNav}
-      options={{
-        tabBarIcon: ({focused}) => (
-          <View>
-            <FontAwesomeIcon
-              icon={faHeart}
-              color={'white'}
-              size={30}
-              style={styles.faHeartIcon}
-            />
-          </View>
-        ),
-      }}
-    />
-    <BlueLakeInfoBottomNav.Screen
-      name="Comment"
-      component={RedLakeInfo}
-      options={{
-        tabBarIcon: ({focused}) => (
-          <View>
-            <FontAwesomeIcon
-              icon={faComment}
-              color={focused ? '#8E8E8E' : 'white'}
-              size={30}
-              style={styles.faCommentIcon}
-            />
-          </View>
-        ),
-      }}
-    />
-    <BlueLakeInfoBottomNav.Screen
-      name="Weather"
-      component={FutureDayForecast}
-      options={{
-        tabBarIcon: ({focused}) => (
-          <View>
-            <FontAwesomeIcon
-              icon={faCloudSun}
-              color={focused ? '#8E8E8E' : 'white'}
-              size={30}
-              style={styles.faCloudIcon}
-            />
-          </View>
-        ),
-      }}
-    />
-    <BlueLakeInfoBottomNav.Screen
-      name="Navigation"
-      component={RedLakeInfo}
-      options={{
-        tabBarIcon: ({focused}) => (
-          <View>
-            <FontAwesomeIcon
-              icon={faRoute}
-              color={'white'}
-              size={30}
-              style={styles.faRouteIcon}
-            />
-          </View>
-        ),
-      }}
-    />
-  </BlueLakeInfoBottomNav.Navigator>
-);
+const BlueLakeBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+
+  useEffect(async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+    }
+  });
+
+  return (
+    <BlueLakeInfoBottomNav.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <BlueLakeInfoBottomNav.Screen
+        name="Blue Lake Info"
+        component={BlueLakeHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      <BlueLakeInfoBottomNav.Screen
+        name="Comment"
+        component={RedLakeInfo}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faComment}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCommentIcon}
+              />
+            </View>
+          ),
+        }}
+        listeners={{
+          tabPress: event => {
+            event.preventDefault();
+            alert('Sign up or login first!');
+          },
+        }}
+      />
+      <BlueLakeInfoBottomNav.Screen
+        name="Weather"
+        component={FutureDayForecast}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <BlueLakeInfoBottomNav.Screen
+          name="Navigation"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <BlueLakeInfoBottomNav.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </BlueLakeInfoBottomNav.Navigator>
+  );
+};
 
 //places what user can visited in imotski
 const ImotskiInfo = () => (
@@ -175,6 +227,18 @@ const windowWidth = Dimensions.get('window').width;
 
 //bottom navigation on first screen Explore Imotski and region
 const BottomTabs = () => {
+  const [isLogged, setIsLogged] = useState(null);
+
+  useEffect(async () => {
+    const token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, []);
+
   return (
     <Tab.Navigator
       tabBarOptions={{showLabel: false, style: styles.tabContainer}}>
@@ -244,39 +308,75 @@ const BottomTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="User"
-        component={SignInNav}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View>
-              <FontAwesomeIcon
-                icon={faUserAlt}
-                style={focused ? styles.tabIconFocused : styles.tabIcon}
-                size={22}
-              />
-              {focused ? (
-                <Svg
-                  width="21"
-                  height="10"
-                  viewBox="0 0 21 10"
-                  style={{marginLeft: 2, marginTop: 2}}
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <Path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M0 1.81818L0.5075 1.36364C0.9975 0.909091 1.995 0 2.9925 1.13636C4.0075 2.27273 5.005 5.45455 6.0025 6.36364C7 7.27273 7.9975 5.90909 8.995 4.09091C9.9925 2.27273 11.0075 0 12.005 0C13.0025 0 14 2.27273 14.9975 3.40909C15.995 4.54545 16.9925 4.54545 18.0075 4.54545C19.005 4.54545 20.0025 4.54545 20.4925 4.54545H21V10H20.4925C20.0025 10 19.005 10 18.0075 10C16.9925 10 15.995 10 14.9975 10C14 10 13.0025 10 12.005 10C11.0075 10 9.9925 10 8.995 10C7.9975 10 7 10 6.0025 10C5.005 10 4.0075 10 2.9925 10C1.995 10 0.9975 10 0.5075 10H0V1.81818Z"
-                    fill="#0D2D5C"
-                  />
-                </Svg>
-              ) : (
-                <></>
-              )}
-            </View>
-          ),
-        }}
-      />
+      {isLogged === true ? (
+        <Tab.Screen
+          name="Profile Page"
+          component={ProfilePageNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faUserAlt}
+                  style={focused ? styles.tabIconFocused : styles.tabIcon}
+                  size={22}
+                />
+                {focused ? (
+                  <Svg
+                    width="21"
+                    height="10"
+                    viewBox="0 0 21 10"
+                    style={{marginLeft: 2, marginTop: 2}}
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <Path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0 1.81818L0.5075 1.36364C0.9975 0.909091 1.995 0 2.9925 1.13636C4.0075 2.27273 5.005 5.45455 6.0025 6.36364C7 7.27273 7.9975 5.90909 8.995 4.09091C9.9925 2.27273 11.0075 0 12.005 0C13.0025 0 14 2.27273 14.9975 3.40909C15.995 4.54545 16.9925 4.54545 18.0075 4.54545C19.005 4.54545 20.0025 4.54545 20.4925 4.54545H21V10H20.4925C20.0025 10 19.005 10 18.0075 10C16.9925 10 15.995 10 14.9975 10C14 10 13.0025 10 12.005 10C11.0075 10 9.9925 10 8.995 10C7.9975 10 7 10 6.0025 10C5.005 10 4.0075 10 2.9925 10C1.995 10 0.9975 10 0.5075 10H0V1.81818Z"
+                      fill="#0D2D5C"
+                    />
+                  </Svg>
+                ) : (
+                  <></>
+                )}
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <Tab.Screen
+          name="User"
+          component={SignInNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faUserAlt}
+                  style={focused ? styles.tabIconFocused : styles.tabIcon}
+                  size={22}
+                />
+                {focused ? (
+                  <Svg
+                    width="21"
+                    height="10"
+                    viewBox="0 0 21 10"
+                    style={{marginLeft: 2, marginTop: 2}}
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <Path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0 1.81818L0.5075 1.36364C0.9975 0.909091 1.995 0 2.9925 1.13636C4.0075 2.27273 5.005 5.45455 6.0025 6.36364C7 7.27273 7.9975 5.90909 8.995 4.09091C9.9925 2.27273 11.0075 0 12.005 0C13.0025 0 14 2.27273 14.9975 3.40909C15.995 4.54545 16.9925 4.54545 18.0075 4.54545C19.005 4.54545 20.0025 4.54545 20.4925 4.54545H21V10H20.4925C20.0025 10 19.005 10 18.0075 10C16.9925 10 15.995 10 14.9975 10C14 10 13.0025 10 12.005 10C11.0075 10 9.9925 10 8.995 10C7.9975 10 7 10 6.0025 10C5.005 10 4.0075 10 2.9925 10C1.995 10 0.9975 10 0.5075 10H0V1.81818Z"
+                      fill="#0D2D5C"
+                    />
+                  </Svg>
+                ) : (
+                  <></>
+                )}
+              </View>
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 };
