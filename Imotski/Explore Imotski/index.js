@@ -19,7 +19,14 @@ const windowHeight = Dimensions.get('window').height;
 export const ExploreImotski = () => {
   return (
     <>
-      <ScrollView style={[styles.container, {flexDirection: 'column'}]}>
+      <ScrollView
+        style={[
+          styles.container,
+          {
+            flexDirection: 'column',
+            backgroundColor: 'white',
+          },
+        ]}>
         <View
           style={{
             flex: 1,
