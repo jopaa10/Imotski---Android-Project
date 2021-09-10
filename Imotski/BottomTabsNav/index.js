@@ -46,7 +46,7 @@ import {ProfilePageNav} from '../profilePage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //alert modal for users who are not logged in
-import {AlertModal} from '../alertModal';
+import {AlertModal, AlertModalNav} from '../alertModal';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -136,6 +136,12 @@ const BlueLakeBottomNav = () => {
             </View>
           ),
         }}
+        listeners={{
+          tabPress: event => {
+            event.preventDefault();
+            alert('Sign up or login first!');
+          },
+        }}
       />
       <BlueLakeInfoBottomNav.Screen
         name="Weather"
@@ -172,8 +178,8 @@ const BlueLakeBottomNav = () => {
         />
       ) : (
         <BlueLakeInfoBottomNav.Screen
-          name="Blue Lake"
-          component={AlertModal}
+          name="Alert"
+          component={BlueLakeInfo}
           options={{
             tabBarIcon: ({focused}) => (
               <View>
@@ -186,6 +192,12 @@ const BlueLakeBottomNav = () => {
               </View>
             ),
           }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              alert('You must login first');
+            },
+          })}
         />
       )}
     </BlueLakeInfoBottomNav.Navigator>
