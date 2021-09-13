@@ -7,10 +7,6 @@ const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../keys');
 const requireLogin = require('../middleware/requireLogin');
 
-router.get('/protected', requireLogin, (req, res) => {
-  res.send('hello');
-});
-
 router.post('/signup', (req, res) => {
   console.log(req.body);
 
@@ -44,11 +40,13 @@ router.post('/signup', (req, res) => {
             surname,
             email,
             password: hashedpassword,
-            daysOfStaying,
             placeOfResidence,
+            daysOfStaying,
           });
           user.save().then(user => {
-            res.json({message: 'User saved successfully'});
+            //res.json({message: 'User saved successfully'});
+            const token = jwt.sign({_id: user._id}, JWT_SECRET);
+            res.json({token});
           });
         })
         .catch(error => {
@@ -91,6 +89,15 @@ router.post('/signin', (req, res) => {
         console.log(error);
       });
   });
+});
+
+router.get('/protected', requireLogin, (req, res) => {
+  //console.log(req.user);
+  User.findById(req.user)
+    .then(userData => res.json({userData}))
+    .catch(error => {
+      console.log(error);
+    });
 });
 
 module.exports = router;

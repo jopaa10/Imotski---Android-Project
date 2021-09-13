@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
 
 //navigation
@@ -22,7 +22,6 @@ import {
   faLock,
   faMapMarkedAlt,
   faPen,
-  faPenAlt,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -43,12 +42,36 @@ export const ProfilePageNav = () => {
 
 export const ProfilePage = () => {
   const navigation = useNavigation();
+  const [userData, setUserData] = useState({
+    name: '',
+    surname: '',
+  });
 
   const handleLogOut = () => {
     AsyncStorage.removeItem('token').then(() => {
       navigation.navigate('User');
     });
   };
+
+  useEffect(async () => {
+    fetch('http://10.0.2.2:5000/protected', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setUserData({
+          name: data.userData.name,
+          surname: data.userData.surname,
+          email: data.userData.email,
+          daysOfStaying: data.userData.daysOfStaying,
+          placeOfResidence: data.userData.placeOfResidence,
+        });
+        console.log(data);
+      });
+  }, []);
 
   return (
     <>
@@ -59,7 +82,7 @@ export const ProfilePage = () => {
         <View>
           <Svg
             style={styles.waves}
-            viewBox={`0 0 ${windowWidth} 155`}
+            viewBox={`0 0 ${windowWidth} 154`}
             fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <Path
@@ -83,7 +106,10 @@ export const ProfilePage = () => {
               style={{top: windowWidth * 0.08}}
             />
             <Text style={styles.textUserInfo}>Name</Text>
-            <Text style={styles.textName1}> Peter Pan </Text>
+            <Text style={styles.textName1}>
+              {' '}
+              {`${userData.name} ${userData.surname}`}{' '}
+            </Text>
           </View>
           <View style={styles.viewUserInfo}>
             <FontAwesomeIcon
@@ -92,8 +118,8 @@ export const ProfilePage = () => {
               color={'white'}
               style={{top: windowWidth * 0.08}}
             />
-            <Text style={styles.textUserInfo}>Place of resistance</Text>
-            <Text style={styles.textName1}> Imotski </Text>
+            <Text style={styles.textUserInfo}>Place of residence</Text>
+            <Text style={styles.textName1}> {userData.placeOfResidence} </Text>
             <Pressable style={styles.editBtn}>
               <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
             </Pressable>
@@ -106,7 +132,7 @@ export const ProfilePage = () => {
               style={{top: windowWidth * 0.08}}
             />
             <Text style={styles.textUserInfo}>Days of staying</Text>
-            <Text style={styles.textName1}> 5 </Text>
+            <Text style={styles.textName1}> {userData.daysOfStaying} </Text>
             <View style={styles.editBtn}>
               <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
             </View>
@@ -120,7 +146,7 @@ export const ProfilePage = () => {
               style={{top: windowWidth * 0.08}}
             />
             <Text style={styles.textUserInfo}>Email</Text>
-            <Text style={styles.textName1}> Peter Pan </Text>
+            <Text style={styles.textName1}> {userData.email} </Text>
           </View>
           <View style={styles.viewUserInfo}>
             <FontAwesomeIcon
