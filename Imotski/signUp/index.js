@@ -41,7 +41,7 @@ export const SignUp = () => {
       alert('Invalid email address.');
     } else {
       fetch('http://10.0.2.2:5000/signup', {
-        method: 'post',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -50,8 +50,8 @@ export const SignUp = () => {
           surname: surname,
           email: email,
           password: password,
-          placeOfResidence: placeOfResidence,
           daysOfStaying: daysOfStaying,
+          placeOfResidence: placeOfResidence,
         }),
       })
         .then(res => res.json())
@@ -64,7 +64,8 @@ export const SignUp = () => {
           } else {
             try {
               await AsyncStorage.setItem('token', data.token);
-              navigation.navigate('Profile page');
+              //await AsyncStorage.setItem('user', JSON.stringify(data));
+              navigation.navigate('Profile Page');
             } catch (e) {
               console.log(e);
             }
@@ -143,8 +144,8 @@ export const SignUp = () => {
                 },
               ]}
               keyboardType="number-pad"
-              value={placeOfResidence}
-              onChangeText={text => setPlaceOfResidence(text)}
+              value={daysOfStaying}
+              onChangeText={text => setDaysOfStaying(text)}
             />
             <TextInput
               style={[
@@ -156,15 +157,15 @@ export const SignUp = () => {
                 },
               ]}
               keyboardType="default"
-              value={daysOfStaying}
-              onChangeText={text => setDaysOfStaying(text)}
+              value={placeOfResidence}
+              onChangeText={text => setPlaceOfResidence(text)}
             />
           </View>
           <View>
             <Text style={styles.error}>{error}</Text>
           </View>
           <View style={styles.proceed}>
-            <Pressable onPress={handleSubmit}>
+            <Pressable onPress={() => handleSubmit()}>
               <Text style={styles.proceedButton}>Proceed</Text>
             </Pressable>
           </View>
