@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   },
   inputEmailPass: {
     backgroundColor: 'white',
+    color: 'black',
     height: 56,
     width: windowWidth * 0.7,
     borderRadius: 20,
