@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
   },
   inputField: {
     backgroundColor: 'white',
+    color: 'black',
     height: 56,
     width: windowWidth * 0.7,
     borderWidth: 1,
