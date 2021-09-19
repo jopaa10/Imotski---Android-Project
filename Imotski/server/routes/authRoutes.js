@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../keys');
 const requireLogin = require('../middleware/requireLogin');
+const ProfilePic = mongoose.model('ProfilePic');
 
 router.post('/signup', (req, res) => {
   console.log(req.body);
@@ -95,6 +96,26 @@ router.get('/protected', requireLogin, (req, res) => {
   //console.log(req.user);
   User.findById(req.user)
     .then(userData => res.json({userData}))
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.post('/newprofilepic', requireLogin, (req, res) => {
+  const {pic} = req.body;
+
+  if (!pic) {
+    return res.status(422).json({error: 'Please add Your Profile pic!'});
+  }
+  const profilePic = new ProfilePic({
+    photo: pic,
+    postedBy: req.user,
+  });
+  profilePic
+    .save()
+    .then(result => {
+      res.json({pic: result});
+    })
     .catch(error => {
       console.log(error);
     });

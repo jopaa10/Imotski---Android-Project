@@ -22,9 +22,11 @@ import {
   faLock,
   faMapMarkedAlt,
   faPen,
+  faPlus,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import {ScrollView} from 'react-native-gesture-handler';
+import DocumentPicker from 'react-native-document-picker';
 
 const ProfileStackNav = createStackNavigator();
 
@@ -47,6 +49,65 @@ export const ProfilePage = () => {
     surname: '',
   });
 
+  const [profilePic, setProfilePic] = useState('');
+  const [url, setUrl] = useState('');
+
+  const uploadProfilePic = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      console.log(res[0]);
+      setProfilePic(res[0]);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (profilePic != '') {
+      const data = new FormData();
+      data.append('file', profilePic);
+      data.append('upload_preset', 'imotski-app');
+      data.append('cloud_name', 'jopaa10');
+
+      await fetch('https://api.cloudinary.com/v1_1/jopaa10/image/upload', {
+        method: 'post',
+        body: data,
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setUrl(data.url);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      await fetch('http://192.168.1.11:5000/newprofilepic', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
+        },
+        body: JSON.stringify({
+          pic: url,
+        }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            console.log(
+              'there was error while uploading a profile pic to mongodb',
+            );
+          } else {
+            console.log('Profile pic successfully uploaded to mongodb');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
   const handleLogOut = () => {
     AsyncStorage.removeItem('token').then(() => {
       navigation.navigate('User');
@@ -54,7 +115,7 @@ export const ProfilePage = () => {
   };
 
   useEffect(async () => {
-    fetch('http://10.0.2.2:5000/protected', {
+    fetch('http://192.168.1.11:5000/protected', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
@@ -76,9 +137,7 @@ export const ProfilePage = () => {
   return (
     <>
       <ScrollView style={{backgroundColor: 'grey'}}>
-        <View style={styles.containerWhite}>
-          <Text style={styles.coverText}>ADD COVER PHOTO</Text>
-        </View>
+        <View style={styles.containerWhite} />
         <View>
           <Svg
             style={styles.waves}
@@ -96,6 +155,9 @@ export const ProfilePage = () => {
             </View>
           </Svg>
         </View>
+        <Pressable onPress={uploadProfilePic}>
+          <Text> + </Text>
+        </Pressable>
         <View style={styles.containerBlue}>
           <View
             style={[styles.viewUserInfo, {marginBottom: windowWidth * 0.05}]}>
@@ -192,7 +254,7 @@ const styles = StyleSheet.create({
     marginTop: windowWidth * 0.35,
   },
   userProfilePic: {
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.3,
     height: windowHeight * 0.15,
     borderRadius: Math.round(windowWidth + windowHeight) / 2,
     borderColor: '#DADADA',

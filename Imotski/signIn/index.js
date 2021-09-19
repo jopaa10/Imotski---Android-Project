@@ -25,7 +25,7 @@ export const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async () => {
-    fetch('http://10.0.2.2:5000/signin', {
+    fetch('http://192.168.1.11:5000/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   },
   inputEmailPass: {
     backgroundColor: 'white',
+    color: 'black',
     height: 56,
     width: windowWidth * 0.7,
     borderRadius: 20,
