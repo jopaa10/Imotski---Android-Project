@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const {ObjectId} = mongoose.Schema.Types;
 const profilePicSchema = new mongoose.Schema({
-  photo: {
+  pic: {
     type: String,
     required: true,
   },

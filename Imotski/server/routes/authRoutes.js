@@ -103,22 +103,47 @@ router.get('/protected', requireLogin, (req, res) => {
 
 router.post('/newprofilepic', requireLogin, (req, res) => {
   const {pic} = req.body;
-
   if (!pic) {
     return res.status(422).json({error: 'Please add Your Profile pic!'});
   }
   const profilePic = new ProfilePic({
-    photo: pic,
+    pic,
     postedBy: req.user,
   });
   profilePic
     .save()
     .then(result => {
-      res.json({pic: result});
+      res.json({result});
+      //console.log(result);
     })
     .catch(error => {
       console.log(error);
     });
+});
+
+router.get('/profilepic', requireLogin, (req, res) => {
+  ProfilePic.findOne({postedBy: req.user._id})
+    .populate('postedBy', '_id name')
+    .then(result => {
+      res.json({result});
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.put('/updatepic', requireLogin, (req, res) => {
+  ProfilePic.findOneAndUpdate(
+    {postedBy: req.user._id},
+    {$set: {pic: req.body.pic}},
+    {new: true},
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({error: 'pic cannot post'});
+      }
+      res.json(result);
+    },
+  );
 });
 
 module.exports = router;
