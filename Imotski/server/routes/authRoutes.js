@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../keys');
 const requireLogin = require('../middleware/requireLogin');
+const ProfilePic = mongoose.model('ProfilePic');
 
 router.post('/signup', (req, res) => {
   console.log(req.body);
@@ -98,6 +99,51 @@ router.get('/protected', requireLogin, (req, res) => {
     .catch(error => {
       console.log(error);
     });
+});
+
+router.post('/newprofilepic', requireLogin, (req, res) => {
+  const {pic} = req.body;
+  if (!pic) {
+    return res.status(422).json({error: 'Please add Your Profile pic!'});
+  }
+  const profilePic = new ProfilePic({
+    pic,
+    postedBy: req.user,
+  });
+  profilePic
+    .save()
+    .then(result => {
+      res.json({result});
+      //console.log(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.get('/profilepic', requireLogin, (req, res) => {
+  ProfilePic.findOne({postedBy: req.user._id})
+    .populate('postedBy', '_id name')
+    .then(result => {
+      res.json({result});
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.put('/updatepic', requireLogin, (req, res) => {
+  ProfilePic.findOneAndUpdate(
+    {postedBy: req.user._id},
+    {$set: {pic: req.body.pic}},
+    {new: true},
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({error: 'pic cannot post'});
+      }
+      res.json(result);
+    },
+  );
 });
 
 module.exports = router;

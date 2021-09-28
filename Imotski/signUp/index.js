@@ -40,7 +40,7 @@ export const SignUp = () => {
     ) {
       alert('Invalid email address.');
     } else {
-      fetch('http://10.0.2.2:5000/signup', {
+      fetch('http://192.168.1.11:5000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
