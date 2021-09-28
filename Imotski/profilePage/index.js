@@ -29,6 +29,7 @@ import {
   faLock,
   faMapMarkedAlt,
   faPen,
+  faPlus,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -59,6 +60,8 @@ export const ProfilePage = () => {
   const [url, setUrl] = useState('');
   let [updatePhoto, setUpdatePhoto] = useState(null);
   const [userPic, setUserPic] = useState(null);
+  const [showUploadBtn, setShowUploadBtn] = useState(true);
+  const [showUpdateBtn, setShowUpdateBtn] = useState(false);
 
   useEffect(async () => {
     await fetch('http://192.168.1.11:5000/protected', {
@@ -78,7 +81,7 @@ export const ProfilePage = () => {
       });
 
     if (url) {
-      await fetch('http://192.168.1.11:5000/newprofilepic', {
+      fetch('http://192.168.1.11:5000/newprofilepic', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -114,6 +117,8 @@ export const ProfilePage = () => {
       .then(res => {
         console.log(res[0]);
         setProfilePic((profilePic = res[0]));
+        setShowUploadBtn(!showUploadBtn);
+        setShowUpdateBtn(!showUpdateBtn);
         //console.log(profilePic);
       })
       .catch(error => {
@@ -135,8 +140,30 @@ export const ProfilePage = () => {
         .then(data => {
           console.log(data.url);
           setUrl(data.url);
+          //setShowUploadBtn(!showUploadBtn);
         });
     }
+  };
+
+  const getProfilePic = async () => {
+    await fetch('http://192.168.1.11:5000/profilepic', {
+      headers: {
+        Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
+      },
+    })
+      .then(res => res.json())
+      .then(photo => {
+        console.log(photo.result);
+
+        if (photo.result === null || photo.result === undefined) {
+          setUserPic(
+            'https://res.cloudinary.com/jopaa10/image/upload/v1632343549/userPhoto_ch87iu.jpg',
+          );
+          //setShow(!showProfilePic);
+        } else {
+          setUserPic(photo.result.pic);
+        }
+      });
   };
 
   const updateProfilePic = async () => {
@@ -194,27 +221,6 @@ export const ProfilePage = () => {
     });
   };
 
-  const getProfilePic = async () => {
-    await fetch('http://192.168.1.11:5000/profilepic', {
-      headers: {
-        Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
-      },
-    })
-      .then(res => res.json())
-      .then(photo => {
-        console.log(photo.result);
-
-        if (photo.result === null || photo.result === undefined) {
-          setUserPic(
-            'https://res.cloudinary.com/jopaa10/image/upload/v1632343549/userPhoto_ch87iu.jpg',
-          );
-          //setShow(!showProfilePic);
-        } else {
-          setUserPic(photo.result.pic);
-        }
-      });
-  };
-
   return (
     <>
       <ScrollView style={{backgroundColor: 'grey'}}>
@@ -234,9 +240,21 @@ export const ProfilePage = () => {
             <Image source={{uri: userPic}} style={styles.userProfilePic} />
           </Svg>
         </View>
-        <Pressable onPress={uploadProfilePic}>
-          <Text> + </Text>
-        </Pressable>
+
+        {showUploadBtn && (
+          <Pressable onPress={uploadProfilePic} style={styles.updateBtn}>
+            <View>
+              <FontAwesomeIcon icon={faPlus} size={20} color={'white'} />
+            </View>
+          </Pressable>
+        )}
+        {showUpdateBtn && (
+          <Pressable onPress={updateProfilePic} style={styles.updateBtn}>
+            <View>
+              <FontAwesomeIcon icon={faPen} size={20} color={'white'} />
+            </View>
+          </Pressable>
+        )}
 
         <View style={styles.containerBlue}>
           <View
@@ -304,9 +322,6 @@ export const ProfilePage = () => {
             </View>
           </View>
         </View>
-        <Pressable onPress={updateProfilePic}>
-          <Text> Update pic </Text>
-        </Pressable>
         <View style={{backgroundColor: '#1F83BB', alignItems: 'center'}}>
           <Pressable style={styles.btnLogout} onPress={handleLogOut}>
             <Text style={styles.textBtnLogout}>LOGOUT</Text>
@@ -386,5 +401,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontSize: 16,
+  },
+  updateBtn: {
+    //flex: 1,
+    position: 'absolute',
+    top: windowWidth * 0.56,
+    left: windowWidth * 0.33,
   },
 });
