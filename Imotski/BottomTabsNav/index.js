@@ -45,8 +45,8 @@ import {ProfilePageNav} from '../profilePage';
 //async storage for getting token
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//alert modal for users who are not logged in
-import {AlertModal, AlertModalNav} from '../alertModal';
+//navigation page for getting directions
+import {RouteMap} from '../routeMap';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -162,7 +162,7 @@ const BlueLakeBottomNav = () => {
       {isLogged === true ? (
         <BlueLakeInfoBottomNav.Screen
           name="Navigation"
-          component={RedLakeInfo}
+          component={RouteMap}
           options={{
             tabBarIcon: ({focused}) => (
               <View>
