@@ -121,28 +121,48 @@ const BlueLakeBottomNav = () => {
           ),
         }}
       />
-      <BlueLakeInfoBottomNav.Screen
-        name="Comment"
-        component={RedLakeInfo}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View>
-              <FontAwesomeIcon
-                icon={faComment}
-                color={focused ? '#8E8E8E' : 'white'}
-                size={30}
-                style={styles.faCommentIcon}
-              />
-            </View>
-          ),
-        }}
-        listeners={{
-          tabPress: event => {
-            event.preventDefault();
-            alert('Sign up or login first!');
-          },
-        }}
-      />
+      {isLogged === true ? (
+        <BlueLakeInfoBottomNav.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <BlueLakeInfoBottomNav.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
       <BlueLakeInfoBottomNav.Screen
         name="Weather"
         component={FutureDayForecast}

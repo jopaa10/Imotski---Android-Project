@@ -64,7 +64,7 @@ export const ProfilePage = () => {
   const [showUpdateBtn, setShowUpdateBtn] = useState(false);
 
   useEffect(async () => {
-    await fetch('http://192.168.1.11:5000/protected', {
+    await fetch('http://192.168.1.2:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
       },
@@ -81,7 +81,7 @@ export const ProfilePage = () => {
       });
 
     if (url) {
-      fetch('http://192.168.1.11:5000/newprofilepic', {
+      fetch('http://192.168.1.2:5000/newprofilepic', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export const ProfilePage = () => {
   };
 
   const getProfilePic = async () => {
-    await fetch('http://192.168.1.11:5000/profilepic', {
+    await fetch('http://192.168.1.2:5000/profilepic', {
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
       },
