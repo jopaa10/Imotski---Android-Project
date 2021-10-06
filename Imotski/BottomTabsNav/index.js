@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Dimensions, View, Text, Modal} from 'react-native';
+import {StyleSheet, Dimensions, View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 //svg
@@ -47,6 +47,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //navigation page for getting directions
 import {RouteMap} from '../routeMap';
+import {CommentNav} from '../commentBox';
+
+//navigation
+import {useNavigation} from '@react-navigation/core';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -91,6 +95,7 @@ const BlueLakeHorizontalNav = () => (
 //blue lake - details
 const BlueLakeBottomNav = () => {
   const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(async () => {
     const token = await AsyncStorage.getItem('token');
@@ -121,24 +126,7 @@ const BlueLakeBottomNav = () => {
           ),
         }}
       />
-      {isLogged === true ? (
-        <BlueLakeInfoBottomNav.Screen
-          name="Comment"
-          component={RedLakeInfo}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <View>
-                <FontAwesomeIcon
-                  icon={faComment}
-                  color={focused ? '#8E8E8E' : 'white'}
-                  size={30}
-                  style={styles.faCommentIcon}
-                />
-              </View>
-            ),
-          }}
-        />
-      ) : (
+      {isLogged === false ? (
         <BlueLakeInfoBottomNav.Screen
           name="Comment"
           component={RedLakeInfo}
@@ -160,6 +148,29 @@ const BlueLakeBottomNav = () => {
               alert('Sign up or login first!');
             },
           }}
+        />
+      ) : (
+        <BlueLakeInfoBottomNav.Screen
+          name="Comment Section"
+          component={CommentNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
         />
       )}
 
