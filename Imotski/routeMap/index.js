@@ -11,7 +11,7 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 
 //fetch route for drawing route from current position to destination
-//import {FetchRoute} from './fetchRoute';
+import {FetchRoute} from './fetchRoute';
 
 //mapbox
 import MapboxGL from '@react-native-mapbox-gl/maps';
@@ -24,22 +24,22 @@ import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 
 //mapbox token
 
-const accessToken =
+/* const accessToken =
   'pk.eyJ1Ijoiam9wYWExMCIsImEiOiJja3RuZHRwaHMwMXY3MnBqbTBibDZjb2JmIn0.NoaI49NCq87KwpDClETgmg';
 
-MapboxGL.setAccessToken(accessToken);
+MapboxGL.setAccessToken(accessToken); */
 
 //set mapbox token
-const directionsClient = MapboxDirectionsFactory({accessToken});
+//const directionsClient = MapboxDirectionsFactory({accessToken});
 
 export const RouteMap = () => {
-  //const [location, setLocation] = useState(null);
-  const [destinationPoint] = useState([17.21, 43.4506]);
-  let [currentCoord, setCurrentCoord] = useState([0, 0]);
-  //const [polylineCoordinates, setPolylineCoordinates] = useState([]);
+  const [location, setLocation] = useState(null);
+  const [destinationPoint] = useState([43.4506, 17.21]);
+  const [currentCoord, setCurrentCoord] = useState([0, 0]);
+  const [polylineCoordinates, setPolylineCoordinates] = useState([]);
   const mapRef = useRef(null);
 
-  const [route, setRoute] = useState(null);
+  /*const [route, setRoute] = useState(null);*/
 
   const handleLocationPermission = async () => {
     let permissionsCheck = '';
@@ -58,19 +58,21 @@ export const RouteMap = () => {
     }
   };
 
-  const renderAnotation = () => {
+  /* const renderAnotation = () => {
     return (
       <MapboxGL.PointAnnotation
         key="pointAnnotation"
         id="pointAnnotation"
         coordinate={destinationPoint}>
-        {/* <View style={styles.destinationPoint} /> */}
-        <View>
+        {/* <View style={styles.destinationPoint} /> */
+  {
+    /* <View>
           <FontAwesomeIcon icon={faMapMarkerAlt} color={'red'} size={25} />
         </View>
       </MapboxGL.PointAnnotation>
     );
-  };
+  };  */
+  }
 
   useEffect(() => {
     handleLocationPermission();
@@ -80,10 +82,10 @@ export const RouteMap = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        //setLocation({latitude, longitude});
+        setLocation({latitude, longitude});
 
         setCurrentCoord([latitude, longitude]);
-        console.log(currentCoord);
+        //console.log(currentCoord);
       },
       error => {
         console.log(error.code, error.message);
@@ -97,6 +99,18 @@ export const RouteMap = () => {
   }, []);
 
   useEffect(() => {
+    if (currentCoord && destinationPoint) {
+      FetchRoute(currentCoord, destinationPoint).then(results => {
+        setPolylineCoordinates(results);
+        //console.log(polylineCoordinates);
+        mapRef.current.fitToCoordinates(results, {
+          edgePadding: {left: 20, right: 20, top: 40, bottom: 60},
+        });
+      });
+    }
+  }, [currentCoord, destinationPoint]);
+
+  /* useEffect(() => {
     fetchRoute();
   }, [currentCoord]);
 
@@ -110,11 +124,11 @@ export const RouteMap = () => {
     const res = await directionsClient.getDirections(reqOptions).send();
     const newRoute = makeLineString(res.body.routes[0].geometry.coordinates);
     setRoute(newRoute);
-  };
+  }; */
 
   return (
     <View style={styles.container}>
-      <MapboxGL.MapView
+      {/* <MapboxGL.MapView
         style={styles.map}
         centerCoordinate={currentCoord}
         userTrackingMode={1}>
@@ -144,7 +158,36 @@ export const RouteMap = () => {
           animationDuration={1100}
         />
         {renderAnotation()}
-      </MapboxGL.MapView>
+      </MapboxGL.MapView> */}
+      {location && (
+        <MapView
+          testID="map"
+          ref={mapRef}
+          style={styles.map}
+          provider={PROVIDER_GOOGLE}
+          showsUserLocation={true}
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}>
+          {polylineCoordinates.length > 1 && (
+            <Polyline
+              testID="route"
+              coordinates={polylineCoordinates}
+              strokeWidth={3}
+              strokeColor="red"
+            />
+          )}
+          {polylineCoordinates.length > 1 && (
+            <Marker
+              testID="destination-marker"
+              coordinate={polylineCoordinates[polylineCoordinates.length - 1]}
+            />
+          )}
+        </MapView>
+      )}
     </View>
   );
 };

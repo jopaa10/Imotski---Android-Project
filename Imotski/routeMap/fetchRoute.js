@@ -1,17 +1,12 @@
 import polyline from '@mapbox/polyline';
 
-export const FetchRoute = async (
-  originPlaceLat,
-  originPlaceLng,
-  destinationPlaceLat,
-  destinationPlaceLng,
-) => {
+export const FetchRoute = async (originPlaceId, destinationPlaceId) => {
   try {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceLat},${originPlaceLng}&destination=${destinationPlaceLat},${destinationPlaceLng}&key=AIzaSyA-t99Dx-RD6dFtzZ443Zv1vBIi2IkxEkU`,
+      `https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
     );
 
-    //console.log(res);
+    console.log(res);
     const json = await res.json();
 
     console.log(json);
