@@ -28,6 +28,9 @@ import {useNavigation} from '@react-navigation/core';
 import Waves from '../wavesTemplate';
 import {ScrollView} from 'react-native-gesture-handler';
 
+//async storage to get token
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const commentStack = createStackNavigator();
 
 export const CommentNav = () => {
@@ -46,9 +49,31 @@ export const CommentScreen = () => {
   const [input, setInput] = useState('');
   const navigation = useNavigation();
 
-  const closeModal = () => {
-    navigation.navigate('Blue Lake Info');
-    setInput('');
+  const submitComment = async () => {
+    //navigation.navigate('Blue Lake Info');
+    await fetch('http://192.168.1.2:5000/createcomment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
+      },
+      body: JSON.stringify({
+        body: input,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.error) {
+          alert('There was an error posting the review. Please try again!');
+        } else {
+          alert('You have successfully posted a review. Thank You!');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    //setInput('');
   };
 
   return (
@@ -72,15 +97,14 @@ export const CommentScreen = () => {
             onChangeText={text => setInput(text)}
             blurOnSubmit={true}
             onSubmitEditing={() => {
-              alert(`You write ${input}`);
               setInput('');
+              submitComment();
             }}
             value={input}
             placeholder={'Write your experience'}
           />
-
           <View>
-            <Pressable style={styles.btnLogout} onPress={closeModal}>
+            <Pressable style={styles.btnLogout} onPress={submitComment}>
               <Text style={styles.textBtnLogout}>Done</Text>
             </Pressable>
           </View>
