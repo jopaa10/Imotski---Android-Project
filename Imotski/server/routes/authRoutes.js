@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../keys');
 const requireLogin = require('../middleware/requireLogin');
 const ProfilePic = mongoose.model('ProfilePic');
+const Comment = mongoose.model('Comment');
 
 router.post('/signup', (req, res) => {
   console.log(req.body);
@@ -145,5 +146,61 @@ router.put('/updatepic', requireLogin, (req, res) => {
     },
   );
 });
+
+router.post('/createcomment', requireLogin, (req, res) => {
+  const {body} = req.body;
+  if (!body) {
+    return res.status(422).json({error: 'Please add your comment'});
+  }
+
+  const commentBox = new Comment({
+    body,
+    postedBy: req.user,
+  });
+
+  console.log(req.user);
+
+  commentBox
+    .save()
+    .then(result => {
+      res.json({result});
+    })
+    .catch(error => console.log(error));
+});
+
+router.get('/allcomments', (req, res) => {
+  Comment.find()
+    .populate('postedBy', '_id name surname')
+    .then(comments => {
+      res.json({comments});
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+/* router.put('/comment', requireLogin, (req, res) => {
+  const comment = {
+    text: req.body.text,
+    postedBy: req.user._id,
+  };
+  Comment.findByIdAndUpdate(
+    req.body.text,
+    {
+      $push: {comments: comment},
+    },
+    {
+      new: true,
+    },
+  )
+    .populate('comments.postedBy', '_id name')
+    .exec((err, result) => {
+      if (err) {
+        return res.status(422).json({error: err});
+      } else {
+        return res.json(result);
+      }
+    });
+}); */
 
 module.exports = router;
