@@ -49,7 +49,7 @@ export const TemplateInfo = props => {
               Gallery
             </Text>
           </Pressable>
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate('Review')}>
             <Text style={[styles.horizotalTab, {color: props.color3}]}>
               Review
             </Text>
@@ -60,6 +60,7 @@ export const TemplateInfo = props => {
       </View>
       {props.gallery}
       {props.weather}
+      {props.review}
     </ScrollView>
   );
 };

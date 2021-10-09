@@ -36,7 +36,7 @@ export const RouteMap = () => {
   const [location, setLocation] = useState(null);
   const [destinationPoint] = useState([43.4506, 17.21]);
   const [currentCoord, setCurrentCoord] = useState([0, 0]);
-  const [polylineCoordinates, setPolylineCoordinates] = useState([]);
+  const [polylineCoordinates, setPolylineCoordinates] = useState([0, 0]);
   const mapRef = useRef(null);
 
   /*const [route, setRoute] = useState(null);*/

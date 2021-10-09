@@ -51,6 +51,7 @@ import {CommentNav} from '../commentBox';
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
+import {ReviewScreen} from '../reviewScreen';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -89,6 +90,12 @@ const BlueLakeHorizontalNav = () => (
       options={{headerShown: false}}
       component={Gallery}
     />
+
+    <BlueLakeHorNav.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewScreen}
+    />
   </BlueLakeHorNav.Navigator>
 );
 
@@ -105,7 +112,7 @@ const BlueLakeBottomNav = () => {
     } else {
       setLogged(false);
     }
-  });
+  }, []);
 
   return (
     <BlueLakeInfoBottomNav.Navigator
@@ -126,7 +133,7 @@ const BlueLakeBottomNav = () => {
           ),
         }}
       />
-      {isLogged === false ? (
+      {isLogged === true ? (
         <BlueLakeInfoBottomNav.Screen
           name="Comment"
           component={RedLakeInfo}
@@ -192,23 +199,6 @@ const BlueLakeBottomNav = () => {
       />
       {isLogged === true ? (
         <BlueLakeInfoBottomNav.Screen
-          name="Navigation"
-          component={RouteMap}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <View>
-                <FontAwesomeIcon
-                  icon={faRoute}
-                  color={focused ? '#8E8E8E' : 'white'}
-                  size={30}
-                  style={styles.faRouteIcon}
-                />
-              </View>
-            ),
-          }}
-        />
-      ) : (
-        <BlueLakeInfoBottomNav.Screen
           name="Alert"
           component={BlueLakeInfo}
           options={{
@@ -229,6 +219,23 @@ const BlueLakeBottomNav = () => {
               alert('You must login first');
             },
           })}
+        />
+      ) : (
+        <BlueLakeInfoBottomNav.Screen
+          name="Navigation"
+          component={RouteMap}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
         />
       )}
     </BlueLakeInfoBottomNav.Navigator>
