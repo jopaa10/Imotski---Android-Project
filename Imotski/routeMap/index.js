@@ -24,22 +24,22 @@ import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 
 //mapbox token
 
-/* const accessToken =
+const accessToken =
   'pk.eyJ1Ijoiam9wYWExMCIsImEiOiJja3RuZHRwaHMwMXY3MnBqbTBibDZjb2JmIn0.NoaI49NCq87KwpDClETgmg';
 
-MapboxGL.setAccessToken(accessToken); */
+MapboxGL.setAccessToken(accessToken);
 
 //set mapbox token
-//const directionsClient = MapboxDirectionsFactory({accessToken});
+const directionsClient = MapboxDirectionsFactory({accessToken});
 
 export const RouteMap = () => {
   const [location, setLocation] = useState(null);
-  const [destinationPoint] = useState([43.4506, 17.21]);
+  const [destinationPoint] = useState([17.21, 43.4506]);
   const [currentCoord, setCurrentCoord] = useState([0, 0]);
-  const [polylineCoordinates, setPolylineCoordinates] = useState([]);
+  const [polylineCoordinates, setPolylineCoordinates] = useState([0, 0]);
   const mapRef = useRef(null);
 
-  /*const [route, setRoute] = useState(null);*/
+  const [route, setRoute] = useState(null);
 
   const handleLocationPermission = async () => {
     let permissionsCheck = '';
@@ -58,21 +58,20 @@ export const RouteMap = () => {
     }
   };
 
-  /* const renderAnotation = () => {
+  const renderAnotation = () => {
     return (
       <MapboxGL.PointAnnotation
         key="pointAnnotation"
         id="pointAnnotation"
         coordinate={destinationPoint}>
-        {/* <View style={styles.destinationPoint} /> */
-  {
-    /* <View>
+        <View style={styles.destinationPoint} />
+
+        <View>
           <FontAwesomeIcon icon={faMapMarkerAlt} color={'red'} size={25} />
         </View>
       </MapboxGL.PointAnnotation>
     );
-  };  */
-  }
+  };
 
   useEffect(() => {
     handleLocationPermission();
@@ -83,7 +82,6 @@ export const RouteMap = () => {
       position => {
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
-
         setCurrentCoord([latitude, longitude]);
         //console.log(currentCoord);
       },
@@ -98,19 +96,22 @@ export const RouteMap = () => {
     );
   }, []);
 
-  useEffect(() => {
-    if (currentCoord && destinationPoint) {
+  //console.log(currentCoord);
+
+  /*  useEffect(() => {
+    if (currentCoord && destinationPoint !== null) {
       FetchRoute(currentCoord, destinationPoint).then(results => {
         setPolylineCoordinates(results);
-        //console.log(polylineCoordinates);
+        //console.log(currentCoord);
+        //console.log(polylineCoordinates.length);
         mapRef.current.fitToCoordinates(results, {
           edgePadding: {left: 20, right: 20, top: 40, bottom: 60},
         });
       });
     }
-  }, [currentCoord, destinationPoint]);
+  }, [currentCoord, destinationPoint]); */
 
-  /* useEffect(() => {
+  useEffect(() => {
     fetchRoute();
   }, [currentCoord]);
 
@@ -124,11 +125,11 @@ export const RouteMap = () => {
     const res = await directionsClient.getDirections(reqOptions).send();
     const newRoute = makeLineString(res.body.routes[0].geometry.coordinates);
     setRoute(newRoute);
-  }; */
+  };
 
   return (
     <View style={styles.container}>
-      {/* <MapboxGL.MapView
+      <MapboxGL.MapView
         style={styles.map}
         centerCoordinate={currentCoord}
         userTrackingMode={1}>
@@ -146,8 +147,12 @@ export const RouteMap = () => {
         {route && (
           <MapboxGL.ShapeSource id="shapeSource" shape={route}>
             <MapboxGL.LineLayer
-              id="lineLayer"
-              style={{lineWidth: 5, lineJoin: 'bevel', lineColor: 'red'}}
+              id="routeFill"
+              style={{
+                lineWidth: 5,
+                lineJoin: 'bevel',
+                lineColor: 'red',
+              }}
             />
           </MapboxGL.ShapeSource>
         )}
@@ -158,8 +163,8 @@ export const RouteMap = () => {
           animationDuration={1100}
         />
         {renderAnotation()}
-      </MapboxGL.MapView> */}
-      {location && (
+      </MapboxGL.MapView>
+      {/* {location && (
         <MapView
           testID="map"
           ref={mapRef}
@@ -171,7 +176,8 @@ export const RouteMap = () => {
             longitude: location.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-          }}>
+          }}
+          loadingEnabled={true}>
           {polylineCoordinates.length > 1 && (
             <Polyline
               testID="route"
@@ -186,8 +192,8 @@ export const RouteMap = () => {
               coordinate={polylineCoordinates[polylineCoordinates.length - 1]}
             />
           )}
-        </MapView>
-      )}
+        </MapView> 
+          )}*/}
     </View>
   );
 };

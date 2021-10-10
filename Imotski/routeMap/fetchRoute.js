@@ -3,8 +3,10 @@ import polyline from '@mapbox/polyline';
 export const FetchRoute = async (originPlaceId, destinationPlaceId) => {
   try {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
+      `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${originPlaceId};${destinationPlaceId}?access_token=pk.eyJ1Ijoiam9wYWExMCIsImEiOiJja3RuZHRwaHMwMXY3MnBqbTBibDZjb2JmIn0.NoaI49NCq87KwpDClETgmg`,
     );
+
+    //https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBJ5sO1HRmzbvinCvs7h-4w1tpAQFzR2ls
 
     console.log(res);
     const json = await res.json();
@@ -21,7 +23,7 @@ export const FetchRoute = async (originPlaceId, destinationPlaceId) => {
       longitude: point[1],
     }));
 
-    console.log(coordinates);
+    //console.log(coordinates);
 
     return coordinates;
   } catch (error) {
