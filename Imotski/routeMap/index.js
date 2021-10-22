@@ -21,6 +21,7 @@ import MapboxDirectionsFactory from '@mapbox/mapbox-sdk/services/directions';
 import {lineString as makeLineString} from '@turf/helpers';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
+import {useNavigation} from '@react-navigation/core';
 
 //mapbox token
 
@@ -33,13 +34,14 @@ MapboxGL.setAccessToken(accessToken);
 const directionsClient = MapboxDirectionsFactory({accessToken});
 
 export const RouteMap = () => {
+  const navigation = useNavigation();
   const [location, setLocation] = useState(null);
-  const [destinationPoint] = useState([17.21, 43.4506]);
-  const [currentCoord, setCurrentCoord] = useState([0, 0]);
-  const [polylineCoordinates, setPolylineCoordinates] = useState([0, 0]);
+  const [destinationPoint] = useState([43.4506, 17.21]);
+  const [currentCoord, setCurrentCoord] = useState([]);
+  let [polylineCoordinates, setPolylineCoordinates] = useState(0);
   const mapRef = useRef(null);
 
-  const [route, setRoute] = useState(null);
+  let [route, setRoute] = useState(0);
 
   const handleLocationPermission = async () => {
     let permissionsCheck = '';
@@ -47,7 +49,10 @@ export const RouteMap = () => {
     if (Platform.OS === 'android') {
       permissionsCheck = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
 
-      if (permissionsCheck === RESULTS.DENIED) {
+      if (
+        permissionsCheck === RESULTS.BLOCKED ||
+        permissionsCheck === RESULTS.DENIED
+      ) {
         const permissionsRequest = await request(
           PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         );
@@ -58,7 +63,7 @@ export const RouteMap = () => {
     }
   };
 
-  const renderAnotation = () => {
+  /* const renderAnotation = () => {
     return (
       <MapboxGL.PointAnnotation
         key="pointAnnotation"
@@ -71,7 +76,7 @@ export const RouteMap = () => {
         </View>
       </MapboxGL.PointAnnotation>
     );
-  };
+  }; */
 
   useEffect(() => {
     handleLocationPermission();
@@ -82,8 +87,9 @@ export const RouteMap = () => {
       position => {
         const {latitude, longitude} = position.coords;
         setLocation({latitude, longitude});
+
         setCurrentCoord([latitude, longitude]);
-        //console.log(currentCoord);
+        //console.log(latitude, longitude);
       },
       error => {
         console.log(error.code, error.message);
@@ -98,20 +104,23 @@ export const RouteMap = () => {
 
   //console.log(currentCoord);
 
-  /*  useEffect(() => {
-    if (currentCoord && destinationPoint !== null) {
+  useEffect(() => {
+    if (currentCoord && destinationPoint) {
+      console.log(currentCoord);
       FetchRoute(currentCoord, destinationPoint).then(results => {
         setPolylineCoordinates(results);
-        //console.log(currentCoord);
-        //console.log(polylineCoordinates.length);
+        console.log(results.length);
+        setRoute(results.length);
         mapRef.current.fitToCoordinates(results, {
           edgePadding: {left: 20, right: 20, top: 40, bottom: 60},
         });
       });
     }
-  }, [currentCoord, destinationPoint]); */
+  }, [currentCoord, destinationPoint]);
 
-  useEffect(() => {
+  console.log(route);
+
+  /*   useEffect(() => {
     fetchRoute();
   }, [currentCoord]);
 
@@ -125,11 +134,11 @@ export const RouteMap = () => {
     const res = await directionsClient.getDirections(reqOptions).send();
     const newRoute = makeLineString(res.body.routes[0].geometry.coordinates);
     setRoute(newRoute);
-  };
+  }; */
 
   return (
     <View style={styles.container}>
-      <MapboxGL.MapView
+      {/* <MapboxGL.MapView
         style={styles.map}
         centerCoordinate={currentCoord}
         userTrackingMode={1}>
@@ -143,8 +152,8 @@ export const RouteMap = () => {
             ];
             setCurrentCoord(currentCoords);
           }}
-        />
-        {route && (
+        /> */}
+      {/* {route && (
           <MapboxGL.ShapeSource id="shapeSource" shape={route}>
             <MapboxGL.LineLayer
               id="routeFill"
@@ -163,8 +172,8 @@ export const RouteMap = () => {
           animationDuration={1100}
         />
         {renderAnotation()}
-      </MapboxGL.MapView>
-      {/* {location && (
+      </MapboxGL.MapView> */}
+      {location && (
         <MapView
           testID="map"
           ref={mapRef}
@@ -178,22 +187,42 @@ export const RouteMap = () => {
             longitudeDelta: 0.0421,
           }}
           loadingEnabled={true}>
-          {polylineCoordinates.length > 1 && (
-            <Polyline
-              testID="route"
-              coordinates={polylineCoordinates}
-              strokeWidth={3}
-              strokeColor="red"
-            />
-          )}
-          {polylineCoordinates.length > 1 && (
-            <Marker
-              testID="destination-marker"
-              coordinate={polylineCoordinates[polylineCoordinates.length - 1]}
-            />
-          )}
-        </MapView> 
-          )}*/}
+          {polylineCoordinates === undefined
+            ? route.length > 1 && (
+                <Polyline
+                  testID="route"
+                  coordinates={polylineCoordinates}
+                  strokeWidth={3}
+                  strokeColor="red"
+                />
+              )
+            : polylineCoordinates.length > 1 && (
+                <Polyline
+                  testID="route"
+                  coordinates={polylineCoordinates}
+                  strokeWidth={3}
+                  strokeColor="red"
+                />
+              )}
+          {polylineCoordinates === undefined
+            ? route.length > 1 && (
+                <Marker
+                  testID="destination-marker"
+                  coordinate={
+                    polylineCoordinates[polylineCoordinates.length - 1]
+                  }
+                />
+              )
+            : polylineCoordinates.length > 1 && (
+                <Marker
+                  testID="destination-marker"
+                  coordinate={
+                    polylineCoordinates[polylineCoordinates.length - 1]
+                  }
+                />
+              )}
+        </MapView>
+      )}
     </View>
   );
 };

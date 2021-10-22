@@ -25,7 +25,7 @@ export const SignIn = () => {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async () => {
-    fetch('http://192.168.1.2:5000/signin', {
+    fetch('http://192.168.1.4:5000/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
