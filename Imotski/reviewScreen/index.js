@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -15,7 +15,35 @@ import {TemplateInfo} from '../infoTemplate';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+//navigation
+import {useNavigation} from '@react-navigation/native';
+
 export const ReviewScreen = () => {
+  const [reviewData, setReviewData] = useState([]);
+  const navigation = useNavigation();
+
+  const getReviewData = () => {
+    fetch('http://192.168.1.4:5000/allcomments', {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then(data => {
+        setReviewData(data.comments);
+        navigation.navigate('Review');
+
+        console.log(data.comments);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getReviewData();
+  }, []);
+
+  console.log(reviewData.length);
+
   return (
     <>
       <TemplateInfo
@@ -27,23 +55,51 @@ export const ReviewScreen = () => {
         color3={'black'}
         review={
           <>
-            <View style={styles.reviewContainer}>
-              <View style={styles.reviewImageContainer}>
-                <Image
-                  style={styles.reviewImage}
-                  source={require('../images/blueLakeArticle.jpg')}
-                />
+            {reviewData.length < 1 ? (
+              <View style={styles.reviewContainer}>
+                <View style={styles.reviewImageContainer}>
+                  <Image
+                    style={styles.reviewImage}
+                    source={require('../images/blueLakeArticle.jpg')}
+                  />
+                </View>
+                <View style={styles.reviewText}>
+                  <Text style={styles.reviewNameContainer}>Petar</Text>
+                  <Text style={styles.reviewCommentContainer}>
+                    There is no reviews at this moment!
+                  </Text>
+                  <Text style={styles.reviewDateContainer}>2021-10-10</Text>
+                </View>
               </View>
-              <View style={styles.reviewText}>
-                <Text style={styles.reviewNameContainer}>John</Text>
-                <Text style={styles.reviewCommentContainer}>
-                  bsdjknnsdkksddsksdls nbjksvkfjsljsckn jks b
-                </Text>
-                <Text style={styles.reviewDateContainer}>March 23, 2018</Text>
-              </View>
-            </View>
+            ) : (
+              reviewData.map(item => {
+                return (
+                  <View key={item._id} style={styles.reviewContainer}>
+                    <View style={styles.reviewImageContainer}>
+                      <Image
+                        style={styles.reviewImage}
+                        source={{
+                          uri: item.postedBy.photo,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.reviewText}>
+                      <Text style={styles.reviewNameContainer}>
+                        {item.postedBy.name}
+                      </Text>
+                      <Text style={styles.reviewCommentContainer}>
+                        {item.body}
+                      </Text>
+                      <Text style={styles.reviewDateContainer}>
+                        {item.time.substring(0, 10)}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })
+            )}
 
-            <View style={styles.reviewContainer}>
+            {/* <View style={styles.reviewContainer}>
               <View style={styles.reviewImageContainer}>
                 <Image
                   style={styles.reviewImage}
@@ -57,23 +113,7 @@ export const ReviewScreen = () => {
                 </Text>
                 <Text style={styles.reviewDateContainer}>March 23, 2018</Text>
               </View>
-            </View>
-
-            <View style={styles.reviewContainer}>
-              <View style={styles.reviewImageContainer}>
-                <Image
-                  style={styles.reviewImage}
-                  source={require('../images/blueLakeArticle.jpg')}
-                />
-              </View>
-              <View style={styles.reviewText}>
-                <Text style={styles.reviewNameContainer}>John</Text>
-                <Text style={styles.reviewCommentContainer}>
-                  bsdjknnsdkksddsksdls nbjksvkfjsljsckn jks b
-                </Text>
-                <Text style={styles.reviewDateContainer}>March 23, 2018</Text>
-              </View>
-            </View>
+            </View> */}
           </>
         }
       />

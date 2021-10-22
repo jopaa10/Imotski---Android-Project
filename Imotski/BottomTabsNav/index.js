@@ -105,13 +105,16 @@ const BlueLakeBottomNav = () => {
   const navigation = useNavigation();
 
   useEffect(async () => {
-    const token = await AsyncStorage.getItem('token');
+    let token = await AsyncStorage.getItem('token');
 
     if (token) {
       setLogged(true);
     } else {
       setLogged(false);
+      token = null;
     }
+    console.log(isLogged);
+    console.log(token);
   }, []);
 
   return (
@@ -133,30 +136,7 @@ const BlueLakeBottomNav = () => {
           ),
         }}
       />
-      {isLogged === true ? (
-        <BlueLakeInfoBottomNav.Screen
-          name="Comment"
-          component={RedLakeInfo}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <View>
-                <FontAwesomeIcon
-                  icon={faComment}
-                  color={focused ? '#8E8E8E' : 'white'}
-                  size={30}
-                  style={styles.faCommentIcon}
-                />
-              </View>
-            ),
-          }}
-          listeners={{
-            tabPress: event => {
-              event.preventDefault();
-              alert('Sign up or login first!');
-            },
-          }}
-        />
-      ) : (
+      {isLogged ? (
         <BlueLakeInfoBottomNav.Screen
           name="Comment Section"
           component={CommentNav}
@@ -179,6 +159,29 @@ const BlueLakeBottomNav = () => {
             },
           })}
         />
+      ) : (
+        <BlueLakeInfoBottomNav.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              alert('Sign up or login first!');
+            },
+          }}
+        />
       )}
 
       <BlueLakeInfoBottomNav.Screen
@@ -198,6 +201,23 @@ const BlueLakeBottomNav = () => {
         }}
       />
       {isLogged === true ? (
+        <BlueLakeInfoBottomNav.Screen
+          name="Navigation"
+          component={RouteMap}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
         <BlueLakeInfoBottomNav.Screen
           name="Alert"
           component={BlueLakeInfo}
@@ -219,23 +239,6 @@ const BlueLakeBottomNav = () => {
               alert('You must login first');
             },
           })}
-        />
-      ) : (
-        <BlueLakeInfoBottomNav.Screen
-          name="Navigation"
-          component={RouteMap}
-          options={{
-            tabBarIcon: ({focused}) => (
-              <View>
-                <FontAwesomeIcon
-                  icon={faRoute}
-                  color={focused ? '#8E8E8E' : 'white'}
-                  size={30}
-                  style={styles.faRouteIcon}
-                />
-              </View>
-            ),
-          }}
         />
       )}
     </BlueLakeInfoBottomNav.Navigator>

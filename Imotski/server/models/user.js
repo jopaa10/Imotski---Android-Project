@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  photo: {
+    type: String,
+    default:
+      'https://res.cloudinary.com/jopaa10/image/upload/v1632343549/userPhoto_ch87iu.jpg',
+  },
 });
 
 mongoose.model('User', userSchema);

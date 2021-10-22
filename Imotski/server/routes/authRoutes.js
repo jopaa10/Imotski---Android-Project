@@ -80,7 +80,27 @@ router.post('/signin', (req, res) => {
         if (doMatch) {
           //return res.json({message: 'signed successfully'});
           const token = jwt.sign({_id: savedUser._id}, JWT_SECRET);
-          res.json({token});
+          const {
+            _id,
+            name,
+            surname,
+            email,
+            password,
+            daysOfStaying,
+            placeOfResidence,
+          } = savedUser;
+          res.json({
+            token,
+            user: {
+              _id,
+              name,
+              surname,
+              email,
+              password,
+              daysOfStaying,
+              placeOfResidence,
+            },
+          });
         } else {
           return res
             .status(422)
@@ -109,7 +129,6 @@ router.post('/newprofilepic', requireLogin, (req, res) => {
   }
   const profilePic = new ProfilePic({
     pic,
-    postedBy: req.user,
   });
   profilePic
     .save()
@@ -122,21 +141,21 @@ router.post('/newprofilepic', requireLogin, (req, res) => {
     });
 });
 
-router.get('/profilepic', requireLogin, (req, res) => {
-  ProfilePic.findOne({postedBy: req.user._id})
-    .populate('postedBy', '_id name')
+/* router.get('/profilepic', requireLogin, (req, res) => {
+  User.findById({_id: req.user._id})
+
     .then(result => {
       res.json({result});
     })
     .catch(error => {
       console.log(error);
     });
-});
+}); */
 
 router.put('/updatepic', requireLogin, (req, res) => {
-  ProfilePic.findOneAndUpdate(
-    {postedBy: req.user._id},
-    {$set: {pic: req.body.pic}},
+  User.findByIdAndUpdate(
+    {_id: req.user._id},
+    {$set: {photo: req.body.photo}},
     {new: true},
     (err, result) => {
       if (err) {
@@ -156,9 +175,8 @@ router.post('/createcomment', requireLogin, (req, res) => {
   const commentBox = new Comment({
     body,
     postedBy: req.user,
+    time: new Date(),
   });
-
-  console.log(req.user);
 
   commentBox
     .save()
@@ -170,7 +188,7 @@ router.post('/createcomment', requireLogin, (req, res) => {
 
 router.get('/allcomments', (req, res) => {
   Comment.find()
-    .populate('postedBy', '_id name surname')
+    .populate('postedBy', '_id name photo')
     .then(comments => {
       res.json({comments});
     })
@@ -178,29 +196,5 @@ router.get('/allcomments', (req, res) => {
       console.log(error);
     });
 });
-
-/* router.put('/comment', requireLogin, (req, res) => {
-  const comment = {
-    text: req.body.text,
-    postedBy: req.user._id,
-  };
-  Comment.findByIdAndUpdate(
-    req.body.text,
-    {
-      $push: {comments: comment},
-    },
-    {
-      new: true,
-    },
-  )
-    .populate('comments.postedBy', '_id name')
-    .exec((err, result) => {
-      if (err) {
-        return res.status(422).json({error: err});
-      } else {
-        return res.json(result);
-      }
-    });
-}); */
 
 module.exports = router;

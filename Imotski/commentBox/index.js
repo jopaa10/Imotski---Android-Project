@@ -65,7 +65,7 @@ export const CommentScreen = () => {
 
   const submitComment = async () => {
     //navigation.navigate('Blue Lake Info');
-    await fetch('http://192.168.1.2:5000/createcomment', {
+    await fetch('http://192.168.1.4:5000/createcomment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

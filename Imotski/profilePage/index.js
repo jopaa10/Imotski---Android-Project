@@ -56,15 +56,13 @@ export const ProfilePage = () => {
     surname: '',
   });
 
-  let [profilePic, setProfilePic] = useState(null);
   const [url, setUrl] = useState('');
   let [updatePhoto, setUpdatePhoto] = useState(null);
   const [userPic, setUserPic] = useState(null);
-  const [showUploadBtn, setShowUploadBtn] = useState(true);
-  const [showUpdateBtn, setShowUpdateBtn] = useState(false);
+  const [showUpdateBtn, setShowUpdateBtn] = useState(true);
 
   useEffect(async () => {
-    await fetch('http://192.168.1.2:5000/protected', {
+    await fetch('http://192.168.1.4:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
       },
@@ -78,17 +76,18 @@ export const ProfilePage = () => {
           daysOfStaying: data.userData.daysOfStaying,
           placeOfResidence: data.userData.placeOfResidence,
         });
+        setUserPic(data.userData.photo);
       });
 
     if (url) {
-      fetch('http://192.168.1.2:5000/newprofilepic', {
+      fetch('http://192.168.1.4:5000/newprofilepic', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
         },
         body: JSON.stringify({
-          pic: url,
+          photo: url,
         }),
       })
         .then(res => res.json())
@@ -106,65 +105,7 @@ export const ProfilePage = () => {
           console.log(error);
         });
     }
-
-    getProfilePic();
   }, [url]);
-
-  const uploadProfilePic = async () => {
-    await DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
-    })
-      .then(res => {
-        console.log(res[0]);
-        setProfilePic((profilePic = res[0]));
-        setShowUploadBtn(!showUploadBtn);
-        setShowUpdateBtn(!showUpdateBtn);
-        //console.log(profilePic);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    if (profilePic != null) {
-      const data = new FormData();
-      const fileToUpload = profilePic;
-      data.append('file', fileToUpload);
-      data.append('upload_preset', 'imotski-app');
-      data.append('cloud_name', 'jopaa10');
-
-      fetch('https://api.cloudinary.com/v1_1/jopaa10/image/upload', {
-        method: 'post',
-        body: data,
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data.url);
-          setUrl(data.url);
-          //setShowUploadBtn(!showUploadBtn);
-        });
-    }
-  };
-
-  const getProfilePic = async () => {
-    await fetch('http://192.168.1.2:5000/profilepic', {
-      headers: {
-        Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
-      },
-    })
-      .then(res => res.json())
-      .then(photo => {
-        console.log(photo.result);
-
-        if (photo.result === null || photo.result === undefined) {
-          setUserPic(
-            'https://res.cloudinary.com/jopaa10/image/upload/v1632343549/userPhoto_ch87iu.jpg',
-          );
-          //setShow(!showProfilePic);
-        } else {
-          setUserPic(photo.result.pic);
-        }
-      });
-  };
 
   const updateProfilePic = async () => {
     await DocumentPicker.pick({
@@ -179,7 +120,7 @@ export const ProfilePage = () => {
         console.log(error);
       });
 
-    if (updatePhoto != null) {
+    if (updatePhoto) {
       const data = new FormData();
       const fileToUpload = updatePhoto;
       data.append('file', fileToUpload);
@@ -192,21 +133,21 @@ export const ProfilePage = () => {
       })
         .then(res => res.json())
         .then(async data => {
-          //console.log(data.url);
-          await fetch('http://192.168.1.11:5000/updatepic', {
+          console.log(data.url);
+          await fetch('http://192.168.1.4:5000/updatepic', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
               Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
             },
             body: JSON.stringify({
-              pic: data.url,
+              photo: data.url,
             }),
           })
             .then(res => res.json())
             .then(result => {
-              console.log(result.pic);
-              setUserPic(result.pic);
+              console.log(result.photo);
+              setUserPic(result.photo);
             })
             .catch(error => {
               console.log(error);
@@ -240,14 +181,6 @@ export const ProfilePage = () => {
             <Image source={{uri: userPic}} style={styles.userProfilePic} />
           </Svg>
         </View>
-
-        {showUploadBtn && (
-          <Pressable onPress={uploadProfilePic} style={styles.updateBtn}>
-            <View>
-              <FontAwesomeIcon icon={faPlus} size={20} color={'white'} />
-            </View>
-          </Pressable>
-        )}
         {showUpdateBtn && (
           <Pressable onPress={updateProfilePic} style={styles.updateBtn}>
             <View>

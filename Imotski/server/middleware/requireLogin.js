@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../keys');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const ProfilePic = mongoose.model('ProfilePic');
 
 module.exports = (req, res, next) => {
   const {authorization} = req.headers;
@@ -16,6 +17,13 @@ module.exports = (req, res, next) => {
     }
 
     const {_id} = payload;
+
+    /*    ProfilePic.findOneAndUpdate({postedBy: _id}).then(proData => {
+      req.avatar = proData;
+      //next();
+      console.log(proData);
+    }); */
+
     User.findById(_id).then(userData => {
       req.user = userData;
       next();
