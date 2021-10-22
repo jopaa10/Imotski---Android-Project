@@ -6,10 +6,12 @@ export const FetchRoute = async (originPlaceId, destinationPlaceId) => {
       `https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
     );
 
-    console.log(res);
+    //https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBJ5sO1HRmzbvinCvs7h-4w1tpAQFzR2ls
+
+    //console.log(res);
     const json = await res.json();
 
-    console.log(json);
+    //console.log(json);
 
     if (!json.routes[0]) {
       return;
@@ -21,7 +23,7 @@ export const FetchRoute = async (originPlaceId, destinationPlaceId) => {
       longitude: point[1],
     }));
 
-    console.log(coordinates);
+    //console.log(coordinates);
 
     return coordinates;
   } catch (error) {
