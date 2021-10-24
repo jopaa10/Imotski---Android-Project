@@ -16,25 +16,21 @@ const Next48Hours = ({weatherData, navigate, today, followingDays}) => {
 
   const weatherDataArray = [
     {
-      key: 1,
       icon: faSun,
       text: 'UV Index',
       weatherD: weatherData.uvIndex,
     },
     {
-      key: 2,
       icon: faCloudSun,
       text: 'Sunrise',
       weatherD: weatherData.sunrise,
     },
     {
-      key: 3,
       icon: faWater,
       text: 'Humidty',
       weatherD: weatherData.humidity,
     },
     {
-      key: 4,
       icon: faCloudSun,
       text: 'Sunset',
       weatherD: weatherData.sunset,
@@ -46,7 +42,9 @@ const Next48Hours = ({weatherData, navigate, today, followingDays}) => {
       <View style={styles.container}>
         {weatherDataArray.map(item => (
           <>
-            <View style={styles.viewWeatherInfo}>
+            <View
+              key={Math.random().toString(36).substr(2, 9)}
+              style={styles.viewWeatherInfo}>
               <FontAwesomeIcon icon={item.icon} size={40} />
               <Text style={styles.textWeatherInfo}>{item.text}</Text>
               <Text style={styles.weatherInfo}>{item.weatherD}</Text>

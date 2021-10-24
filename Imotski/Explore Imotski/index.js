@@ -8,30 +8,39 @@
 
 import {auto} from 'async';
 import React from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {Dimensions} from 'react-native';
 import ListOfSights from './listOfSights';
+import Activities from './activities';
+
+//drawer navigator
+import {createDrawerTabNavigator} from '@react-navigatio/drawer';
+
+//navigation
+import {useNavigation} from '@react-navigation/core';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const ExploreImotski = () => {
+  const navigation = useNavigation();
+
   return (
     <>
-      <ScrollView
-        style={[
-          styles.container,
-          {
-            flexDirection: 'column',
-            backgroundColor: 'white',
-          },
-        ]}>
-        <View
+      <ScrollView style={styles.container}>
+        {/*<View
           style={{
             flex: 1,
           }}>
-          <Svg
+           <Svg
             style={styles.waves}
             viewBox={`0 0 ${windowWidth} 104`}
             fill="none"
@@ -49,11 +58,28 @@ export const ExploreImotski = () => {
               fill="#2A99D8"
             />
             <Text style={styles.titleExploreIm}>EXPLORE IMOTSKI & REGION</Text>
-          </Svg>
+          </Svg> 
+        </View>*/}
+
+        <View style={styles.avatarContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile Page')}>
+            <Image
+              source={require('../images/userPhoto.jpg')}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <Text style={styles.txtPlaces}>Places</Text>
         </View>
         <View style={styles.listContainer}>
           <ListOfSights />
         </View>
+        <View>
+          <Text style={styles.txtExplore}>Activities</Text>
+        </View>
+        <Activities />
       </ScrollView>
     </>
   );
@@ -62,6 +88,10 @@ export const ExploreImotski = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    height: windowHeight,
+    width: windowWidth,
   },
   waves: {
     width: windowWidth,
@@ -73,9 +103,33 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
   listContainer: {
     flex: 4,
+  },
+  txtExplore: {
+    color: '#5D5D5D',
+    fontWeight: 'bold',
+    marginHorizontal: 20,
+    fontSize: 20,
+  },
+  txtPlaces: {
+    color: '#5D5D5D',
+    fontWeight: 'bold',
+    marginHorizontal: 20,
+    fontSize: 20,
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+  },
+  avatarContainer: {
+    width: windowWidth * 0.5,
+    marginVertical: windowWidth * 0.05,
+    flex: 1,
+    alignItems: 'flex-end',
+    alignSelf: 'flex-end',
+    marginRight: windowWidth * 0.05,
   },
 });
