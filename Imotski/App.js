@@ -10,12 +10,13 @@ import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import BottomTabsNav from './BottomTabsNav';
+import {AppDrawerScreen} from './Explore Imotski';
 
 const App = () => {
   return (
     <>
       <NavigationContainer>
-        <BottomTabsNav />
+        <AppDrawerScreen />
       </NavigationContainer>
     </>
   );

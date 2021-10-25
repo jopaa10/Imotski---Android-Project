@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
   container: {
     //flex: 1,
     width: windowWidth * 0.5,
-    marginTop: StatusBar.currentHeight || 0,
+    //marginTop: StatusBar.currentHeight || 0,
+    marginTop: windowWidth * 0.04,
     height: 250,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

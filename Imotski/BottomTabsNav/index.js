@@ -20,6 +20,9 @@ import {
 
 import {createStackNavigator} from '@react-navigation/stack';
 
+//app drawer
+import {AppDrawerScreen} from '../Explore Imotski/index';
+
 //Main page: Explore Imotski & region
 import {ExploreImotski} from '../Explore Imotski/index';
 import {Imotski} from '../offlineScreens/imotski';

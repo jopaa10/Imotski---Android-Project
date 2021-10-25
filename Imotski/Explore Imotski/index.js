@@ -6,6 +6,7 @@
  * @flow strict-local
  */
 
+import 'react-native-gesture-handler';
 import {auto} from 'async';
 import React from 'react';
 import {
@@ -15,20 +16,42 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
-import Svg, {Path} from 'react-native-svg';
-import {Dimensions} from 'react-native';
+//import Svg, {Path} from 'react-native-svg';
 import ListOfSights from './listOfSights';
 import Activities from './activities';
 
 //drawer navigator
-import {createDrawerTabNavigator} from '@react-navigatio/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+
+//drawer actions
+import {DrawerActions} from '@react-navigation/native';
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
+import {RedLakeInfo} from '../redLakeInfo';
+import BottomTabsNav from '../BottomTabsNav';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faBars} from '@fortawesome/free-solid-svg-icons';
 
+//dimensions
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+//drawer navigator
+const AppDrawer = createDrawerNavigator();
+
+export const AppDrawerScreen = () => {
+  return (
+    <AppDrawer.Navigator
+      initialRouteName="Explore Imotski"
+      screenOptions={{headerShown: false}}>
+      <AppDrawer.Screen name="Explore Imotski" component={BottomTabsNav} />
+      <AppDrawer.Screen name="About Us" component={RedLakeInfo} />
+    </AppDrawer.Navigator>
+  );
+};
 
 export const ExploreImotski = () => {
   const navigation = useNavigation();
@@ -62,6 +85,10 @@ export const ExploreImotski = () => {
         </View>*/}
 
         <View style={styles.avatarContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <FontAwesomeIcon icon={faBars} size={25} color={'#1F83BB'} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Profile Page')}>
             <Image
               source={require('../images/userPhoto.jpg')}
@@ -71,7 +98,8 @@ export const ExploreImotski = () => {
         </View>
 
         <View>
-          <Text style={styles.txtPlaces}>Places</Text>
+          <Text style={styles.txtDiscover}> Discover Imotski & region </Text>
+          <Text style={styles.txtPlaces}>{`Places`}</Text>
         </View>
         <View style={styles.listContainer}>
           <ListOfSights />
@@ -109,27 +137,36 @@ const styles = StyleSheet.create({
     flex: 4,
   },
   txtExplore: {
-    color: '#5D5D5D',
+    color: '#1F83BB',
     fontWeight: 'bold',
     marginHorizontal: 20,
-    fontSize: 20,
+    fontSize: 17,
+  },
+  txtDiscover: {
+    color: '#1F83BB',
+    fontWeight: 'bold',
+    marginHorizontal: 15,
+    fontSize: 22,
   },
   txtPlaces: {
-    color: '#5D5D5D',
-    fontWeight: 'bold',
+    color: '#1F83BB',
     marginHorizontal: 20,
-    fontSize: 20,
+    fontSize: 14,
+    paddingTop: windowWidth * 0.05,
   },
   avatar: {
     width: 60,
     height: 60,
   },
   avatarContainer: {
-    width: windowWidth * 0.5,
+    width: windowWidth * 0.9,
     marginVertical: windowWidth * 0.05,
     flex: 1,
-    alignItems: 'flex-end',
-    alignSelf: 'flex-end',
-    marginRight: windowWidth * 0.05,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: windowWidth * 0.05,
+    /*  borderColor: 'black',
+    borderWidth: 1, */
   },
 });
