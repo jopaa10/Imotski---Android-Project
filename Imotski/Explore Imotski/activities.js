@@ -121,12 +121,12 @@ const styles = StyleSheet.create({
     height: 50,
   },
   txtExploreActions: {
-    color: '#1F83BB',
+    color: '#A8A8A8',
     marginVertical: windowWidth * 0.05,
     textAlign: 'center',
     fontSize: 12,
   },
   containerHorizontalIcons: {
-    marginBottom: windowWidth * 0.2,
+    //marginBottom: windowWidth * 0.05,
   },
 });

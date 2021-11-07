@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     width: windowWidth * 0.5,
     //marginTop: StatusBar.currentHeight || 0,
-    marginTop: windowWidth * 0.04,
+    marginTop: windowWidth * 0.01,
     height: 250,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
