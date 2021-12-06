@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {UserContext} from '../App';
+
 //waves
 import Waves from '../wavesTemplate';
 
@@ -20,12 +22,13 @@ const windowWidth = Dimensions.get('window').width;
 
 export const SignIn = () => {
   const navigation = useNavigation();
+  const {state, dispatch} = useContext(UserContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async () => {
-    fetch('http://192.168.1.4:5000/signin', {
+    fetch('http://192.168.1.3:5000/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -45,6 +48,8 @@ export const SignIn = () => {
         } else {
           try {
             await AsyncStorage.setItem('token', data.token);
+            await AsyncStorage.setItem('user', JSON.stringify(data.user));
+            dispatch({type: 'USER', payload: data.token});
             navigation.navigate('Profile Page');
             setEmail('');
             setPassword('');

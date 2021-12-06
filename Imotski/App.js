@@ -6,18 +6,25 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {createContext, useContext, useEffect, useReducer} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import BottomTabsNav from './BottomTabsNav';
 import {AppDrawerScreen} from './Explore Imotski';
+import {initialState, reducer} from './reducers/userReducer';
+
+export const UserContext = createContext();
 
 const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <>
-      <NavigationContainer>
-        <AppDrawerScreen />
-      </NavigationContainer>
+      <UserContext.Provider value={{state, dispatch}}>
+        <NavigationContainer>
+          <AppDrawerScreen />
+        </NavigationContainer>
+      </UserContext.Provider>
     </>
   );
 };

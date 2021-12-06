@@ -7,8 +7,7 @@
  */
 
 import 'react-native-gesture-handler';
-import {auto} from 'async';
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Text,
   View,
@@ -16,7 +15,6 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Dimensions,
   SafeAreaView,
 } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
@@ -31,20 +29,17 @@ import {DrawerActions} from '@react-navigation/native';
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
-import {RedLakeInfo} from '../redLakeInfo';
 import BottomTabsNav from '../BottomTabsNav';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
-
-//dimensions
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 //drawer navigator
 const AppDrawer = createDrawerNavigator();
 
 //drawer content
 import {DrawerContent} from '../drawerNav';
+import {UserContext} from '../App';
+import {windowHeight, windowWidth} from '../constants/global';
 
 export const AppDrawerScreen = () => {
   return (
@@ -60,6 +55,23 @@ export const AppDrawerScreen = () => {
 
 export const ExploreImotski = () => {
   const navigation = useNavigation();
+  const [userPhoto, setUserPhoto] = useState('');
+  const {state, dispatch} = useContext(UserContext);
+
+  console.log(state);
+
+  if (state != null) {
+    fetch('http://192.168.1.3:5000/protected', {
+      headers: {
+        Authorization: 'Bearer ' + state,
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        //console.log(data);
+        setUserPhoto(data.userData.photo);
+      });
+  }
 
   return (
     <>
@@ -71,13 +83,28 @@ export const ExploreImotski = () => {
                 onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
                 <FontAwesomeIcon icon={faBars} size={25} color={'white'} />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Profile Page')}>
-                <Image
-                  source={require('../images/userIcon.png')}
-                  style={styles.avatar}
-                />
-              </TouchableOpacity>
+              <View>
+                <>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(state ? 'User' : 'Profile Page')
+                    }>
+                    {!state ? (
+                      <Image
+                        source={require('../images/userIcon.png')}
+                        style={styles.avatar}
+                      />
+                    ) : (
+                      <>
+                        <Image
+                          source={{uri: userPhoto}}
+                          style={styles.profilePic}
+                        />
+                      </>
+                    )}
+                  </TouchableOpacity>
+                </>
+              </View>
             </View>
 
             <Svg
@@ -169,6 +196,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: windowWidth * 0.05,
+  },
+  profilePic: {
+    width: windowWidth * 0.12,
+    height: windowHeight * 0.06,
+    borderRadius: Math.round((windowWidth + windowHeight) / 2),
+    borderWidth: 1,
   },
   containerDiscover: {
     //marginVertical: windowWidth * 0.01,

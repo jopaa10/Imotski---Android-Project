@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -15,9 +15,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //svg, path
 import Svg, {Path} from 'react-native-svg';
 
-//Dimensions
+/* //Dimensions
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get('window').height; */
 
 //stack navigation
 import {createStackNavigator} from '@react-navigation/stack';
@@ -34,6 +34,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {ScrollView} from 'react-native-gesture-handler';
 import DocumentPicker from 'react-native-document-picker';
+import {UserContext} from '../App';
+import {windowHeight, windowWidth} from '../constants/global';
 
 const ProfileStackNav = createStackNavigator();
 
@@ -60,9 +62,10 @@ export const ProfilePage = () => {
   let [updatePhoto, setUpdatePhoto] = useState(null);
   const [userPic, setUserPic] = useState(null);
   const [showUpdateBtn, setShowUpdateBtn] = useState(true);
+  const {state, dispatch} = useContext(UserContext);
 
   useEffect(async () => {
-    await fetch('http://192.168.1.4:5000/protected', {
+    await fetch('http://192.168.1.3:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
       },
@@ -80,7 +83,7 @@ export const ProfilePage = () => {
       });
 
     if (url) {
-      fetch('http://192.168.1.4:5000/newprofilepic', {
+      fetch('http://192.168.1.3:5000/newprofilepic', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +115,7 @@ export const ProfilePage = () => {
       type: [DocumentPicker.types.allFiles],
     })
       .then(res => {
-        console.log(res[0]);
+        // console.log(res[0]);
         setUpdatePhoto((updatePhoto = res[0]));
         //console.log(updatePhoto);
       })
@@ -134,7 +137,7 @@ export const ProfilePage = () => {
         .then(res => res.json())
         .then(async data => {
           console.log(data.url);
-          await fetch('http://192.168.1.4:5000/updatepic', {
+          await fetch('http://192.168.1.3:5000/updatepic', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
@@ -146,7 +149,7 @@ export const ProfilePage = () => {
           })
             .then(res => res.json())
             .then(result => {
-              console.log(result.photo);
+              //console.log(result.photo);
               setUserPic(result.photo);
             })
             .catch(error => {
@@ -156,10 +159,17 @@ export const ProfilePage = () => {
     }
   };
 
-  const handleLogOut = () => {
-    AsyncStorage.removeItem('token').then(() => {
+  const handleLogOut = async () => {
+    /* AsyncStorage.removeItem('token').then(() => {
+      dispatch({type: 'CLEAR'});
       navigation.navigate('User');
-    });
+    }); */
+
+    const token = await AsyncStorage.removeItem('token');
+    //const user = await AsyncStorage.removeItem('user');
+
+    dispatch({type: 'USER', payload: token});
+    navigation.navigate('User');
   };
 
   return (

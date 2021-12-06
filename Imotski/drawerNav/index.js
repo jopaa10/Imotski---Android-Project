@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
 //drawer components
 import {DrawerItem} from '@react-navigation/drawer';
@@ -24,23 +17,52 @@ import {
   faPhoneAlt,
   faAdjust,
 } from '@fortawesome/free-solid-svg-icons';
-
-//dimensions
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import {UserContext} from '../App';
+import {windowHeight, windowWidth} from '../constants/global';
 
 export const DrawerContent = props => {
+  const [userImage, setUserImage] = useState('');
+  const [userName, setUserName] = useState('');
+  const {state, dispatch} = useContext(UserContext);
+
+  if (state) {
+    fetch('http://192.168.1.3:5000/protected', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + state,
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        //console.log(data);
+        setUserImage(data.userData.photo);
+        setUserName(data.userData.name);
+      });
+  }
+
   return (
     <>
       <View style={styles.whiteContainer}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Profile Page')}>
-          <Image
-            source={require('../images/userPhoto.jpg')}
-            style={styles.image}
-          />
-          <Text style={styles.loginTxt}>Login</Text>
-        </TouchableOpacity>
+        {!state ? (
+          <>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Profile Page')}>
+              <Image
+                style={styles.image}
+                source={require('../images/userPhoto.jpg')}
+              />
+              <Text style={styles.loginTxt}>Login</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Profile Page')}>
+              <Image source={{uri: userImage}} style={styles.image} />
+              <Text style={styles.loginTxt}>{userName}</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <Svg
@@ -68,6 +90,7 @@ export const DrawerContent = props => {
               color={'#fff'}
               size={20}
             />
+
             <Text style={styles.text}>Home</Text>
           </TouchableOpacity>
 
@@ -160,11 +183,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: 80,
-    height: 80,
+    width: windowWidth * 0.22,
+    height: windowHeight * 0.12,
+    borderRadius: Math.round((windowWidth + windowHeight) / 2),
+    borderWidth: 1,
   },
   loginTxt: {
     color: '#828282',
     textAlign: 'center',
+    paddingTop: windowWidth * 0.02,
   },
 });
