@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "235557348041",
+    "project_id": "imotski-touristic-app-334521",
+    "storage_bucket": "imotski-touristic-app-334521.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235557348041:android:2c19278f8c05c5733d6318",
+        "android_client_info": {
+          "package_name": "com.imotski"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235557348041-so43iusovo5kv6l6tinl2oafuvjfrg5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imotski",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "235557348041-ejo2smfsfc77lgo7prmognfevgqf8o1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtx4ryyjRPRnijUepA0ZU5eu6J9j0dw_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235557348041-ejo2smfsfc77lgo7prmognfevgqf8o1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

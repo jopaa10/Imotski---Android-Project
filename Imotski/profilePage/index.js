@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   Image,
+  Modal,
 } from 'react-native';
 
 //navigation
@@ -22,6 +23,8 @@ const windowHeight = Dimensions.get('window').height; */
 //stack navigation
 import {createStackNavigator} from '@react-navigation/stack';
 import {SignInNav} from '../userPage';
+
+//fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faCalendarAlt,
@@ -32,10 +35,19 @@ import {
   faPlus,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+
 import {ScrollView} from 'react-native-gesture-handler';
 import DocumentPicker from 'react-native-document-picker';
 import {UserContext} from '../App';
+
+//dimensions
 import {windowHeight, windowWidth} from '../constants/global';
+
+//google login
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+//dialog
+import DialogInput from 'react-native-dialog-input';
 
 const ProfileStackNav = createStackNavigator();
 
@@ -62,16 +74,20 @@ export const ProfilePage = () => {
   let [updatePhoto, setUpdatePhoto] = useState(null);
   const [userPic, setUserPic] = useState(null);
   const [showUpdateBtn, setShowUpdateBtn] = useState(true);
+  const [dialog, setDialog] = useState(false);
+  const [dialogDays, setDialogDays] = useState(false);
+  const [infoData, setInfoData] = useState(false);
   const {state, dispatch} = useContext(UserContext);
 
   useEffect(async () => {
-    await fetch('http://192.168.1.3:5000/protected', {
+    await fetch('http://192.168.1.2:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
       },
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setUserData({
           name: data.userData.name,
           surname: data.userData.surname,
@@ -83,7 +99,7 @@ export const ProfilePage = () => {
       });
 
     if (url) {
-      fetch('http://192.168.1.3:5000/newprofilepic', {
+      fetch('http://192.168.1.2:5000/newprofilepic', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +124,7 @@ export const ProfilePage = () => {
           console.log(error);
         });
     }
-  }, [url]);
+  }, [url, infoData]);
 
   const updateProfilePic = async () => {
     await DocumentPicker.pick({
@@ -137,7 +153,7 @@ export const ProfilePage = () => {
         .then(res => res.json())
         .then(async data => {
           console.log(data.url);
-          await fetch('http://192.168.1.3:5000/updatepic', {
+          await fetch('http://192.168.1.2:5000/updatepic', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
@@ -168,8 +184,46 @@ export const ProfilePage = () => {
     const token = await AsyncStorage.removeItem('token');
     //const user = await AsyncStorage.removeItem('user');
 
+    GoogleSignin.signOut();
+
     dispatch({type: 'USER', payload: token});
     navigation.navigate('User');
+  };
+
+  const submitPlace = inputText => {
+    fetch('http://192.168.1.2:5000/addplace', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + state,
+      },
+      body: JSON.stringify({
+        placeOfResidence: inputText,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  };
+
+  const submitDays = inputTextDays => {
+    console.log(inputTextDays);
+
+    fetch('http://192.168.1.2:5000/daysofstaying', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + state,
+      },
+      body: JSON.stringify({
+        daysOfStaying: inputTextDays,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
   };
 
   return (
@@ -223,7 +277,7 @@ export const ProfilePage = () => {
             />
             <Text style={styles.textUserInfo}>Place of residence</Text>
             <Text style={styles.textName1}> {userData.placeOfResidence} </Text>
-            <Pressable style={styles.editBtn}>
+            <Pressable style={styles.editBtn} onPress={() => setDialog(true)}>
               <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
             </Pressable>
           </View>
@@ -236,9 +290,11 @@ export const ProfilePage = () => {
             />
             <Text style={styles.textUserInfo}>Days of staying</Text>
             <Text style={styles.textName1}> {userData.daysOfStaying} </Text>
-            <View style={styles.editBtn}>
+            <Pressable
+              style={styles.editBtn}
+              onPress={() => setDialogDays(true)}>
               <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
-            </View>
+            </Pressable>
           </View>
           <View
             style={[styles.viewUserInfo, {marginBottom: windowWidth * 0.05}]}>
@@ -271,6 +327,38 @@ export const ProfilePage = () => {
           </Pressable>
         </View>
       </ScrollView>
+
+      <DialogInput
+        isDialogVisible={dialog}
+        title={'Place of residence'}
+        message={
+          'Please input Your place of staying while You are on vacations'
+        }
+        hintInput={'HINT: Imotski'}
+        submitInput={inputText => {
+          submitPlace(inputText);
+          setDialog(false);
+          setInterval(() => {
+            setInfoData(!infoData);
+          }, 1000);
+        }}
+        closeDialog={() => setDialog(false)}
+      />
+
+      <DialogInput
+        isDialogVisible={dialogDays}
+        title={'Days of staying'}
+        message={'Please input Your days of staying while You are on vacations'}
+        hintInput={'HINT: 5'}
+        submitInput={inputTextDays => {
+          submitDays(inputTextDays);
+          setDialogDays(false);
+          setInterval(() => {
+            setInfoData(!infoData);
+          }, 1000);
+        }}
+        closeDialog={() => setDialogDays(false)}
+      />
     </>
   );
 };

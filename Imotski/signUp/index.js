@@ -5,20 +5,21 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  Dimensions,
   Pressable,
+  SafeAreaView,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //waves
 import Waves from '../wavesTemplate';
-
+/* 
 //dimension
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get('window').width; */
 
 //navigation
 import {useNavigation} from '@react-navigation/native';
+import {windowWidth} from '../constants/global';
 
 export const SignUp = () => {
   const navigation = useNavigation();
@@ -79,104 +80,106 @@ export const SignUp = () => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        <Waves navigate={'User'} />
-        <View style={styles.signUpScreen}>
-          <Text style={styles.txtSignUp}> Sign Up</Text>
-          <Text style={styles.txtWelcome}>
-            Fill in your information in order to use all features
-          </Text>
-          <Text style={styles.placeholder}>Name</Text>
-          <View style={styles.viewField}>
-            <TextInput
-              style={[styles.inputField, {borderColor: borderErrorColor}]}
-              keyboardType="ascii-capable"
-              value={name}
-              onChangeText={text => setName(text)}
-            />
-          </View>
-          <Text style={styles.placeholder}>Surname</Text>
-          <View style={styles.viewField}>
-            <TextInput
-              style={[styles.inputField, {borderColor: borderErrorColor}]}
-              keyboardType="ascii-capable"
-              value={surname}
-              onChangeText={text => setSurname(text)}
-            />
-          </View>
-          <Text style={styles.placeholder}>Email</Text>
-          <View style={styles.viewField}>
-            <TextInput
-              style={[styles.inputField, {borderColor: borderErrorColor}]}
-              keyboardType="email-address"
-              value={email}
-              onChangeText={text => setEmail(text)}
-            />
-          </View>
-          <Text style={styles.placeholder}>Password</Text>
-          <View style={styles.viewField}>
-            <TextInput
-              style={[styles.inputField, {borderColor: borderErrorColor}]}
-              secureTextEntry={true}
-              value={password}
-              onChangeText={text => setPassword(text)}
-            />
-          </View>
-          <Text
-            style={[styles.placeholder2in1Field, {top: windowWidth * 0.13}]}>
-            Days of staying
-          </Text>
-          <Text
-            style={[
-              styles.placeholder2in1Field,
-              {marginLeft: windowWidth * 0.57},
-            ]}>
-            Place of residence
-          </Text>
-          <View style={styles.view2in1Field}>
-            <TextInput
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <Waves navigate={'User'} />
+          <View style={styles.signUpScreen}>
+            <Text style={styles.txtSignUp}> Sign Up</Text>
+            <Text style={styles.txtWelcome}>
+              Fill in your information in order to use all features
+            </Text>
+            <Text style={styles.placeholder}>Name</Text>
+            <View style={styles.viewField}>
+              <TextInput
+                style={[styles.inputField, {borderColor: borderErrorColor}]}
+                keyboardType="ascii-capable"
+                value={name}
+                onChangeText={text => setName(text)}
+              />
+            </View>
+            <Text style={styles.placeholder}>Surname</Text>
+            <View style={styles.viewField}>
+              <TextInput
+                style={[styles.inputField, {borderColor: borderErrorColor}]}
+                keyboardType="ascii-capable"
+                value={surname}
+                onChangeText={text => setSurname(text)}
+              />
+            </View>
+            <Text style={styles.placeholder}>Email</Text>
+            <View style={styles.viewField}>
+              <TextInput
+                style={[styles.inputField, {borderColor: borderErrorColor}]}
+                keyboardType="email-address"
+                value={email}
+                onChangeText={text => setEmail(text)}
+              />
+            </View>
+            <Text style={styles.placeholder}>Password</Text>
+            <View style={styles.viewField}>
+              <TextInput
+                style={[styles.inputField, {borderColor: borderErrorColor}]}
+                secureTextEntry={true}
+                value={password}
+                onChangeText={text => setPassword(text)}
+              />
+            </View>
+            <Text
+              style={[styles.placeholder2in1Field, {top: windowWidth * 0.13}]}>
+              Days of staying
+            </Text>
+            <Text
               style={[
-                styles.inputField,
-                {
-                  width: windowWidth * 0.3,
-                  marginTop: windowWidth * 0.05,
-                  borderColor: borderErrorColor,
-                },
-              ]}
-              keyboardType="number-pad"
-              value={daysOfStaying}
-              onChangeText={text => setDaysOfStaying(text)}
-            />
-            <TextInput
-              style={[
-                styles.inputField,
-                {
-                  width: windowWidth * 0.3,
-                  marginTop: windowWidth * 0.05,
-                  borderColor: borderErrorColor,
-                },
-              ]}
-              keyboardType="default"
-              value={placeOfResidence}
-              onChangeText={text => setPlaceOfResidence(text)}
-            />
+                styles.placeholder2in1Field,
+                {marginLeft: windowWidth * 0.57},
+              ]}>
+              Place of residence
+            </Text>
+            <View style={styles.view2in1Field}>
+              <TextInput
+                style={[
+                  styles.inputField,
+                  {
+                    width: windowWidth * 0.3,
+                    marginTop: windowWidth * 0.05,
+                    borderColor: borderErrorColor,
+                  },
+                ]}
+                keyboardType="number-pad"
+                value={daysOfStaying}
+                onChangeText={text => setDaysOfStaying(text)}
+              />
+              <TextInput
+                style={[
+                  styles.inputField,
+                  {
+                    width: windowWidth * 0.3,
+                    marginTop: windowWidth * 0.05,
+                    borderColor: borderErrorColor,
+                  },
+                ]}
+                keyboardType="default"
+                value={placeOfResidence}
+                onChangeText={text => setPlaceOfResidence(text)}
+              />
+            </View>
+            <View>
+              <Text style={styles.error}>{error}</Text>
+            </View>
+            <View style={styles.proceed}>
+              <Pressable onPress={() => handleSubmit()}>
+                <Text style={styles.proceedButton}>Proceed</Text>
+              </Pressable>
+            </View>
+            <View>
+              <Text style={styles.txtAlreadyMember}>Already a member?</Text>
+              <Pressable onPress={() => navigation.navigate('Sign In')}>
+                <Text style={styles.txtSignIn}>Sign In</Text>
+              </Pressable>
+            </View>
           </View>
-          <View>
-            <Text style={styles.error}>{error}</Text>
-          </View>
-          <View style={styles.proceed}>
-            <Pressable onPress={() => handleSubmit()}>
-              <Text style={styles.proceedButton}>Proceed</Text>
-            </Pressable>
-          </View>
-          <View>
-            <Text style={styles.txtAlreadyMember}>Already a member?</Text>
-            <Pressable onPress={() => navigation.navigate('Sign In')}>
-              <Text style={styles.txtSignIn}>Sign In</Text>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };
@@ -187,7 +190,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   signUpScreen: {
-    flex: 4,
+    //flex: 4,
+    paddingBottom: windowWidth * 0.15,
   },
   txtSignUp: {
     color: '#1F83BB',

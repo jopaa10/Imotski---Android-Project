@@ -26,7 +26,7 @@ export const DrawerContent = props => {
   const {state, dispatch} = useContext(UserContext);
 
   if (state) {
-    fetch('http://192.168.1.3:5000/protected', {
+    fetch('http://192.168.1.2:5000/protected', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + state,
@@ -45,8 +45,7 @@ export const DrawerContent = props => {
       <View style={styles.whiteContainer}>
         {!state ? (
           <>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('Profile Page')}>
+            <TouchableOpacity onPress={() => props.navigation.navigate('User')}>
               <Image
                 style={styles.image}
                 source={require('../images/userPhoto.jpg')}
@@ -108,7 +107,7 @@ export const DrawerContent = props => {
 
           <TouchableOpacity
             style={styles.container}
-            onPress={() => props.navigation.navigate('Profile Page')}>
+            onPress={() => props.navigation.navigate('User')}>
             <FontAwesomeIcon
               style={styles.icon}
               icon={faUserAlt}

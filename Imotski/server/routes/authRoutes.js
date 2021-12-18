@@ -6,8 +6,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../keys');
 const requireLogin = require('../middleware/requireLogin');
+
 const ProfilePic = mongoose.model('ProfilePic');
 const Comment = mongoose.model('Comment');
+const {OAuth2Client} = require('google-auth-library');
+
+const client = new OAuth2Client(
+  '235557348041-ejo2smfsfc77lgo7prmognfevgqf8o1s.apps.googleusercontent.com',
+);
 
 router.post('/signup', (req, res) => {
   console.log(req.body);
@@ -141,6 +147,52 @@ router.post('/newprofilepic', requireLogin, (req, res) => {
     });
 });
 
+router.post('/addplace', requireLogin, (req, res) => {
+  const {placeOfResidence} = req.body;
+
+  if (!placeOfResidence) {
+    return res
+      .status(422)
+      .json({error: 'Please add Your place od staying during vacations'});
+  }
+
+  User.findByIdAndUpdate(
+    {_id: req.user._id},
+    {$set: {placeOfResidence: req.body.placeOfResidence}},
+    {new: true},
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({error: 'Place cannot be added!'});
+      } else {
+        res.json({result});
+      }
+    },
+  );
+});
+
+router.post('/daysofstaying', requireLogin, (req, res) => {
+  const {daysOfStaying} = req.body;
+
+  if (!daysOfStaying) {
+    return res
+      .status(422)
+      .json({error: 'Please add how much days You will be on vacations'});
+  }
+
+  User.findByIdAndUpdate(
+    {_id: req.user._id},
+    {$set: {daysOfStaying: req.body.daysOfStaying}},
+    {new: true},
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({error: 'Something went wrong...'});
+      } else {
+        res.json({result});
+      }
+    },
+  );
+});
+
 /* router.get('/profilepic', requireLogin, (req, res) => {
   User.findById({_id: req.user._id})
 
@@ -195,6 +247,65 @@ router.get('/allcomments', (req, res) => {
     .catch(error => {
       console.log(error);
     });
+});
+
+router.post('/googlelogin', (req, res) => {
+  const {googleId} = req.body;
+
+  client
+    .verifyIdToken({
+      idToken: googleId,
+      audience:
+        '235557348041-ejo2smfsfc77lgo7prmognfevgqf8o1s.apps.googleusercontent.com',
+    })
+    .then(response => {
+      const {email_verified, given_name, family_name, email} = response.payload;
+
+      if (email_verified) {
+        User.findOne({email}).exec((err, user) => {
+          if (err) {
+            return res.status(400).json({
+              error: 'Something went wrong...',
+            });
+          } else {
+            if (user) {
+              const token = jwt.sign({_id: user._id}, JWT_SECRET);
+              const {_id, name, surname, email} = user;
+
+              res.json({
+                token,
+                user: {_id, name, email},
+              });
+            } else {
+              let password = email + JWT_SECRET;
+              let newUser = new User({
+                name: given_name,
+                surname: family_name,
+                email,
+                password,
+              });
+
+              newUser.save((err, data) => {
+                if (err) {
+                  return res.status(400).json({
+                    err: 'Something went wrong...',
+                  });
+                }
+                const token = jwt.sign({_id: data._id}, JWT_SECRET);
+                const {_id, given_name, family_name, email} = newUser;
+
+                res.json({
+                  token,
+                  user: {_id, given_name, family_name, email},
+                });
+              });
+            }
+          }
+        });
+      }
+    });
+
+  //console.log(googleId);
 });
 
 module.exports = router;

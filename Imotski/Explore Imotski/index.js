@@ -61,7 +61,7 @@ export const ExploreImotski = () => {
   console.log(state);
 
   if (state != null) {
-    fetch('http://192.168.1.3:5000/protected', {
+    fetch('http://192.168.1.2:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + state,
       },
@@ -87,7 +87,7 @@ export const ExploreImotski = () => {
                 <>
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate(state ? 'User' : 'Profile Page')
+                      navigation.navigate(!state ? 'User' : 'Profile Page')
                     }>
                     {!state ? (
                       <Image
