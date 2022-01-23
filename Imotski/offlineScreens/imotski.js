@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
-  LayoutAnimation,
 } from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -16,6 +15,7 @@ import {faReply} from '@fortawesome/free-solid-svg-icons';
 
 //useNav hookd
 import {useNavigation} from '@react-navigation/core';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 //get dimensions for different smartphones
 const windowWidth = Dimensions.get('window').width;
@@ -40,7 +40,7 @@ export const Imotski = () => {
     {
       key: 1,
       name: 'Blue Lake',
-      image: require('../images/blueLake.jpg'),
+      image: require('../images/blueLakeLarge.jpg'),
       screen: 'Blue Lake Info',
       ref: null,
       bgColor: '#1F83BB',
@@ -126,10 +126,10 @@ export const Imotski = () => {
             (index = i),
             (
               <TouchableOpacity onPress={() => scrollToView(item.key)}>
-                <View style={styles.container} key={index} ref={item.ref}>
+                <View key={index} ref={item.ref}>
                   <Image style={styles.image} source={item.image} />
 
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     style={[
                       styles.dots,
                       {
@@ -144,7 +144,7 @@ export const Imotski = () => {
                       styles.dots,
                       {
                         backgroundColor: item.bgDot2,
-                        top: windowWidth * 0.15,
+                        //top: windowWidth * 0.15,
                       },
                     ]}
                     onPress={() => scrollUpDown((index = 2))}
@@ -155,11 +155,11 @@ export const Imotski = () => {
                       styles.dots,
                       {
                         backgroundColor: item.bgDot3,
-                        top: windowWidth * 0.2,
+                        //top: windowWidth * 0.2,
                       },
                     ]}
                     onPress={() => scrollUpDown((index = 3))}
-                  />
+                  /> */}
 
                   <Text style={styles.txt}>{item.name}</Text>
                   <Pressable
@@ -240,8 +240,8 @@ export const Imotski = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: windowWidth,
+    flex: 1,
     height: windowHeight,
   },
   image: {
@@ -285,12 +285,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   dots: {
-    position: 'absolute',
-    top: windowWidth * 0.1,
+    /* position: 'absolute',
+    top: windowWidth * 0.1, */
     width: 12,
     borderRadius: 12 / 2,
     height: 12,
     backgroundColor: 'white',
-    right: windowWidth * 0.05,
+    /* right: windowWidth * 0.05, */
   },
 });

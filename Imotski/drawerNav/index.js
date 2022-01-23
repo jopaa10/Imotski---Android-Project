@@ -26,7 +26,7 @@ export const DrawerContent = props => {
   const {state, dispatch} = useContext(UserContext);
 
   if (state) {
-    fetch('http://192.168.1.2:5000/protected', {
+    fetch('http://192.168.1.3:5000/protected', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + state,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   whiteContainer: {
     backgroundColor: 'white',
-    height: windowHeight * 0.21,
+    height: windowHeight * 0.25,
     alignItems: 'center',
     justifyContent: 'center',
   },

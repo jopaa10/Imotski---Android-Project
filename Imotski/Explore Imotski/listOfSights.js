@@ -97,11 +97,6 @@ const ListOfSights = () => {
               style={styles.image}
               source={require('../images/greenLakeH.jpg')}
             />
-            <FontAwesomeIcon
-              icon={faHeart}
-              style={styles.iconHeart}
-              size={20}
-            />
             <View style={styles.cityContainer}>
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}

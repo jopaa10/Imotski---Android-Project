@@ -24,7 +24,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {AppDrawerScreen} from '../Explore Imotski/index';
 
 //Main page: Explore Imotski & region
-import {ExploreImotski} from '../Explore Imotski/index';
+import ExploreImotski from '../Explore Imotski/index';
 import {Imotski} from '../offlineScreens/imotski';
 import {Biokovo} from '../offlineScreens/biokovo';
 import {Prolozac} from '../offlineScreens/prolozac';
@@ -55,6 +55,7 @@ import {CommentNav} from '../commentBox';
 //navigation
 import {useNavigation} from '@react-navigation/core';
 import {ReviewScreen} from '../reviewScreen';
+import {NearbyPlacesNavigator} from '../Explore Imotski/nearbyPlaces';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -288,7 +289,7 @@ const BottomTabs = () => {
       tabBarOptions={{showLabel: false, style: styles.tabContainer}}>
       <Tab.Screen
         name="Explore Imotski"
-        component={ExploreImotski}
+        component={NearbyPlacesNavigator}
         options={{
           tabBarIcon: ({focused}) => (
             <View>

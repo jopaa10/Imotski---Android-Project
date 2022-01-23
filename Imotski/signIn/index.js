@@ -128,7 +128,7 @@ export const SignIn = () => {
 
   const responseSuccessGoogle = userInfo => {
     //console.log(response);
-    fetch('http://192.168.1.2:5000/googlelogin', {
+    fetch('http://192.168.1.3:5000/googlelogin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -151,7 +151,6 @@ export const SignIn = () => {
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <Waves navigate={'User'} />
-
           <View style={styles.signInScreen}>
             <Text style={styles.txtSignIn}> Sign In</Text>
             <Text style={styles.txtWelcome}>Welcome back</Text>

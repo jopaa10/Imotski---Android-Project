@@ -10,7 +10,7 @@ import React, {createContext, useContext, useEffect, useReducer} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import BottomTabsNav from './BottomTabsNav';
-import {AppDrawerScreen} from './Explore Imotski';
+import {AppDrawerScreen} from './exploreImotskiTemplate';
 import {initialState, reducer} from './reducers/userReducer';
 
 export const UserContext = createContext();

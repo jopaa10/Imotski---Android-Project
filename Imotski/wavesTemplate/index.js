@@ -23,7 +23,7 @@ const Waves = props => {
       }}>
       <Svg
         style={styles.waves}
-        viewBox={`0 0 ${windowWidth} 104`}
+        viewBox={`0 0 ${windowWidth} 110`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg">
         <Path
@@ -54,7 +54,7 @@ export default Waves;
 const styles = StyleSheet.create({
   waves: {
     width: windowWidth,
-    height: 109,
+    height: 120,
     paddingTop: 0,
   },
   titleExploreIm: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   arrowLeftIcon: {
     position: 'absolute',
-    marginTop: windowWidth * 0.055,
+    marginTop: windowWidth * 0.1,
     marginHorizontal: windowWidth * 0.05,
   },
 });

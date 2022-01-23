@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  StatusBar,
 } from 'react-native';
 
 //fontawesome
@@ -24,6 +25,7 @@ export const TemplateInfo = props => {
 
   return (
     <ScrollView style={{backgroundColor: 'white'}}>
+      <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
       <View>
         <Image style={styles.image} source={props.image} />
         <Pressable
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   },
   arrowLeftIcon: {
     position: 'absolute',
-    marginTop: 15,
+    marginTop: windowWidth * 0.1,
     marginHorizontal: 20,
   },
   horizotalTab: {

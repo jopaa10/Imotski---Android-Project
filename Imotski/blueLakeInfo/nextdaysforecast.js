@@ -64,7 +64,7 @@ export const NextDaysForecast = () => {
 
   return (
     <ScrollView style={[styles.container, {flexDirection: 'column'}]}>
-      <Waves title={'WEATHER FORECAST - BLUE LAKE'} navigate={'Weather Data'} />
+      <Waves navigate={'Weather Data'} />
       <View>
         <Text style={styles.titleNextDaysForecast}>Next 7 days forecast</Text>
       </View>

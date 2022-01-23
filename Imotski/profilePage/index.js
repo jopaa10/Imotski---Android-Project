@@ -80,7 +80,7 @@ export const ProfilePage = () => {
   const {state, dispatch} = useContext(UserContext);
 
   useEffect(async () => {
-    await fetch('http://192.168.1.2:5000/protected', {
+    await fetch('http://192.168.1.3:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
       },
@@ -99,7 +99,7 @@ export const ProfilePage = () => {
       });
 
     if (url) {
-      fetch('http://192.168.1.2:5000/newprofilepic', {
+      fetch('http://192.168.1.3:5000/newprofilepic', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export const ProfilePage = () => {
         .then(res => res.json())
         .then(async data => {
           console.log(data.url);
-          await fetch('http://192.168.1.2:5000/updatepic', {
+          await fetch('http://192.168.1.3:5000/updatepic', {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ export const ProfilePage = () => {
   };
 
   const submitPlace = inputText => {
-    fetch('http://192.168.1.2:5000/addplace', {
+    fetch('http://192.168.1.11:5000/addplace', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ export const ProfilePage = () => {
   const submitDays = inputTextDays => {
     console.log(inputTextDays);
 
-    fetch('http://192.168.1.2:5000/daysofstaying', {
+    fetch('http://192.168.1.11:5000/daysofstaying', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
