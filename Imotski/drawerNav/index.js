@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.25,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: windowWidth * 0.1,
   },
   image: {
     width: windowWidth * 0.22,

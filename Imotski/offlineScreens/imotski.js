@@ -21,6 +21,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+import Swiper from 'react-native-swiper';
+
 export const Imotski = () => {
   const navigation = useNavigation();
   const viewRef = useRef(null);
@@ -40,15 +42,12 @@ export const Imotski = () => {
     {
       key: 1,
       name: 'Blue Lake',
-      image: require('../images/blueLakeLarge.jpg'),
+      image: require('../images/blueLake.jpg'),
       screen: 'Blue Lake Info',
       ref: null,
       bgColor: '#1F83BB',
       fontAwColor: '#1F83BB',
       fontAwBgColor: 'white',
-      bgDot: 'grey',
-      bgDot2: 'white',
-      bgDot3: 'white',
     },
     {
       key: 2,
@@ -59,9 +58,6 @@ export const Imotski = () => {
       bgColor: '#CA9A8C',
       fontAwColor: 'white',
       fontAwBgColor: '#CA9A8C',
-      bgDot: 'white',
-      bgDot2: 'grey',
-      bgDot3: 'white',
     },
     {
       key: 3,
@@ -70,22 +66,19 @@ export const Imotski = () => {
       screen: '',
       ref: viewRef,
       bgColor: '#CA9A8C',
-      bgDot: 'white',
-      bgDot2: 'white',
-      bgDot3: 'grey',
     },
   ];
 
-  const scrollToView = index => {
+  /*   const scrollToView = index => {
     //console.log(index);
     ref.scrollTo({
       x: 0,
       y: windowHeight * index,
       animated: true,
     });
-  };
+  }; */
 
-  const scrollUpDown = index => {
+  /* const scrollUpDown = index => {
     console.log(index);
 
     if (index === 3) {
@@ -116,11 +109,68 @@ export const Imotski = () => {
         setMeasure({width: width, height: height});
       });
     }
-  }, [measureView]);
+  }, [measureView]); */
 
   return (
     <>
-      <ScrollView ref={ref => setViewRef(ref)}>
+      <Swiper
+        horizontal={false}
+        loop={false}
+        showsHorizontalScrollIndicator={true}
+        paginationStyle={{
+          justifyContent: 'flex-start',
+          paddingTop: windowWidth * 0.22,
+        }}
+        dot={
+          <View
+            style={{
+              backgroundColor: '#fff',
+              width: 9,
+              height: 9,
+              borderRadius: 4,
+              marginLeft: 3,
+              marginRight: 3,
+              marginTop: 3,
+              marginBottom: 3,
+            }}
+          />
+        }
+        activeDot={
+          <View
+            style={{
+              backgroundColor: '#8E8E8E',
+              width: 9,
+              height: 9,
+              borderRadius: 4,
+              marginLeft: 3,
+              marginRight: 3,
+              marginTop: 3,
+              marginBottom: 3,
+            }}
+          />
+        }>
+        {DATA.map(item => (
+          <View key={item.index}>
+            <Image style={styles.image} source={item.image} />
+            <Text style={styles.txt}>{item.name}</Text>
+            <Pressable
+              style={[styles.btn, {backgroundColor: item.bgColor}]}
+              onPress={() => navigation.navigate(item.screen)}>
+              <Text style={styles.txtBtn}>Explore</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.btnCircle, {backgroundColor: item.fontAwBgColor}]}
+              onPress={() => navigation.goBack()}>
+              <FontAwesomeIcon
+                icon={faReply}
+                style={[styles.btnCircleIcon, {color: item.fontAwColor}]}
+                size={30}
+              />
+            </Pressable>
+          </View>
+        ))}
+      </Swiper>
+      {/*  <ScrollView ref={ref => setViewRef(ref)}>
         {DATA.map(
           (item, i) => (
             (index = i),
@@ -129,7 +179,7 @@ export const Imotski = () => {
                 <View key={index} ref={item.ref}>
                   <Image style={styles.image} source={item.image} />
 
-                  {/* <TouchableOpacity
+                   <TouchableOpacity
                     style={[
                       styles.dots,
                       {
@@ -159,7 +209,7 @@ export const Imotski = () => {
                       },
                     ]}
                     onPress={() => scrollUpDown((index = 3))}
-                  /> */}
+                  /> 
 
                   <Text style={styles.txt}>{item.name}</Text>
                   <Pressable
@@ -184,69 +234,20 @@ export const Imotski = () => {
             )
           ),
         )}
-      </ScrollView>
-      {/* 
-    <ScrollView ref={ref => setViewRef(ref)}>
-      <TouchableOpacity onPress={scrollToView}>
-        <View ref={viewRef}>
-          <Image
-            style={styles.image}
-            source={require('../images/blueLake.jpg')}
-          />
-          <Text style={styles.txt}>Blue Lake</Text>
-          <Pressable
-            style={styles.btn}
-            onPress={() => navigation.navigate('Blue Lake Info')}>
-            <Text style={styles.txtBtn}>Explore</Text>
-          </Pressable>
-          <Pressable
-            style={styles.btnCircle}
-            onPress={() => navigation.goBack()}>
-            <FontAwesomeIcon
-              icon={faReply}
-              style={styles.btnCircleIcon}
-              size={30}
-            />
-          </Pressable>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View ref={viewRef}>
-          <Image
-            style={styles.image}
-            source={require('../images/redLake.jpg')}
-          />
-          <Text style={styles.txt}>Red Lake</Text>
-          <Pressable
-            style={[styles.btn, {backgroundColor: '#CA9A8C'}]}
-            onPress={() => navigation.navigate('Red Lake Info')}>
-            <Text style={styles.txtBtn}>Explore</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.btnCircle, {backgroundColor: '#CA9A8C'}]}
-            onPress={() => navigation.goBack()}>
-            <FontAwesomeIcon
-              icon={faReply}
-              style={[styles.btnCircleIcon, {color: 'white'}]}
-              size={30}
-            />
-          </Pressable>
-        </View>
-      </TouchableOpacity>
-    </ScrollView>*/}
+      </ScrollView> */}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  /* container: {
     width: windowWidth,
     flex: 1,
     height: windowHeight,
-  },
+  }, */
   image: {
     width: '100%',
-    height: windowHeight,
+    height: '100%',
   },
   txt: {
     position: 'absolute',
@@ -276,7 +277,7 @@ const styles = StyleSheet.create({
     bottom: windowWidth * 0.1,
     right: windowWidth * 0.1,
     width: 45,
-    borderRadius: 40 / 2,
+    borderRadius: 45 / 2,
     height: 40,
   },
   btnCircleIcon: {

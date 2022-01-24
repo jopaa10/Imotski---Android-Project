@@ -43,7 +43,12 @@ const Waves = props => {
       <Pressable
         style={styles.arrowLeftIcon}
         onPress={() => navigation.navigate(props.navigate)}>
-        <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+        <FontAwesomeIcon
+          color="white"
+          icon={faArrowLeft}
+          size={20}
+          style={{display: props.display}}
+        />
       </Pressable>
     </View>
   );

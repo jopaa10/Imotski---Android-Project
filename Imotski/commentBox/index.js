@@ -102,15 +102,13 @@ export const CommentScreen = () => {
     <>
       <ScrollView
         style={{backgroundColor: 'white', height: windowHeight, flex: 1}}>
-        <Waves />
+        <Waves display={'none'} />
         <Pressable
           style={styles.arrowLeftIcon}
           onPress={() => navigation.goBack()}>
           <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
         </Pressable>
-        <View style={styles.reviewContainer}>
-          <Text style={styles.reviewTitle}> REVIEW - BLUE LAKE </Text>
-        </View>
+
         <View style={styles.container}>
           <TextInput
             style={styles.commentBox}
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: windowWidth * 0.1,
+    paddingVertical: windowWidth * 0.2,
   },
   reviewContainer: {
     alignItems: 'center',
@@ -238,7 +236,7 @@ const styles = StyleSheet.create({
   },
   arrowLeftIcon: {
     position: 'absolute',
-    marginTop: windowWidth * 0.055,
+    marginTop: windowWidth * 0.1,
     marginHorizontal: windowWidth * 0.05,
   },
   btnLogout: {

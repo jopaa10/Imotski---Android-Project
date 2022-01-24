@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
   },
   signInScreen: {
     flex: 3,
+    paddingTop: windowWidth * 0.05,
   },
   txtSignIn: {
     color: '#1F83BB',
