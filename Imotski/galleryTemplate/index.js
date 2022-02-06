@@ -103,54 +103,58 @@ const GalleryTemplate = props => {
       <View style={styles.container}>
         {images.map((item, index) => (
           <Pressable
+            key={index}
             onPress={() => {
               openModal(index, item.image);
             }}>
-            <Image key={item.key} source={item.image} style={styles.image} />
+            <Image key={index} source={item.image} style={styles.image} />
           </Pressable>
         ))}
       </View>
 
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(!modalVisible)}>
-          <View style={styles.modal}>
-            <Image
-              source={currentImage.image}
-              key={modalIndex}
-              style={styles.modalImg}
-            />
-            <Pressable onPress={closeModal} style={styles.btnClose}>
-              <FontAwesomeIcon
-                icon={faTimes}
-                color={'rgba(0, 0, 0, 0.8)'}
-                size={20}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        statusBarTranslucent
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(!modalVisible)}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modal}>
+              <Image
+                source={currentImage.image}
+                key={modalIndex}
+                style={styles.modalImg}
               />
-            </Pressable>
-            <Pressable
-              onPress={() => prevImg(modalIndex)}
-              style={styles.btnLeft}>
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                color={'rgba(0,0,0,0.8)'}
-                size={20}
-              />
-            </Pressable>
-            <Pressable
-              onPress={() => nextImg(modalIndex)}
-              style={styles.btnRight}>
-              <FontAwesomeIcon
-                icon={faArrowRight}
-                color={'rgba(0,0,0,0.8)'}
-                size={20}
-              />
-            </Pressable>
+              <Pressable onPress={closeModal} style={styles.btnClose}>
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  color={'rgba(0, 0, 0, 0.8)'}
+                  size={20}
+                />
+              </Pressable>
+              <Pressable
+                onPress={() => prevImg(modalIndex)}
+                style={styles.btnLeft}>
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  color={'rgba(0,0,0,0.8)'}
+                  size={20}
+                />
+              </Pressable>
+              <Pressable
+                onPress={() => nextImg(modalIndex)}
+                style={styles.btnRight}>
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  color={'rgba(0,0,0,0.8)'}
+                  size={20}
+                />
+              </Pressable>
+            </View>
           </View>
-        </Modal>
-      </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -166,6 +170,28 @@ const styles = StyleSheet.create({
     bottom: windowWidth * 0.2,
     elevation: 5,
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   image: {
     width: 118,
     height: 70,
@@ -173,7 +199,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   modal: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    //backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderStyle: 'solid',
     width: windowWidth,
     height: windowHeight,

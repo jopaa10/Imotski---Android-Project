@@ -9,7 +9,7 @@ const FutureWeather = ({weatherData}) => {
       {weatherData && weatherData.length > 0 ? (
         weatherData.map(
           (weatherData, idx) =>
-            idx !== 0 && <FutureWeatherItem data={weatherData} />,
+            idx !== 0 && <FutureWeatherItem key={idx} data={weatherData} />,
         )
       ) : (
         <View />

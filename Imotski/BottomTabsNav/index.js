@@ -56,6 +56,8 @@ import {CommentNav} from '../commentBox';
 import {useNavigation} from '@react-navigation/core';
 import {ReviewScreen} from '../reviewScreen';
 import {NearbyPlacesNavigator} from '../Explore Imotski/nearbyPlaces';
+import MarkedPlaces from '../placesDetailsMapForAllUsers';
+import {blueLakeTopTabsNav} from '../infoTemplate';
 
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
@@ -66,13 +68,14 @@ const BlueLakeInfoBottomNav = createBottomTabNavigator();
 const WeatherStack = createStackNavigator();
 
 //next 7 days forecast
-const FutureDayForecast = () => (
+export const FutureDayForecast = () => (
   <WeatherStack.Navigator>
     <WeatherStack.Screen
       name="Weather Data"
       component={Weather}
       options={{headerShown: false}}
     />
+
     <WeatherStack.Screen
       name="Next Days Forecast"
       component={NextDaysForecast}
@@ -82,7 +85,7 @@ const FutureDayForecast = () => (
 );
 
 const BlueLakeHorizontalNav = () => (
-  <BlueLakeHorNav.Navigator>
+  <BlueLakeHorNav.Navigator initialRouteName="Blue Lake Info">
     <BlueLakeHorNav.Screen
       name="Blue Lake Info"
       component={BlueLakeInfo}
@@ -249,7 +252,7 @@ const BlueLakeBottomNav = () => {
   );
 };
 
-//places what user can visited in imotski
+//places what user can visited - Imotski screen
 const ImotskiInfo = () => (
   <BlueLakeStack.Navigator>
     <BlueLakeStack.Screen
@@ -266,6 +269,7 @@ const ImotskiInfo = () => (
   </BlueLakeStack.Navigator>
 );
 
+//tab for bottom tab navigation
 const Tab = createBottomTabNavigator();
 
 const windowWidth = Dimensions.get('window').width;
@@ -321,8 +325,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={RedLakeInfo}
+        name="MarkedPlaces"
+        component={MarkedPlaces}
         options={{
           tabBarIcon: ({focused}) => (
             <View>

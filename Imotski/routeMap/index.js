@@ -102,6 +102,30 @@ export const RouteMap = () => {
     );
   }, []);
 
+  useEffect(() => {
+    const _watchId = Geolocation.watchPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setLocation({latitude, longitude});
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 0,
+        interval: 5000,
+        fastestInterval: 2000,
+      },
+    );
+
+    return () => {
+      if (_watchId) {
+        Geolocation.clearWatch(_watchId);
+      }
+    };
+  }, []);
+
   //console.log(currentCoord);
 
   useEffect(() => {

@@ -65,7 +65,7 @@ export const Winearies = () => {
 
   const handleCoffeeSearch = () => {
     fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?&keyword=wineary&location=${currentCoord.lat},${currentCoord.lng}&radius=10000&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?&keyword=winery&location=${currentCoord.lat},${currentCoord.lng}&radius=10000&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
     )
       .then(res => res.json())
       .then(data => {

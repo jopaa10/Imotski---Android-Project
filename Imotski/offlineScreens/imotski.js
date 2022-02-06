@@ -149,8 +149,8 @@ export const Imotski = () => {
             }}
           />
         }>
-        {DATA.map(item => (
-          <View key={item.index}>
+        {DATA.map((item, index) => (
+          <View key={index}>
             <Image style={styles.image} source={item.image} />
             <Text style={styles.txt}>{item.name}</Text>
             <Pressable

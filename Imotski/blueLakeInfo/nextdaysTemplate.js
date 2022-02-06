@@ -9,7 +9,7 @@ const NextDaysTemplateItem = ({weatherData}) => {
       {weatherData && weatherData.length > 0 ? (
         weatherData.map(
           (weatherData, idx) =>
-            idx !== 0 && <NextDaysTemplate data={weatherData} />,
+            idx !== 0 && <NextDaysTemplate key={idx} data={weatherData} />,
         )
       ) : (
         <View />
