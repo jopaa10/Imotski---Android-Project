@@ -26,7 +26,7 @@ import Activities from './activities'; */
 import {useNavigation} from '@react-navigation/core';
 import BottomTabsNav from '../BottomTabsNav';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faSearchLocation} from '@fortawesome/free-solid-svg-icons';
 
 import {UserContext} from '../App';
 import {windowHeight, windowWidth} from '../constants/global';
@@ -123,7 +123,15 @@ export const TemplateExploreImotski = props => {
                 fill="#1F83BB"
               />
               <View style={styles.containerDiscover}>
-                <Text style={styles.txtDiscover}> Discover </Text>
+                <FontAwesomeIcon
+                  icon={faSearchLocation}
+                  size={25}
+                  style={{
+                    marginLeft: 5,
+                  }}
+                  color={'white'}
+                />
+                <Text style={styles.txtDiscover}> Imotski & region </Text>
               </View>
             </Svg>
             <NearbyPlaces />
@@ -167,7 +175,9 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     //marginTop: 20,
-    bottom: windowWidth * 0.1,
+    bottom: windowWidth * 0.22,
+    /* borderColor: 'black',
+    borderWidth: 1, */
   },
   txtActivities: {
     color: '#1F83BB',
@@ -178,14 +188,14 @@ const styles = StyleSheet.create({
   txtDiscover: {
     color: 'white',
     fontWeight: 'bold',
-    marginHorizontal: 15,
-    fontSize: 22,
+    marginRight: 15,
+    fontSize: 20,
   },
   txtPlaces: {
     color: '#1F83BB',
     marginHorizontal: 20,
     fontSize: 16,
-    paddingTop: windowWidth * 0.08,
+    //paddingTop: windowWidth * 0.05,
   },
   avatar: {
     width: 40,
@@ -210,14 +220,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   containerDiscover: {
-    //marginVertical: windowWidth * 0.01,
-    /*   borderColor: 'black',
-    borderWidth: 1, */
-    //flexDirection: 'row',
-    bottom: windowWidth * 0.03,
+    marginVertical: windowWidth * 0.01,
+    borderColor: '#1F83BB',
+    borderWidth: 1,
+    flexDirection: 'row',
+    bottom: windowWidth * 0.08,
+    justifyContent: 'flex-end',
+    width: windowWidth,
   },
 
   containerActivities: {
-    bottom: windowWidth * 0.1,
+    bottom: windowWidth * 0.2,
+    /* borderColor: 'black',
+    borderWidth: 1, */
+    flexDirection: 'column',
+    width: windowWidth,
   },
 });

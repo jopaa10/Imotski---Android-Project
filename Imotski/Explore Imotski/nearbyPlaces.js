@@ -143,17 +143,15 @@ export const NearbyPlaces = () => {
 
 const styles = StyleSheet.create({
   horizontalView: {
-    bottom: windowWidth * 0.2,
+    bottom: windowWidth * 0.35,
   },
   txtPlaces: {
-    color: '#1F83BB',
-    marginHorizontal: 17,
+    color: '#fff',
+    marginHorizontal: 18,
     fontSize: 16,
     //paddingTop: windowWidth * 0.08,
   },
   containerNearbyPlaces: {
     flexDirection: 'row',
-    /*  borderColor: 'black',
-    borderWidth: 1, */
   },
 });

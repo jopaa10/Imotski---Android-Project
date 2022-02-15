@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  TouchableNativeFeedback,
 } from 'react-native';
 
 //fontawesome
@@ -25,17 +26,16 @@ const ListOfSights = () => {
   return (
     <>
       <ScrollView horizontal={true}>
-        <TouchableOpacity onPress={() => navigation.navigate('Imotski')}>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple('#00000040', false)}
+          useForeground={true}
+          onPress={() => navigation.navigate('Imotski')}>
           <View style={styles.container}>
             <Image
               style={styles.image}
               source={require('../images/blueLakeH.jpg')}
             />
-            <FontAwesomeIcon
-              icon={faHeart}
-              style={styles.iconHeart}
-              size={20}
-            />
+
             <View style={styles.cityContainer}>
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
@@ -45,7 +45,7 @@ const ListOfSights = () => {
               <Text style={[styles.cityTitle, {marginLeft: 0}]}>Imotski</Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
 
         <TouchableOpacity onPress={() => navigation.navigate('Biokovo')}>
           <View style={styles.container}>
@@ -53,11 +53,7 @@ const ListOfSights = () => {
               style={styles.image}
               source={require('../images/biokovo.jpg')}
             />
-            <FontAwesomeIcon
-              icon={faHeart}
-              style={styles.iconHeart}
-              size={20}
-            />
+
             <View style={styles.cityContainer}>
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
@@ -75,11 +71,7 @@ const ListOfSights = () => {
               style={styles.image}
               source={require('../images/dvaOkaH.jpg')}
             />
-            <FontAwesomeIcon
-              icon={faHeart}
-              style={styles.iconHeart}
-              size={20}
-            />
+
             <View style={styles.cityContainer}>
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
@@ -114,7 +106,7 @@ const ListOfSights = () => {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
+    flex: 1,
     width: windowWidth * 0.5,
     //marginTop: StatusBar.currentHeight || 0,
     marginTop: windowWidth * 0.01,

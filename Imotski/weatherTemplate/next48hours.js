@@ -40,12 +40,10 @@ const Next48Hours = ({weatherData, navigate, today, followingDays}) => {
   return (
     <>
       <View style={styles.container}>
-        {weatherDataArray.map(item => (
+        {weatherDataArray.map((item, index) => (
           <>
-            <View
-              key={Math.random().toString(36).substr(2, 9)}
-              style={styles.viewWeatherInfo}>
-              <FontAwesomeIcon icon={item.icon} size={40} />
+            <View key={index} style={styles.viewWeatherInfo}>
+              <FontAwesomeIcon key={index} icon={item.icon} size={40} />
               <Text style={styles.textWeatherInfo}>{item.text}</Text>
               <Text style={styles.weatherInfo}>{item.weatherD}</Text>
             </View>

@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -6,53 +7,125 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  SafeAreaView,
+  TouchableNativeFeedback,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const Activities = () => {
+  const navigation = useNavigation();
+
   const activitiesData = [
     {
-      bgClr: '#E9FCFE',
+      bgClr: '#1F83BB',
+      //bgClr: '#E9FCFE',
       img: require('../images/kayakIcon.jpg'),
       txt: 'Kayaking',
     },
     {
-      bgClr: '#EBFDE1',
+      bgClr: '#8BCA3A',
+      //bgClr: '#EBFDE1',
       img: require('../images/bikeIcon.jpg'),
       txt: 'Bike',
     },
     {
-      bgClr: '#FFF1F1',
+      bgClr: '#ED4E4E',
+      //bgClr: '#FFF1F1',
       img: require('../images/walkIcon.png'),
       txt: 'Walking',
     },
+  ];
+
+  const activitiesData2 = [
     {
-      bgClr: '#FFFDED',
+      bgClr: '#BB22AC',
+      img: require('../images/partyIcon.png'),
+      txt: 'Entertainment',
+    },
+    {
+      bgClr: '#D6C533',
+      //bgClr: '#FFFDED',
       img: require('../images/quadIcon.jpg'),
       txt: 'Quad',
     },
     {
-      bgClr: '#F1FFFF',
+      bgClr: '#1F83BB',
+      //bgClr: '#F1FFFF',
       img: require('../images/swimIcon.png'),
       txt: 'Swimming',
     },
   ];
 
   return (
-    <ScrollView horizontal={true} style={styles.containerHorizontalIcons}>
-      {activitiesData.map(item => {
-        return (
-          <View key={Math.random().toString(36).substr(2, 9)}>
-            <View
-              style={[styles.containerIcons, {backgroundColor: item.bgClr}]}>
-              <Image source={item.img} style={styles.icons} />
-            </View>
-            <Text style={styles.txtExploreActions}>{item.txt}</Text>
-          </View>
-        );
-      })}
+    <ScrollView style={styles.containerHorizontalIcons}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        {activitiesData.map((item, index) => {
+          return (
+            <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple('#00000040', false)}
+              useForeground={true}
+              onPress={() => navigation.navigate('Red Lake Info')}>
+              <View
+                key={index}
+                style={{
+                  width: windowWidth * 0.3,
+                  flexDirection: 'column',
+                  marginHorizontal: 5,
+                }}>
+                <View
+                  style={[
+                    styles.containerIcons,
+                    {backgroundColor: item.bgClr},
+                  ]}>
+                  <Image source={item.img} style={styles.icons} />
+                </View>
+                <Text style={styles.txtExploreActions}>{item.txt}</Text>
+              </View>
+            </TouchableNativeFeedback>
+          );
+        })}
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginHorizontal: 5,
+          backgroundColor: 'white',
+        }}>
+        {activitiesData2.map((item, index) => {
+          return (
+            <TouchableNativeFeedback
+              background={TouchableNativeFeedback.Ripple('#00000040', false)}
+              useForeground={true}
+              onPress={() => navigation.navigate('Red Lake Info')}>
+              <View
+                key={index}
+                style={{
+                  width: windowWidth * 0.3,
+                  flexDirection: 'column',
+                }}>
+                <View
+                  style={[
+                    styles.containerIcons,
+                    {backgroundColor: item.bgClr},
+                  ]}>
+                  <Image source={item.img} style={styles.icons} />
+                </View>
+
+                <Text style={styles.txtExploreActions}>{item.txt}</Text>
+              </View>
+            </TouchableNativeFeedback>
+          );
+        })}
+      </View>
       {/* <View>
         <View style={styles.containerIcons}>
           <Image
@@ -106,8 +179,6 @@ export default Activities;
 const styles = StyleSheet.create({
   containerIcons: {
     borderRadius: 20,
-    flexDirection: 'column',
-    justifyContent: 'center',
     marginHorizontal: 20,
     marginTop: windowWidth * 0.07,
     backgroundColor: '#E9FCFE',
@@ -115,10 +186,12 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.1,
     alignItems: 'center',
     elevation: 5,
+    justifyContent: 'center',
   },
   icons: {
     width: 50,
     height: 50,
+    tintColor: 'white',
   },
   txtExploreActions: {
     color: '#A8A8A8',
@@ -128,5 +201,6 @@ const styles = StyleSheet.create({
   },
   containerHorizontalIcons: {
     //marginBottom: windowWidth * 0.05,
+    //flexDirection: 'column',
   },
 });

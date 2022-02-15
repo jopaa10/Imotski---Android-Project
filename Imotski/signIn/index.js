@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,20 +16,26 @@ import {UserContext} from '../App';
 
 //waves
 import Waves from '../wavesTemplate';
+
+//fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faGoogle} from '@fortawesome/free-brands-svg-icons';
-import {windowWidth} from '../constants/global';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+
+//dimensions
+import {windowHeight, windowWidth} from '../constants/global';
 
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import Svg, {Defs, G, Path} from 'react-native-svg';
 
 /* //dimension
 const windowWidth = Dimensions.get('window').width; */
 
-export const SignIn = () => {
+export const SignIn = props => {
   const navigation = useNavigation();
   const {state, dispatch} = useContext(UserContext);
 
@@ -149,10 +156,45 @@ export const SignIn = () => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <Waves navigate={'User'} />
-          <View style={styles.signInScreen}>
+        <ScrollView style={{height: windowHeight}}>
+          {/* <Waves navigate={'User'} /> */}
+          <View
+            style={{height: windowHeight * 0.3, backgroundColor: '#1F83BB'}}>
+            <TouchableOpacity
+              style={styles.arrowLeftIcon}
+              onPress={() => navigation.goBack()}>
+              <FontAwesomeIcon
+                color="white"
+                icon={faArrowLeft}
+                size={20}
+                style={{display: props.display}}
+              />
+            </TouchableOpacity>
             <Text style={styles.txtSignIn}> Sign In</Text>
+          </View>
+          <Svg
+            style={styles.waves}
+            width="375"
+            height={windowHeight * 0.21}
+            viewBox={`0 0 375 ${windowHeight * 0.21}`}
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <G filter="url(#filter0_i_718_2)">
+              <Path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                fill="white"
+              />
+              <Path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+              />
+            </G>
+          </Svg>
+
+          <View style={styles.signInScreen}>
             <Text style={styles.txtWelcome}>Welcome back</Text>
             <Text style={styles.placeholderEmail}>Email</Text>
             <View style={styles.viewEmailPass}>
@@ -215,16 +257,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    height: '100%',
   },
   signInScreen: {
-    flex: 3,
+    height: windowHeight * 0.6,
+    flex: 1,
+    justifyContent: 'flex-start',
     paddingTop: windowWidth * 0.05,
+    bottom: windowHeight * 0.2,
   },
   txtSignIn: {
-    color: '#1F83BB',
+    color: '#fff',
     fontSize: 36,
     fontWeight: 'bold',
     paddingLeft: 20,
+    paddingTop: windowHeight * 0.01,
   },
   txtWelcome: {
     color: '#A8A8A8',
@@ -314,5 +361,13 @@ const styles = StyleSheet.create({
   },
   googleLogo: {
     marginVertical: windowWidth * 0.02,
+  },
+  waves: {
+    bottom: windowHeight * 0.2,
+    height: windowHeight * 0.2,
+  },
+  arrowLeftIcon: {
+    marginTop: windowWidth * 0.15,
+    marginHorizontal: windowWidth * 0.05,
   },
 });
