@@ -10,7 +10,6 @@ import {
   SafeAreaView,
   TouchableNativeFeedback,
 } from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -24,18 +23,21 @@ const Activities = () => {
       //bgClr: '#E9FCFE',
       img: require('../images/kayakIcon.jpg'),
       txt: 'Kayaking',
+      navigation: 'Kayak Screen',
     },
     {
       bgClr: '#8BCA3A',
       //bgClr: '#EBFDE1',
       img: require('../images/bikeIcon.jpg'),
       txt: 'Bike',
+      navigation: 'Bike Screen',
     },
     {
       bgClr: '#ED4E4E',
       //bgClr: '#FFF1F1',
       img: require('../images/walkIcon.png'),
       txt: 'Walking',
+      navigation: 'Walking Screen',
     },
   ];
 
@@ -44,18 +46,21 @@ const Activities = () => {
       bgClr: '#BB22AC',
       img: require('../images/partyIcon.png'),
       txt: 'Entertainment',
+      navigation: 'Entertainment Screen',
     },
     {
       bgClr: '#D6C533',
       //bgClr: '#FFFDED',
       img: require('../images/quadIcon.jpg'),
       txt: 'Quad',
+      navigation: 'Quad Screen',
     },
     {
       bgClr: '#1F83BB',
       //bgClr: '#F1FFFF',
       img: require('../images/swimIcon.png'),
       txt: 'Swimming',
+      navigation: 'Swimming Screen',
     },
   ];
 
@@ -71,7 +76,7 @@ const Activities = () => {
             <TouchableNativeFeedback
               background={TouchableNativeFeedback.Ripple('#00000040', false)}
               useForeground={true}
-              onPress={() => navigation.navigate('Red Lake Info')}>
+              onPress={() => navigation.navigate(item.navigation)}>
               <View
                 key={index}
                 style={{
@@ -105,7 +110,7 @@ const Activities = () => {
             <TouchableNativeFeedback
               background={TouchableNativeFeedback.Ripple('#00000040', false)}
               useForeground={true}
-              onPress={() => navigation.navigate('Red Lake Info')}>
+              onPress={() => navigation.navigate(item.navigation)}>
               <View
                 key={index}
                 style={{

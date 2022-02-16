@@ -59,6 +59,14 @@ import {NearbyPlacesNavigator} from '../Explore Imotski/nearbyPlaces';
 import MarkedPlaces from '../placesDetailsMapForAllUsers';
 import {blueLakeTopTabsNav} from '../infoTemplate';
 
+//activities screen
+import {Kayaking} from '../ActivitiesScreens/kayak';
+import {WalkingBottomNav} from '../ActivitiesScreens/walking';
+import {EntertainmentScreen} from '../ActivitiesScreens/entertainment';
+import {QuadBottomNav} from '../ActivitiesScreens/quad';
+import {BikeScreen} from '../ActivitiesScreens/bike';
+import {SwimmingBottomNav} from '../ActivitiesScreens/swimming';
+
 const Stack = createStackNavigator();
 const BlueLakeStack = createStackNavigator();
 const BlueLakeHorNav = createStackNavigator();
@@ -446,6 +454,36 @@ const ExploreImotskiNav = () => {
       <Stack.Screen name="Biokovo" component={Biokovo} />
       <Stack.Screen name="Prolozac" component={Prolozac} />
       <Stack.Screen name="Ricice" component={Ricice} />
+      <Stack.Screen
+        name="Kayak Screen"
+        component={Kayaking}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Bike Screen"
+        component={BikeScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Walking Screen"
+        component={WalkingBottomNav}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Entertainment Screen"
+        component={EntertainmentScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Quad Screen"
+        component={QuadBottomNav}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Swimming Screen"
+        component={SwimmingBottomNav}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

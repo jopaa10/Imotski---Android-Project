@@ -43,6 +43,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 
 //drawer actions
 import {DrawerActions} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 export const AppDrawerScreen = () => {
   return (
