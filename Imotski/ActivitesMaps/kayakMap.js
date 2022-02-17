@@ -64,20 +64,6 @@ export const KayakMap = () => {
       latitude: 43.448771,
       longitude: 17.1781,
     },
-    /*  {
-      latitude: 43.448211,
-      longitude: 17.17516,
-    }, */
-
-    /*  {
-      latitude: 43.447434,
-      longitude: 17.175872,
-    }, */
-
-    /* {
-      latitude: 43.436048,
-      longitude: 17.179971,
-    }, */
     {
       latitude: 43.432166,
       longitude: 17.18012,
