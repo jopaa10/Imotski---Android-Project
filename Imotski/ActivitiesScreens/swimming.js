@@ -14,7 +14,7 @@ const SwimmingBottomTab = createBottomTabNavigator();
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHeart, faRoute} from '@fortawesome/free-solid-svg-icons';
+import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
 
 //blue lake - details
 export const SwimmingBottomNav = () => {
@@ -28,7 +28,7 @@ export const SwimmingBottomNav = () => {
           tabBarIcon: ({focused}) => (
             <View>
               <FontAwesomeIcon
-                icon={faHeart}
+                icon={faHome}
                 color={focused ? '#8E8E8E' : 'white'}
                 size={30}
                 style={styles.faHeartIcon}
@@ -47,7 +47,7 @@ export const SwimmingBottomNav = () => {
                 icon={faRoute}
                 color={focused ? '#8E8E8E' : 'white'}
                 size={30}
-                style={styles.faCloudIcon}
+                style={styles.faRouteIcon}
               />
             </View>
           ),
@@ -60,7 +60,7 @@ export const SwimmingBottomNav = () => {
 export const SwimmingScreen = () => {
   return (
     <ActivitiesInfoTemplate
-      image={require('../images/blueLakeSwimming.jpg')}
+      image={require('../images/swimBlueLake.jpg')}
       city={'Imotski'}
       sight={'Blue Lake'}
       title={'Swimming in Lake'}
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     left: windowWidth * 0.2,
     right: windowWidth * 0.2,
     marginBottom: 20,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   faHeartIcon: {
     marginRight: windowWidth * 0.01,

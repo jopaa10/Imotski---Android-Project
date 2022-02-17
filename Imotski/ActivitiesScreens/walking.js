@@ -8,7 +8,7 @@ const WalkingBottomTab = createBottomTabNavigator();
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHeart, faRoute} from '@fortawesome/free-solid-svg-icons';
+import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
 
 //dimensions
 import {windowWidth} from '../constants/global';
@@ -29,7 +29,7 @@ export const WalkingBottomNav = () => {
           tabBarIcon: ({focused}) => (
             <View>
               <FontAwesomeIcon
-                icon={faHeart}
+                icon={faHome}
                 color={focused ? '#8E8E8E' : 'white'}
                 size={30}
                 style={styles.faHeartIcon}
@@ -48,7 +48,7 @@ export const WalkingBottomNav = () => {
                 icon={faRoute}
                 color={focused ? '#8E8E8E' : 'white'}
                 size={30}
-                style={styles.faCloudIcon}
+                style={styles.faRouteIcon}
               />
             </View>
           ),
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     left: windowWidth * 0.2,
     right: windowWidth * 0.2,
     marginBottom: 20,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   faHeartIcon: {
     marginRight: windowWidth * 0.01,

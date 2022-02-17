@@ -15,6 +15,7 @@ import MapView, {PROVIDER_GOOGLE, Marker, Polyline} from 'react-native-maps';
 //permissions for location
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
+//swipe modal
 import Modal from 'react-native-modal';
 
 //geocoder
@@ -35,7 +36,6 @@ import {
   faStar,
   faDirections,
 } from '@fortawesome/free-solid-svg-icons';
-import {resolve} from 'path/posix';
 
 Geocoder.init('AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo');
 

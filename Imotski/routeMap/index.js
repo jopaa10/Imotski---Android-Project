@@ -24,7 +24,6 @@ import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 import {useNavigation} from '@react-navigation/core';
 
 //mapbox token
-
 const accessToken =
   'pk.eyJ1Ijoiam9wYWExMCIsImEiOiJja3RuZHRwaHMwMXY3MnBqbTBibDZjb2JmIn0.NoaI49NCq87KwpDClETgmg';
 

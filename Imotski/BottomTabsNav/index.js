@@ -60,7 +60,7 @@ import MarkedPlaces from '../placesDetailsMapForAllUsers';
 import {blueLakeTopTabsNav} from '../infoTemplate';
 
 //activities screen
-import {Kayaking} from '../ActivitiesScreens/kayak';
+import {KayakBottomNav} from '../ActivitiesScreens/kayak';
 import {WalkingBottomNav} from '../ActivitiesScreens/walking';
 import {EntertainmentScreen} from '../ActivitiesScreens/entertainment';
 import {QuadBottomNav} from '../ActivitiesScreens/quad';
@@ -456,7 +456,7 @@ const ExploreImotskiNav = () => {
       <Stack.Screen name="Ricice" component={Ricice} />
       <Stack.Screen
         name="Kayak Screen"
-        component={Kayaking}
+        component={KayakBottomNav}
         options={{headerShown: false}}
       />
       <Stack.Screen

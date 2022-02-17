@@ -111,7 +111,9 @@ const styles = StyleSheet.create({
   txtTitle: {
     fontSize: 22,
     marginTop: 20,
-    marginHorizontal: 20,
+    marginHorizontal: 15,
+    /* borderColor: 'black',
+    borderWidth: 1, */
   },
   txtInfoBL: {
     flex: 1,
