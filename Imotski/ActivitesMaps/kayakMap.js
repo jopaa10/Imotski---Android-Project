@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 
 //map view for specific region
@@ -89,6 +89,7 @@ export const KayakMap = () => {
         setLocation({latitude, longitude});
         setCurrentCoord([latitude, longitude]);
         //console.log(latitude, longitude);
+        setModalIsOpen(false);
       },
       error => {
         console.log(error.code, error.message);
@@ -123,18 +124,22 @@ export const KayakMap = () => {
     console.log(location);
 
     if (currentCoord && destinationPoint) {
-      setModalIsOpen(false);
+      //setModalIsOpen(false);
       console.log(currentCoord);
       FetchRoute(currentCoord, destinationPoint).then(results => {
         setPolylineCoordinates(results);
         //console.log(results);
-        setRoute(results.length);
+        //setRoute(results.length);
         mapRef.current.fitToCoordinates(results, {
           edgePadding: {left: 20, right: 20, top: 40, bottom: 60},
         });
       });
     }
   };
+
+  useEffect(() => {
+    handleLocationPermission();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -144,6 +149,7 @@ export const KayakMap = () => {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
+          ref={mapRef}
           initialRegion={{
             latitude: 43.4347607,
             longitude: 17.1964512,
@@ -151,7 +157,7 @@ export const KayakMap = () => {
             longitudeDelta: 0.0421,
           }}
           loadingEnabled={true}>
-          {polylineCoordinates === undefined
+          {/* {polylineCoordinates === undefined
             ? route.length > 1 && (
                 <Polyline
                   testID="route"
@@ -167,7 +173,7 @@ export const KayakMap = () => {
                   strokeWidth={3}
                   strokeColor="red"
                 />
-              )}
+              )} */}
           <Marker
             coordinate={{
               latitude: startPoint.latitude,
@@ -215,9 +221,16 @@ export const KayakMap = () => {
 
               if (result.distance) {
                 setModalIsOpen(true);
-                getUserCurrentCoordinates();
               }
             }}
+          />
+          <MapViewDirections
+            origin={location}
+            destination={destinationPoint}
+            apikey={GOOGLE_MAPS_APIKEY}
+            strokeWidth={3}
+            strokeColor="red"
+            mode="DRIVING"
           />
         </MapView>
       ) : (
@@ -286,6 +299,7 @@ export const KayakMap = () => {
           />
         </MapView>
       )}
+
       <Modal
         isVisible={modalIsOpen}
         onSwipeComplete={() => setModalIsOpen(false)}
@@ -322,7 +336,7 @@ export const KayakMap = () => {
                       Kayak Tour on river Vrljika
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={handleLocationPermission}>
+                  <TouchableOpacity onPress={getUserCurrentCoordinates}>
                     <View style={styles.directionsStyle}>
                       <FontAwesomeIcon
                         icon={faDirections}
@@ -364,6 +378,7 @@ export const KayakMap = () => {
                   </Text>
                 </View>
               </View>
+
               <View style={styles.startDestinationPointContainer}>
                 <View style={{flexDirection: 'row', paddingTop: 10}}>
                   <FontAwesomeIcon icon={faClock} size={20} />
@@ -378,6 +393,7 @@ export const KayakMap = () => {
                   </Text>
                 </View>
               </View>
+
               <View style={styles.infoContainer}>
                 <View style={{flexDirection: 'row', paddingTop: 10}}>
                   <FontAwesomeIcon icon={faInfoCircle} size={20} />

@@ -156,13 +156,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 7,
   },
-  iconHeart: {
-    position: 'absolute',
-    color: 'white',
-    left: windowWidth * 0.8,
-    right: windowWidth * 0.8,
-    top: 10,
-  },
 });
 
 export default ListOfSights;

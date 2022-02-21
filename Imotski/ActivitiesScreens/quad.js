@@ -16,6 +16,7 @@ import {windowWidth} from '../constants/global';
 //bottom nav
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RedLakeInfo} from '../redLakeInfo';
+import {QuadMap} from '../ActivitesMaps/quadMap';
 
 //blue lake - details
 export const QuadBottomNav = () => {
@@ -30,8 +31,8 @@ export const QuadBottomNav = () => {
             <View>
               <FontAwesomeIcon
                 icon={faHome}
-                color={focused ? '#8E8E8E' : 'white'}
-                size={30}
+                color={focused ? 'white' : '#8E8E8E'}
+                size={25}
                 style={styles.faHeartIcon}
               />
             </View>
@@ -39,15 +40,15 @@ export const QuadBottomNav = () => {
         }}
       />
       <QuadBottomTab.Screen
-        name="Red Lake Info"
-        component={RedLakeInfo}
+        name="Quad Map"
+        component={QuadMap}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
               <FontAwesomeIcon
                 icon={faRoute}
-                color={focused ? '#8E8E8E' : 'white'}
-                size={30}
+                color={focused ? 'white' : '#8E8E8E'}
+                size={25}
                 style={styles.faRouteIcon}
               />
             </View>
@@ -88,11 +89,11 @@ const styles = StyleSheet.create({
   },
   blueLakeTab: {
     backgroundColor: '#656d44',
-    width: windowWidth * 0.6,
-    height: 50,
+    width: windowWidth * 0.5,
+    height: 45,
     position: 'absolute',
-    left: windowWidth * 0.2,
-    right: windowWidth * 0.2,
+    left: windowWidth * 0.25,
+    right: windowWidth * 0.25,
     marginBottom: 20,
     borderRadius: 10,
   },
