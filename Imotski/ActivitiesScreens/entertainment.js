@@ -20,6 +20,61 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 import {useNavigation} from '@react-navigation/native';
 
+//navigator
+import {createStackNavigator} from '@react-navigation/stack';
+
+//event screens
+import {ImotskaSila} from '../eventScreens/imotskaSila';
+import {CvitRazgovora} from '../eventScreens/cvitRazgovora';
+import {MagicTimeVinyl} from '../eventScreens/magicTimeVinyl';
+import {ImotaBikeAndWine} from '../eventScreens/imotaBikeWine';
+import {GlumciUZagvozdu} from '../eventScreens/glumciUZagvozdu';
+import {ZabarskaVecer} from '../eventScreens/zabarskaVecer';
+
+const EventStack = createStackNavigator();
+
+export const EventNavigation = () => {
+  return (
+    <EventStack.Navigator>
+      <EventStack.Screen
+        name="Entertainment Screen"
+        component={EntertainmentScreen}
+        options={{headerShown: false}}
+      />
+      <EventStack.Screen
+        name="Imotska Sila"
+        component={ImotskaSila}
+        options={{headerShown: false}}
+      />
+      <EventStack.Screen
+        name="Cvit Razgovora"
+        component={CvitRazgovora}
+        options={{headerShown: false}}
+      />
+      <EventStack.Screen
+        name="Magic Time Vinly Festival"
+        component={MagicTimeVinyl}
+        options={{headerShown: false}}
+      />
+      <EventStack.Screen
+        name="Imota Bike And Wine"
+        component={ImotaBikeAndWine}
+        options={{headerShown: false}}
+      />
+      <EventStack.Screen
+        name="Glumci U Zagvozdu"
+        component={GlumciUZagvozdu}
+        options={{headerShown: false}}
+      />
+      <EventStack.Screen
+        name="Zabarska Vecer"
+        component={ZabarskaVecer}
+        options={{headerShown: false}}
+      />
+    </EventStack.Navigator>
+  );
+};
+
 export const EntertainmentScreen = props => {
   const navigation = useNavigation();
 
@@ -28,31 +83,37 @@ export const EntertainmentScreen = props => {
       title: 'Imotska sila',
       image: require('../images/imotskaSila.jpg'),
       city: 'City Imotski',
+      navigation: 'Imotska Sila',
     },
     {
       title: 'Cvit razgovora',
       image: require('../images/cvitRazgovora.jpg'),
       city: 'City Imotski',
+      navigation: 'Cvit Razgovora',
     },
     {
-      title: 'Magic Time Vinly Festival',
+      title: 'Magic Time Vinyl Festival',
       image: require('../images/magicVinylFestival.jpg'),
       city: 'Perinuša',
+      navigation: 'Magic Time Vinly Festival',
     },
     {
       title: 'Glumci u Zagvozdu',
       image: require('../images/glumciUZagvozdu.jpg'),
       city: 'Zagvozd',
+      navigation: 'Glumci U Zagvozdu',
     },
     {
       title: 'Imota Bike & wine',
       image: require('../images/imotaBikeAndWine.jpeg'),
       city: 'Imotski region',
+      navigation: 'Imota Bike And Wine',
     },
     {
       title: 'Žabarska Večer',
       image: require('../images/zabarskaVecerImotski.jpg'),
       city: 'Zmijavci',
+      navigation: 'Zabarska Vecer',
     },
   ];
 
@@ -95,7 +156,9 @@ export const EntertainmentScreen = props => {
         </View>
 
         {DATA.map((item, index) => (
-          <TouchableOpacity key={index}>
+          <TouchableOpacity
+            key={index}
+            onPress={() => navigation.navigate(item.navigation)}>
             <View style={styles.listContainer}>
               <View style={styles.containerEvent}>
                 <Image style={styles.image} source={item.image} />

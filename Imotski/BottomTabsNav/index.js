@@ -62,7 +62,7 @@ import {blueLakeTopTabsNav} from '../infoTemplate';
 //activities screen
 import {KayakBottomNav} from '../ActivitiesScreens/kayak';
 import {WalkingBottomNav} from '../ActivitiesScreens/walking';
-import {EntertainmentScreen} from '../ActivitiesScreens/entertainment';
+import {EventNavigation} from '../ActivitiesScreens/entertainment';
 import {QuadBottomNav} from '../ActivitiesScreens/quad';
 import {BikeScreen} from '../ActivitiesScreens/bike';
 import {SwimmingBottomNav} from '../ActivitiesScreens/swimming';
@@ -471,7 +471,7 @@ const ExploreImotskiNav = () => {
       />
       <Stack.Screen
         name="Entertainment Screen"
-        component={EntertainmentScreen}
+        component={EventNavigation}
         options={{headerShown: false}}
       />
       <Stack.Screen

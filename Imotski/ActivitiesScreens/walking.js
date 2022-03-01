@@ -16,6 +16,7 @@ import {windowWidth} from '../constants/global';
 //bottom nav
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RedLakeInfo} from '../redLakeInfo';
+import {WalkingMap} from '../ActivitesMaps/walkingMap';
 
 //blue lake - details
 export const WalkingBottomNav = () => {
@@ -30,8 +31,8 @@ export const WalkingBottomNav = () => {
             <View>
               <FontAwesomeIcon
                 icon={faHome}
-                color={focused ? '#8E8E8E' : 'white'}
-                size={30}
+                color={focused ? 'white' : '#8E8E8E'}
+                size={25}
                 style={styles.faHeartIcon}
               />
             </View>
@@ -40,14 +41,14 @@ export const WalkingBottomNav = () => {
       />
       <WalkingBottomTab.Screen
         name="Red Lake Info"
-        component={RedLakeInfo}
+        component={WalkingMap}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
               <FontAwesomeIcon
                 icon={faRoute}
-                color={focused ? '#8E8E8E' : 'white'}
-                size={30}
+                color={focused ? 'white' : '#8E8E8E'}
+                size={25}
                 style={styles.faRouteIcon}
               />
             </View>
@@ -88,11 +89,11 @@ const styles = StyleSheet.create({
   },
   blueLakeTab: {
     backgroundColor: '#CA9A8C',
-    width: windowWidth * 0.6,
-    height: 50,
+    width: windowWidth * 0.5,
+    height: 45,
     position: 'absolute',
-    left: windowWidth * 0.2,
-    right: windowWidth * 0.2,
+    left: windowWidth * 0.25,
+    right: windowWidth * 0.25,
     marginBottom: 20,
     borderRadius: 10,
   },

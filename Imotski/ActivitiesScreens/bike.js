@@ -199,9 +199,10 @@ export const BikeScreen = () => {
       distance: 16.7,
       time: 'cca ' + 1 + 'h',
       weight: 'hill',
-      image: require('../images/redLake.jpg'),
-      title: 'Red Lake, Busanje',
-      description: 'There is no description at this moment',
+      image: require('../images/ecoVillageGrabovci.jpeg'),
+      title: 'Eco tour of Grabovci village',
+      description:
+        'This circular asphalt route starts and finishes at the entrance of Modro lake. Enjoy the wonderful views over Modro and Crveno lakes, as you go uphill towards the road that leads you towards Gornji Proložac, as well as the field of Imotski and Biokovo mountain. After further 2 kilometres, you will come up to Podi plateau and the eco village of Grabovci, where you can see the birth house of a Croatian poet and politician Vlado Gotovac. Enjoy a homemade meal and recharge your batteries at the family farm Grabovac. The rest of the route is an easy downhill ride through Glavina Gornja, above the Modro lake, through the city streets to get back to the starting point – the entrance to Modro lake.',
     },
     {
       key: 3,
