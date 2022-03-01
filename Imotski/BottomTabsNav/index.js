@@ -1,6 +1,13 @@
 import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Dimensions, View, Text} from 'react-native';
+import {
+  StyleSheet,
+  Modal,
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 //svg
@@ -16,12 +23,16 @@ import {
   faComment,
   faCloudSun,
   faRoute,
+  faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {createStackNavigator} from '@react-navigation/stack';
 
 //app drawer
 import {AppDrawerScreen} from '../Explore Imotski/index';
+
+//dimension
+import {windowWidth, windowHeight} from '../constants/global';
 
 //Main page: Explore Imotski & region
 import ExploreImotski from '../Explore Imotski/index';
@@ -118,6 +129,8 @@ const BlueLakeHorizontalNav = () => (
 const BlueLakeBottomNav = () => {
   const [isLogged, setLogged] = useState(false);
   const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
 
   useEffect(async () => {
     let token = await AsyncStorage.getItem('token');
@@ -187,13 +200,59 @@ const BlueLakeBottomNav = () => {
                   size={30}
                   style={styles.faCommentIcon}
                 />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('User');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
               </View>
             ),
           }}
           listeners={{
             tabPress: event => {
               event.preventDefault();
-              alert('Sign up or login first!');
+              setAlertModal(true);
+              //alert('Sign up or login first!');
             },
           }}
         />
@@ -245,13 +304,59 @@ const BlueLakeBottomNav = () => {
                   size={30}
                   style={styles.faRouteIcon}
                 />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('User');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
               </View>
             ),
           }}
           listeners={() => ({
             tabPress: event => {
               event.preventDefault();
-              alert('You must login first');
+              setAlertModal(true);
+              //alert('You must login first');
             },
           })}
         />
@@ -279,8 +384,6 @@ const ImotskiInfo = () => (
 
 //tab for bottom tab navigation
 const Tab = createBottomTabNavigator();
-
-const windowWidth = Dimensions.get('window').width;
 
 //bottom navigation on first screen Explore Imotski and region
 const BottomTabs = () => {
@@ -525,6 +628,61 @@ const styles = StyleSheet.create({
   },
   faRouteIcon: {
     marginRight: windowWidth * 0.01,
+  },
+  alertModal: {
+    width: windowWidth,
+    height: windowHeight,
+  },
+  centeredView: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: windowWidth,
+    height: windowHeight,
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+  },
+  alertModalContainer: {
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.35,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  alertIcon: {
+    //flex: 1,
+    //justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    marginRight: windowWidth * 0.05,
+    marginTop: windowWidth * 0.02,
+  },
+  alertMessage: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: windowWidth * 0.05,
+  },
+  alertText: {
+    textAlign: 'center',
+    color: '#1F83BB',
+    fontSize: 13,
+    fontWeight: 'bold',
+    paddingTop: windowWidth * 0.03,
+  },
+  closeBtn: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.5,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 0.7,
+    marginBottom: windowWidth * 0.1,
+    justifyContent: 'center',
+    elevation: 10,
+    shadowColor: '#1F83BB',
+    bottom: windowWidth * 0.05,
+  },
+  closeBtnTxt: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 

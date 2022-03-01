@@ -31,6 +31,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import Svg, {Defs, G, Path} from 'react-native-svg';
+import {Divider} from 'react-native-elements/dist/divider/Divider';
 
 /* //dimension
 const windowWidth = Dimensions.get('window').width; */
@@ -194,56 +195,69 @@ export const SignIn = props => {
             </G>
           </Svg>
 
+          <View
+            style={{
+              bottom: windowWidth * 0.4,
+            }}>
+            <Text style={styles.txtGoogleLogin}>Login via Google</Text>
+          </View>
+
+          <View style={styles.googleLoginView}>
+            {/* <Pressable onPress={signIn}>
+              <FontAwesomeIcon
+                style={styles.googleLogo}
+                icon={faGoogle}
+                size={25}
+                color={'#1F83BB'}
+              />
+            </Pressable> */}
+            <GoogleSigninButton
+              style={styles.googleLogo}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={signIn}
+            />
+          </View>
+          <Divider style={{bottom: windowWidth * 0.3}} />
           <View style={styles.signInScreen}>
-            <Text style={styles.txtWelcome}>Welcome back</Text>
-            <Text style={styles.placeholderEmail}>Email</Text>
-            <View style={styles.viewEmailPass}>
-              <TextInput
-                style={styles.inputEmailPass}
-                keyboardType="email-address"
-                value={email}
-                onChangeText={text => setEmail(text)}
-              />
+            <View>
+              <Text style={styles.txtWelcome}>Welcome back</Text>
             </View>
-            <Text style={styles.placeholderPassword}>Password</Text>
-            <View style={styles.viewEmailPass}>
-              <TextInput
-                style={styles.inputEmailPass}
-                secureTextEntry={true}
-                value={password}
-                onChangeText={text => setPassword(text)}
-              />
-            </View>
-            <View style={styles.proceed}>
-              <Pressable onPress={() => handleSubmit()}>
-                <Text style={styles.proceedButton}>Proceed</Text>
-              </Pressable>
-            </View>
-            <View style={styles.containerGoogleLoginOrSignUp}>
-              <View>
-                <Text style={styles.txtNewMember}>New member?</Text>
-                <Pressable onPress={() => navigation.navigate('Sign Up')}>
-                  <Text style={styles.txtSignUp}>Sign Up</Text>
+            <View
+              style={{
+                bottom: windowWidth * 0.05,
+              }}>
+              <Text style={styles.placeholderEmail}>Email</Text>
+              <View style={styles.viewEmailPass}>
+                <TextInput
+                  style={styles.inputEmailPass}
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={text => setEmail(text)}
+                />
+              </View>
+              <Text style={styles.placeholderPassword}>Password</Text>
+              <View style={styles.viewEmailPass}>
+                <TextInput
+                  style={styles.inputEmailPass}
+                  secureTextEntry={true}
+                  value={password}
+                  onChangeText={text => setPassword(text)}
+                />
+              </View>
+
+              <View style={styles.proceed}>
+                <Pressable onPress={() => handleSubmit()}>
+                  <Text style={styles.proceedButton}>Proceed</Text>
                 </Pressable>
               </View>
-              <View style={styles.googleLoginView}>
-                <Text style={[styles.txtNewMember, {paddingLeft: 0}]}>
-                  Login via Google
-                </Text>
-                <Pressable onPress={signIn}>
-                  <FontAwesomeIcon
-                    style={styles.googleLogo}
-                    icon={faGoogle}
-                    size={25}
-                    color={'#1F83BB'}
-                  />
-                </Pressable>
-                {/* <GoogleSigninButton
-                  style={styles.googleLogo}
-                  size={GoogleSigninButton.Size.Wide}
-                  color={GoogleSigninButton.Color.Dark}
-                  onPress={signIn}
-                /> */}
+              <View style={styles.containerGoogleLoginOrSignUp}>
+                <View>
+                  <Text style={styles.txtNewMember}>New member?</Text>
+                  <Pressable onPress={() => navigation.navigate('Sign Up')}>
+                    <Text style={styles.txtSignUp}>Sign Up</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
           </View>
@@ -277,7 +291,7 @@ const styles = StyleSheet.create({
     color: '#A8A8A8',
     fontSize: 14,
     paddingLeft: 30,
-    paddingTop: 10,
+    marginTop: windowWidth * 0.1,
   },
   txtNewMember: {
     color: '#A8A8A8',
@@ -356,8 +370,15 @@ const styles = StyleSheet.create({
     marginVertical: windowWidth * 0.1,
   },
   googleLoginView: {
-    marginRight: 30,
+    //marginRight: 30,
     alignItems: 'center',
+    bottom: windowWidth * 0.38,
+  },
+  txtGoogleLogin: {
+    color: '#A8A8A8',
+    fontSize: 14,
+    paddingLeft: 30,
+    //marginTop: windowWidth * 0.1,
   },
   googleLogo: {
     marginVertical: windowWidth * 0.02,
