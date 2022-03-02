@@ -46,7 +46,7 @@ export const SignIn = props => {
   const [user, setUser] = useState({});
 
   const handleSubmit = async () => {
-    fetch('http://192.168.1.3:5000/signin', {
+    fetch('http://192.168.1.2:5000/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ export const SignIn = props => {
 
   const responseSuccessGoogle = userInfo => {
     //console.log(response);
-    fetch('http://192.168.1.3:5000/googlelogin', {
+    fetch('http://192.168.1.2:5000/googlelogin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

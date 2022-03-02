@@ -18,7 +18,7 @@ const windowHeight = Dimensions.get('window').height;
 //navigation
 import {useNavigation} from '@react-navigation/native';
 
-export const ReviewScreen = () => {
+export const ReviewScreenRedLake = () => {
   const [reviewData, setReviewData] = useState([]);
   const navigation = useNavigation();
 
@@ -28,14 +28,18 @@ export const ReviewScreen = () => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data.comments);
+        //setReviewData(data.comments);
+
         const placeFilter = data.comments.filter(
-          places => places.catg === 'blue lake',
+          places => places.catg === 'red lake',
         );
 
+        console.log(placeFilter);
         setReviewData(placeFilter);
         navigation.navigate('Review');
 
-        console.log(data.comments);
+        //console.log(data.comments);
       })
       .catch(error => {
         console.log(error);
@@ -51,9 +55,9 @@ export const ReviewScreen = () => {
   return (
     <>
       <TemplateInfo
-        image={require('../images/blueLakeArticle.jpg')}
+        image={require('../images/redLake.jpg')}
         city={'Imotski'}
-        sight={'Blue Lake'}
+        sight={'Red Lake'}
         color={'grey'}
         color2={'grey'}
         color3={'black'}
@@ -64,7 +68,7 @@ export const ReviewScreen = () => {
                 <View style={styles.reviewImageContainer}>
                   <Image
                     style={styles.reviewImage}
-                    source={require('../images/blueLakeArticle.jpg')}
+                    source={require('../images/redLakeH.jpg')}
                   />
                 </View>
                 <View style={styles.reviewText}>

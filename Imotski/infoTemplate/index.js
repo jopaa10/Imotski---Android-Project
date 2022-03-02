@@ -55,7 +55,7 @@ export const TemplateInfo = props => {
   const DATA = [
     {
       index: 1,
-      navigate: 'Blue Lake Info',
+      navigate: 'Overview',
       title: 'Overview',
       color: props.color,
     },

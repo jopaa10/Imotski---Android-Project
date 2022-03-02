@@ -8,13 +8,13 @@ import {TemplateInfo} from '../infoTemplate';
 import moment from 'moment-timezone';
 
 import {ScrollView} from 'react-native-gesture-handler';
-import FutureWeather from './futureWeather';
 import Next48Hours from '../weatherTemplate/next48hours';
+import FutureWeatherRedLake from './futureWeatherRedLake';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export const Weather = () => {
+export const WeatherRedLake = () => {
   const [weatherData, setweatherData] = useState({
     uvIndex: null,
     humidity: null,
@@ -32,7 +32,7 @@ export const Weather = () => {
 
   const getWeather = () => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=43.4506&lon=17.2100&units=metric&appid=e903bab07386bca9e1753e78018f8091`,
+      `https://api.openweathermap.org/data/2.5/onecall?lat=43.4550&lon=17.1982&units=metric&appid=e903bab07386bca9e1753e78018f8091`,
     )
       .then(res => res.json())
       .then(data => {
@@ -57,9 +57,9 @@ export const Weather = () => {
   return (
     <>
       <TemplateInfo
-        image={require('../images/blueLakeArticle.jpg')}
+        image={require('../images/redLakeH.jpg')}
         city={'Imotski'}
-        sight={'Blue Lake'}
+        sight={'Red Lake'}
         weather={
           <>
             {/*<View style={styles.container}>
@@ -84,11 +84,11 @@ export const Weather = () => {
               navigate={'Next Days Forecast'}
               today={'Next 48 hours'}
               followingDays={'Next 7 days >'}
-              txtColor={'#1F83BB'}
+              txtColor={'#CA9A8C'}
               weatherData={weatherData}
             />
             <ScrollView horizontal={true} style={styles.hourWeatherView}>
-              <FutureWeather weatherData={data} />
+              <FutureWeatherRedLake weatherData={data} />
             </ScrollView>
           </>
         }

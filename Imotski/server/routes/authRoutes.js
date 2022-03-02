@@ -219,7 +219,7 @@ router.put('/updatepic', requireLogin, (req, res) => {
 });
 
 router.post('/createcomment', requireLogin, (req, res) => {
-  const {body} = req.body;
+  const {body, catg} = req.body;
   if (!body) {
     return res.status(422).json({error: 'Please add your comment'});
   }
@@ -228,6 +228,7 @@ router.post('/createcomment', requireLogin, (req, res) => {
     body,
     postedBy: req.user,
     time: new Date(),
+    catg,
   });
 
   commentBox

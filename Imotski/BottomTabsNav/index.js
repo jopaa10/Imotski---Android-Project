@@ -50,7 +50,7 @@ import {Weather} from '../blueLakeInfo/weather';
 import {NextDaysForecast} from '../blueLakeInfo/nextdaysforecast';
 
 //red lake info in Imotski screen
-import {RedLakeInfo} from '../redLakeInfo';
+import {RedLakeInfo} from '../redLakeInfo/index';
 
 //first page for user signIn or signUp
 import {SignInNav} from '../userPage';
@@ -61,7 +61,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //navigation page for getting directions
 import {RouteMap} from '../routeMap';
-import {CommentNav} from '../commentBox';
+import {CommentNavBlueLake} from '../commentBox/blueLakeComment';
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
@@ -78,15 +78,31 @@ import {QuadBottomNav} from '../ActivitiesScreens/quad';
 import {BikeScreen} from '../ActivitiesScreens/bike';
 import {SwimmingBottomNav} from '../ActivitiesScreens/swimming';
 
+//red lake
+import {GalleryRedLake} from '../redLakeInfo/galleryRedLake';
+import {ReviewScreenRedLake} from '../reviewScreenRedLake';
+import {WeatherRedLake} from '../redLakeInfo/weatherRedLake';
+import {NextDaysForecastRedLake} from '../redLakeInfo/nextdaysforecastRedLake';
+import {CommentNavRedLake} from '../commentBox/redLakeComment';
+
 const Stack = createStackNavigator();
-const BlueLakeStack = createStackNavigator();
+
+//blue lake
+const ImotskiStack = createStackNavigator();
 const BlueLakeHorNav = createStackNavigator();
 const BlueLakeInfoBottomNav = createBottomTabNavigator();
 
-//weather stack
+//red lake
+const RedLakeInfoBottomNav = createBottomTabNavigator();
+const RedLakeHorNav = createStackNavigator();
+
+//weather stack for Blue lake
 const WeatherStack = createStackNavigator();
 
-//next 7 days forecast
+//weather stack for Red lake
+const WeatherStackRedLake = createStackNavigator();
+
+//next 7 days forecast for Blue Lake
 export const FutureDayForecast = () => (
   <WeatherStack.Navigator>
     <WeatherStack.Screen
@@ -106,7 +122,7 @@ export const FutureDayForecast = () => (
 const BlueLakeHorizontalNav = () => (
   <BlueLakeHorNav.Navigator initialRouteName="Blue Lake Info">
     <BlueLakeHorNav.Screen
-      name="Blue Lake Info"
+      name="Overview"
       component={BlueLakeInfo}
       options={{headerShown: false}}
     />
@@ -167,7 +183,7 @@ const BlueLakeBottomNav = () => {
       {isLogged ? (
         <BlueLakeInfoBottomNav.Screen
           name="Comment Section"
-          component={CommentNav}
+          component={CommentNavBlueLake}
           options={{
             tabBarIcon: ({focused}) => (
               <View>
@@ -365,21 +381,309 @@ const BlueLakeBottomNav = () => {
   );
 };
 
+//next 7 days forecast for Red Lake
+export const FutureDayForecastRedLake = () => (
+  <WeatherStackRedLake.Navigator>
+    <WeatherStackRedLake.Screen
+      name="Weather Data"
+      component={WeatherRedLake}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackRedLake.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastRedLake}
+      options={{headerShown: false}}
+    />
+  </WeatherStackRedLake.Navigator>
+);
+
+//red lake - details
+const RedLakeHorizontalNav = () => (
+  <RedLakeHorNav.Navigator initialRouteName="Red Lake Info">
+    <RedLakeHorNav.Screen
+      name="Overview"
+      component={RedLakeInfo}
+      options={{headerShown: false}}
+    />
+
+    <RedLakeHorNav.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryRedLake}
+    />
+
+    <RedLakeHorNav.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewScreenRedLake}
+    />
+  </RedLakeHorNav.Navigator>
+);
+
+const RedLakeBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    console.log(isLogged);
+    console.log(token);
+  }, []);
+
+  return (
+    <RedLakeInfoBottomNav.Navigator
+      tabBarOptions={{
+        showLabel: false,
+        style: styles.redLakeTab,
+      }}>
+      <RedLakeInfoBottomNav.Screen
+        name="Red Lake Info"
+        component={RedLakeHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <RedLakeInfoBottomNav.Screen
+          name="Comment Section"
+          component={CommentNavRedLake}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <RedLakeInfoBottomNav.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#CA9A8C',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('User');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <RedLakeInfoBottomNav.Screen
+        name="Weather"
+        component={FutureDayForecastRedLake}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <RedLakeInfoBottomNav.Screen
+          name="Navigation"
+          component={RouteMap}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <RedLakeInfoBottomNav.Screen
+          name="Alert"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#CA9A8C',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={[styles.alertText, {color: '#CA9A8C'}]}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={[
+                            styles.closeBtn,
+                            {backgroundColor: '#CA9A8C'},
+                          ]}
+                          onPress={() => {
+                            navigation.navigate('User');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </RedLakeInfoBottomNav.Navigator>
+  );
+};
+
 //places what user can visited - Imotski screen
 const ImotskiInfo = () => (
-  <BlueLakeStack.Navigator>
-    <BlueLakeStack.Screen
+  <ImotskiStack.Navigator>
+    <ImotskiStack.Screen
       name="Explore Imotski"
       component={Imotski}
       options={{headerShown: false}}
     />
-    <BlueLakeStack.Screen
+    <ImotskiStack.Screen
       name="Blue Lake Info"
       component={BlueLakeBottomNav}
       options={{headerShown: false}}
     />
-    <BlueLakeStack.Screen name="Red Lake Info" component={RedLakeInfo} />
-  </BlueLakeStack.Navigator>
+    <ImotskiStack.Screen
+      name="Red Lake Info"
+      component={RedLakeBottomNav}
+      options={{headerShown: false}}
+    />
+  </ImotskiStack.Navigator>
 );
 
 //tab for bottom tab navigation
@@ -609,6 +913,16 @@ const styles = StyleSheet.create({
   },
   blueLakeTab: {
     backgroundColor: '#1F83BB',
+    width: windowWidth * 0.9,
+    height: 50,
+    position: 'absolute',
+    left: windowWidth * 0.05,
+    right: windowWidth * 0.05,
+    marginBottom: 20,
+    borderRadius: 20,
+  },
+  redLakeTab: {
+    backgroundColor: '#CA9A8C',
     width: windowWidth * 0.9,
     height: 50,
     position: 'absolute',

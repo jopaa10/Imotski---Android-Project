@@ -65,7 +65,7 @@ export const TemplateExploreImotski = props => {
   //console.log(state);
 
   if (state != null) {
-    fetch('http://192.168.1.3:5000/protected', {
+    fetch('http://192.168.1.2:5000/protected', {
       headers: {
         Authorization: 'Bearer ' + state,
       },
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     borderColor: '#1F83BB',
     borderWidth: 1,
     flexDirection: 'row',
-    bottom: windowWidth * 0.08,
+    bottom: windowWidth * 0.085,
     justifyContent: 'flex-end',
     width: windowWidth,
   },

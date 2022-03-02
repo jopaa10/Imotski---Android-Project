@@ -51,13 +51,17 @@ export const CommentNav = () => {
       <commentStack.Screen
         name="Comment Section"
         options={{headerShown: false}}
-        component={CommentScreen}
+        component={CommentTemplate}
       />
     </commentStack.Navigator>
   );
 };
 
-export const CommentScreen = () => {
+export const CommentTemplate = ({
+  diffColorForPlace,
+  diffColorForPlace2,
+  category,
+}) => {
   const [input, setInput] = useState('');
   const navigation = useNavigation();
   const [alertModal, setAlertModal] = useState(false);
@@ -65,7 +69,7 @@ export const CommentScreen = () => {
 
   const submitComment = async () => {
     //navigation.navigate('Blue Lake Info');
-    await fetch('http://192.168.1.4:5000/createcomment', {
+    await fetch('http://192.168.1.2:5000/createcomment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -73,6 +77,7 @@ export const CommentScreen = () => {
       },
       body: JSON.stringify({
         body: input,
+        catg: category,
       }),
     })
       .then(res => res.json())
@@ -102,7 +107,11 @@ export const CommentScreen = () => {
     <>
       <ScrollView
         style={{backgroundColor: 'white', height: windowHeight, flex: 1}}>
-        <Waves display={'none'} />
+        <Waves
+          display={'none'}
+          color={diffColorForPlace}
+          color2={diffColorForPlace2}
+        />
         <Pressable
           style={styles.arrowLeftIcon}
           onPress={() => navigation.goBack()}>

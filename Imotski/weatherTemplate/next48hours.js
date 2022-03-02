@@ -11,7 +11,13 @@ import {useNavigation} from '@react-navigation/core';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const Next48Hours = ({weatherData, navigate, today, followingDays}) => {
+const Next48Hours = ({
+  weatherData,
+  navigate,
+  today,
+  followingDays,
+  txtColor,
+}) => {
   const navigation = useNavigation();
 
   const weatherDataArray = [
@@ -53,7 +59,9 @@ const Next48Hours = ({weatherData, navigate, today, followingDays}) => {
       <View style={styles.containerWeatherByHour}>
         <Text style={styles.todayW}>{today}</Text>
         <Pressable onPress={() => navigation.navigate(navigate)}>
-          <Text style={styles.followingDaysW}>{followingDays}</Text>
+          <Text style={[styles.followingDaysW, {color: txtColor}]}>
+            {followingDays}
+          </Text>
         </Pressable>
       </View>
     </>
