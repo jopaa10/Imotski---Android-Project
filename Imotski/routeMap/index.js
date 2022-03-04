@@ -32,10 +32,13 @@ MapboxGL.setAccessToken(accessToken);
 //set mapbox token
 const directionsClient = MapboxDirectionsFactory({accessToken});
 
-export const RouteMap = () => {
+export const RouteMap = ({destinationCoordLat, destinationCoordLong}) => {
   const navigation = useNavigation();
   const [location, setLocation] = useState(null);
-  const [destinationPoint] = useState([43.4506, 17.21]);
+  const [destinationPoint] = useState([
+    destinationCoordLat,
+    destinationCoordLong,
+  ]);
   const [currentCoord, setCurrentCoord] = useState([]);
   let [polylineCoordinates, setPolylineCoordinates] = useState(0);
   const mapRef = useRef(null);

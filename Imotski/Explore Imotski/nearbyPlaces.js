@@ -75,7 +75,7 @@ export const NearbyPlaces = () => {
   const [colorChangeRestaurant, setColorChangeRestaurant] = useState('white');
   const [colorChangeWineanry, setColorChangeWineary] = useState('white');
 
-  const changeColor = event => {
+  /*  const changeColor = event => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
 
     console.log(scrollPosition);
@@ -92,13 +92,10 @@ export const NearbyPlaces = () => {
       setColorChangeRestaurant('white');
     }
   };
-
+ */
   return (
     <>
-      <ScrollView
-        horizontal={true}
-        onScroll={changeColor}
-        style={styles.horizontalView}>
+      <ScrollView horizontal={true} style={styles.horizontalView}>
         <View style={styles.containerNearbyPlaces}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Explore Imotski')}>
@@ -111,16 +108,11 @@ export const NearbyPlaces = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Restaurants')}>
-                <Text
-                  style={[styles.txtPlaces, {color: colorChangeRestaurant}]}>
-                  {`Restaurants`}
-                </Text>
+                <Text style={styles.txtPlaces}>{`Restaurants`}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Winearies')}>
-                <Text style={[styles.txtPlaces, {color: colorChangeWineanry}]}>
-                  {`Winearies`}
-                </Text>
+                <Text style={styles.txtPlaces}>{`Winearies`}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Shopping Mall')}>

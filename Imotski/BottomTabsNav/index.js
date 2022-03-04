@@ -84,6 +84,8 @@ import {ReviewScreenRedLake} from '../reviewScreenRedLake';
 import {WeatherRedLake} from '../redLakeInfo/weatherRedLake';
 import {NextDaysForecastRedLake} from '../redLakeInfo/nextdaysforecastRedLake';
 import {CommentNavRedLake} from '../commentBox/redLakeComment';
+import {BlueLakeNavRoute} from '../routeMap/blueLakenav';
+import {RedLakeNavRoute} from '../routeMap/redLakeNav';
 
 const Stack = createStackNavigator();
 
@@ -293,7 +295,7 @@ const BlueLakeBottomNav = () => {
       {isLogged === true ? (
         <BlueLakeInfoBottomNav.Screen
           name="Navigation"
-          component={RouteMap}
+          component={BlueLakeNavRoute}
           options={{
             tabBarIcon: ({focused}) => (
               <View>
@@ -574,7 +576,7 @@ const RedLakeBottomNav = () => {
       {isLogged === true ? (
         <RedLakeInfoBottomNav.Screen
           name="Navigation"
-          component={RouteMap}
+          component={RedLakeNavRoute}
           options={{
             tabBarIcon: ({focused}) => (
               <View>

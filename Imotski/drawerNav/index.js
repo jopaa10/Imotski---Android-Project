@@ -95,7 +95,7 @@ export const DrawerContent = props => {
 
           <TouchableOpacity
             style={styles.container}
-            onPress={() => props.navigation.navigate('Biokovo')}>
+            onPress={() => props.navigation.navigate('MarkedPlaces')}>
             <FontAwesomeIcon
               style={styles.icon}
               icon={faFlag}
