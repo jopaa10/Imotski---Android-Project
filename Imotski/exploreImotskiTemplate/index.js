@@ -32,6 +32,9 @@ import {UserContext} from '../App';
 import {windowHeight, windowWidth} from '../constants/global';
 import {NearbyPlaces} from '../Explore Imotski/nearbyPlaces';
 
+//redux
+import {useSelector} from 'react-redux';
+
 //drawer navigator
 const AppDrawer = createDrawerNavigator();
 
@@ -42,7 +45,7 @@ import {DrawerContent} from '../drawerNav';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 //drawer actions
-import {DrawerActions} from '@react-navigation/native';
+import {DrawerActions, ThemeProvider} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 export const AppDrawerScreen = () => {
@@ -77,78 +80,96 @@ export const TemplateExploreImotski = props => {
       });
   }
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <SafeAreaView style={{flex: 1}}>
-        <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        <ScrollView style={styles.container}>
-          <View style={{zIndex: -1}}>
-            <View style={styles.avatarContainer}>
-              <TouchableOpacity
-                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-                <FontAwesomeIcon icon={faBars} size={25} color={'white'} />
-              </TouchableOpacity>
-              <View>
-                <>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate(!state ? 'User' : 'Profile Page')
-                    }>
-                    {!state ? (
-                      <Image
-                        source={require('../images/userIcon.png')}
-                        style={styles.avatar}
-                      />
-                    ) : (
-                      <>
+      <ThemeProvider theme={theme}>
+        <SafeAreaView style={{flex: 1}}>
+          <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+          <ScrollView
+            style={[
+              styles.container,
+              {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+            ]}>
+            <View style={{zIndex: -1}}>
+              <View
+                style={[
+                  styles.avatarContainer,
+                  {backgroundColor: theme.PRIMARY_BACKGROUND_COLOR},
+                ]}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.dispatch(DrawerActions.openDrawer())
+                  }>
+                  <FontAwesomeIcon icon={faBars} size={25} color={'white'} />
+                </TouchableOpacity>
+                <View>
+                  <>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate(!state ? 'User' : 'Profile Page')
+                      }>
+                      {!state ? (
                         <Image
-                          source={{uri: userPhoto}}
-                          style={styles.profilePic}
+                          source={require('../images/userIcon.png')}
+                          style={styles.avatar}
                         />
-                      </>
-                    )}
-                  </TouchableOpacity>
-                </>
+                      ) : (
+                        <>
+                          <Image
+                            source={{uri: userPhoto}}
+                            style={styles.profilePic}
+                          />
+                        </>
+                      )}
+                    </TouchableOpacity>
+                  </>
+                </View>
               </View>
-            </View>
-            <Svg
-              width={windowWidth}
-              height="130"
-              viewBox={`10 5 ${windowWidth} 130`}
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M415 53.1351L397.5 67.8949C380 82.6546 345 112.174 310 123.982C275 135.79 240 129.886 205 109.222C170 88.5585 135 53.1351 100 44.2793C65 35.4234 30 53.1351 12.5 61.991L-5.00001 70.8468L-5.00001 -4.43602e-06L12.5 -4.43602e-06C30 -4.43602e-06 65 -4.43602e-06 100 -4.43602e-06C135 -4.43602e-06 170 -4.43602e-06 205 -4.43602e-06C240 -4.43602e-06 275 -4.43602e-06 310 -4.43602e-06C345 -4.43602e-06 380 -4.43602e-06 397.5 -4.43602e-06H415L415 53.1351Z"
-                fill="#1F83BB"
-              />
-              <View style={styles.containerDiscover}>
-                <FontAwesomeIcon
-                  icon={faSearchLocation}
-                  size={25}
-                  style={{
-                    marginLeft: 5,
-                  }}
-                  color={'white'}
+              <Svg
+                width={windowWidth}
+                height="130"
+                viewBox={`10 5 ${windowWidth} 130`}
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M415 53.1351L397.5 67.8949C380 82.6546 345 112.174 310 123.982C275 135.79 240 129.886 205 109.222C170 88.5585 135 53.1351 100 44.2793C65 35.4234 30 53.1351 12.5 61.991L-5.00001 70.8468L-5.00001 -4.43602e-06L12.5 -4.43602e-06C30 -4.43602e-06 65 -4.43602e-06 100 -4.43602e-06C135 -4.43602e-06 170 -4.43602e-06 205 -4.43602e-06C240 -4.43602e-06 275 -4.43602e-06 310 -4.43602e-06C345 -4.43602e-06 380 -4.43602e-06 397.5 -4.43602e-06H415L415 53.1351Z"
+                  fill={theme.PRIMARY_BACKGROUND_COLOR}
                 />
-                <Text style={styles.txtDiscover}> Imotski & region </Text>
-              </View>
-            </Svg>
-            <NearbyPlaces />
-          </View>
-          <View style={styles.listContainer}>
-            {/*  <ListOfSights /> */}
-            {props.listOfSights}
-            {props.nearbyPlaces}
-          </View>
-          <View style={styles.containerActivities}>
-            <Text style={styles.txtActivities}>Activities</Text>
-            {/* <Activities /> */}
-            {props.activity}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+                <View
+                  style={[
+                    styles.containerDiscover,
+                    {borderColor: theme.PRIMARY_BACKGROUND_COLOR},
+                  ]}>
+                  <FontAwesomeIcon
+                    icon={faSearchLocation}
+                    size={25}
+                    style={{
+                      marginLeft: 5,
+                    }}
+                    color={'white'}
+                  />
+                  <Text style={styles.txtDiscover}> Imotski & region </Text>
+                </View>
+              </Svg>
+              <NearbyPlaces />
+            </View>
+            <View style={styles.listContainer}>
+              {/*  <ListOfSights /> */}
+              {props.listOfSights}
+              {props.nearbyPlaces}
+            </View>
+            <View style={styles.containerActivities}>
+              <Text style={styles.txtActivities}>Activities</Text>
+              {/* <Activities /> */}
+              {props.activity}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </ThemeProvider>
     </>
   );
 };

@@ -86,6 +86,7 @@ import {NextDaysForecastRedLake} from '../redLakeInfo/nextdaysforecastRedLake';
 import {CommentNavRedLake} from '../commentBox/redLakeComment';
 import {BlueLakeNavRoute} from '../routeMap/blueLakenav';
 import {RedLakeNavRoute} from '../routeMap/redLakeNav';
+import {NextDaysForecastBlueLake} from '../blueLakeInfo/nextDaysForecastBlueLake';
 
 const Stack = createStackNavigator();
 
@@ -115,7 +116,7 @@ export const FutureDayForecast = () => (
 
     <WeatherStack.Screen
       name="Next Days Forecast"
-      component={NextDaysForecast}
+      component={NextDaysForecastBlueLake}
       options={{headerShown: false}}
     />
   </WeatherStack.Navigator>

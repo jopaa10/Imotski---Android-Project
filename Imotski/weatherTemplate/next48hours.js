@@ -7,9 +7,13 @@ import {faSun, faCloudSun, faWater} from '@fortawesome/free-solid-svg-icons';
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
+import {ThemeProvider} from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+//redux
+import {useSelector} from 'react-redux';
 
 const Next48Hours = ({
   weatherData,
@@ -43,27 +47,50 @@ const Next48Hours = ({
     },
   ];
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <View style={styles.container}>
-        {weatherDataArray.map((item, index) => (
-          <>
-            <View key={index} style={styles.viewWeatherInfo}>
-              <FontAwesomeIcon key={index} icon={item.icon} size={40} />
-              <Text style={styles.textWeatherInfo}>{item.text}</Text>
-              <Text style={styles.weatherInfo}>{item.weatherD}</Text>
-            </View>
-          </>
-        ))}
-      </View>
-      <View style={styles.containerWeatherByHour}>
-        <Text style={styles.todayW}>{today}</Text>
-        <Pressable onPress={() => navigation.navigate(navigate)}>
-          <Text style={[styles.followingDaysW, {color: txtColor}]}>
-            {followingDays}
+      <ThemeProvider>
+        <View style={styles.container}>
+          {weatherDataArray.map((item, index) => (
+            <>
+              <View key={index} style={styles.viewWeatherInfo}>
+                <FontAwesomeIcon
+                  key={index}
+                  icon={item.icon}
+                  size={40}
+                  color={theme.FONTAWESOME_ICON_COLOR}
+                />
+                <Text
+                  style={[
+                    styles.textWeatherInfo,
+                    {color: theme.PRIMARY_TEXT_COLOR},
+                  ]}>
+                  {item.text}
+                </Text>
+                <Text
+                  style={[
+                    styles.weatherInfo,
+                    {color: theme.PRIMARY_TEXT_COLOR},
+                  ]}>
+                  {item.weatherD}
+                </Text>
+              </View>
+            </>
+          ))}
+        </View>
+        <View style={styles.containerWeatherByHour}>
+          <Text style={[styles.todayW, {color: theme.PRIMARY_TEXT_COLOR}]}>
+            {today}
           </Text>
-        </Pressable>
-      </View>
+          <Pressable onPress={() => navigation.navigate(navigate)}>
+            <Text style={[styles.followingDaysW, {color: txtColor}]}>
+              {followingDays}
+            </Text>
+          </Pressable>
+        </View>
+      </ThemeProvider>
     </>
   );
 };
@@ -97,6 +124,7 @@ const styles = StyleSheet.create({
     left: windowWidth * 0.15,
     fontSize: 12,
     textAlign: 'center',
+    color: 'black',
   },
   weatherInfo: {
     fontSize: 16,

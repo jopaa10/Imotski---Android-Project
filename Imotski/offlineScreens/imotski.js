@@ -160,7 +160,7 @@ export const Imotski = () => {
               }}
             />
           }>
-          {DATA.map((item, index) => (
+          {DATA.map((item, index, indexAnimated) => (
             <>
               <View key={index}>
                 <Image style={styles.image} source={item.image} />
@@ -189,6 +189,7 @@ export const Imotski = () => {
                 </View>
               </View>
               <Animatable.View
+                key={indexAnimated}
                 animation={'bounce'}
                 easing={'ease-out'}
                 iterationCount={3}

@@ -26,8 +26,13 @@ const windowWidth = Dimensions.get('window').width; */
 import Svg, {G, Path} from 'react-native-svg';
 
 //navigation
+import styled, {ThemeProvider} from 'styled-components';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+
+//dimensions
 import {windowWidth, windowHeight} from '../constants/global';
+import {UserContext} from '../App';
 
 export const SignUp = props => {
   const navigation = useNavigation();
@@ -40,6 +45,8 @@ export const SignUp = props => {
   const [placeOfResidence, setPlaceOfResidence] = useState('');
   const [error, setError] = useState('');
   const [borderErrorColor, setBorderErrorColor] = useState('white');
+
+  const theme = useSelector(state => state.themeReducer.theme);
 
   const handleSubmit = async () => {
     if (
@@ -88,140 +95,152 @@ export const SignUp = props => {
 
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={{height: windowHeight}}>
-          {/* <Waves navigate={'User'} /> */}
-          <View
-            style={{height: windowHeight * 0.35, backgroundColor: '#1F83BB'}}>
-            <TouchableOpacity
-              style={styles.arrowLeftIcon}
-              onPress={() => navigation.goBack()}>
-              <FontAwesomeIcon
-                color="white"
-                icon={faArrowLeft}
-                size={20}
-                style={{display: props.display}}
-              />
-            </TouchableOpacity>
-            <Text style={styles.txtSignUp}> Sign Up</Text>
-          </View>
-          <Svg
-            style={styles.waves}
-            width="375"
-            height={windowHeight * 0.21}
-            viewBox={`0 0 375 ${windowHeight * 0.21}`}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <G filter="url(#filter0_i_718_2)">
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-                fill="white"
-              />
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-              />
-            </G>
-          </Svg>
-          <View style={styles.signUpScreen}>
-            <Text style={styles.txtWelcome}>
-              Fill in your information in order to use all features
-            </Text>
-            <Text style={styles.placeholder}>Name</Text>
-            <View style={styles.viewField}>
-              <TextInput
-                style={[styles.inputField, {borderColor: borderErrorColor}]}
-                keyboardType="ascii-capable"
-                value={name}
-                onChangeText={text => setName(text)}
-              />
+      <ThemeProvider theme={theme}>
+        <SafeAreaView
+          style={[
+            styles.container,
+            {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+          ]}>
+          <ScrollView style={{height: windowHeight}}>
+            {/* <Waves navigate={'User'} /> */}
+            <View
+              style={{
+                height: windowHeight * 0.35,
+                backgroundColor: theme.PRIMARY_BACKGROUND_COLOR,
+              }}>
+              <TouchableOpacity
+                style={styles.arrowLeftIcon}
+                onPress={() => navigation.goBack()}>
+                <FontAwesomeIcon
+                  color="white"
+                  icon={faArrowLeft}
+                  size={20}
+                  style={{display: props.display}}
+                />
+              </TouchableOpacity>
+              <Text style={styles.txtSignUp}> Sign Up</Text>
             </View>
-            <Text style={styles.placeholder}>Surname</Text>
-            <View style={styles.viewField}>
-              <TextInput
-                style={[styles.inputField, {borderColor: borderErrorColor}]}
-                keyboardType="ascii-capable"
-                value={surname}
-                onChangeText={text => setSurname(text)}
-              />
-            </View>
-            <Text style={styles.placeholder}>Email</Text>
-            <View style={styles.viewField}>
-              <TextInput
-                style={[styles.inputField, {borderColor: borderErrorColor}]}
-                keyboardType="email-address"
-                value={email}
-                onChangeText={text => setEmail(text)}
-              />
-            </View>
-            <Text style={styles.placeholder}>Password</Text>
-            <View style={styles.viewField}>
-              <TextInput
-                style={[styles.inputField, {borderColor: borderErrorColor}]}
-                secureTextEntry={true}
-                value={password}
-                onChangeText={text => setPassword(text)}
-              />
-            </View>
-            <Text
-              style={[styles.placeholder2in1Field, {top: windowWidth * 0.13}]}>
-              Days of staying
-            </Text>
-            <Text
-              style={[
-                styles.placeholder2in1Field,
-                {marginLeft: windowWidth * 0.57},
-              ]}>
-              Place of residence
-            </Text>
-            <View style={styles.view2in1Field}>
-              <TextInput
+            <Svg
+              style={styles.waves}
+              width="375"
+              height={windowHeight * 0.21}
+              viewBox={`0 0 375 ${windowHeight * 0.21}`}
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <G filter="url(#filter0_i_718_2)">
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                  fill={theme.SECUNDARY_BACKGROUND_COLOR}
+                />
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                />
+              </G>
+            </Svg>
+            <View style={styles.signUpScreen}>
+              <Text style={styles.txtWelcome}>
+                Fill in your information in order to use all features
+              </Text>
+              <Text style={styles.placeholder}>Name</Text>
+              <View style={styles.viewField}>
+                <TextInput
+                  style={[styles.inputField, {borderColor: borderErrorColor}]}
+                  keyboardType="ascii-capable"
+                  value={name}
+                  onChangeText={text => setName(text)}
+                />
+              </View>
+              <Text style={styles.placeholder}>Surname</Text>
+              <View style={styles.viewField}>
+                <TextInput
+                  style={[styles.inputField, {borderColor: borderErrorColor}]}
+                  keyboardType="ascii-capable"
+                  value={surname}
+                  onChangeText={text => setSurname(text)}
+                />
+              </View>
+              <Text style={styles.placeholder}>Email</Text>
+              <View style={styles.viewField}>
+                <TextInput
+                  style={[styles.inputField, {borderColor: borderErrorColor}]}
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={text => setEmail(text)}
+                />
+              </View>
+              <Text style={styles.placeholder}>Password</Text>
+              <View style={styles.viewField}>
+                <TextInput
+                  style={[styles.inputField, {borderColor: borderErrorColor}]}
+                  secureTextEntry={true}
+                  value={password}
+                  onChangeText={text => setPassword(text)}
+                />
+              </View>
+              <Text
                 style={[
-                  styles.inputField,
-                  {
-                    width: windowWidth * 0.3,
-                    marginTop: windowWidth * 0.05,
-                    borderColor: borderErrorColor,
-                  },
-                ]}
-                keyboardType="number-pad"
-                value={daysOfStaying}
-                onChangeText={text => setDaysOfStaying(text)}
-              />
-              <TextInput
+                  styles.placeholder2in1Field,
+                  {top: windowWidth * 0.13},
+                ]}>
+                Days of staying
+              </Text>
+              <Text
                 style={[
-                  styles.inputField,
-                  {
-                    width: windowWidth * 0.3,
-                    marginTop: windowWidth * 0.05,
-                    borderColor: borderErrorColor,
-                  },
-                ]}
-                keyboardType="default"
-                value={placeOfResidence}
-                onChangeText={text => setPlaceOfResidence(text)}
-              />
+                  styles.placeholder2in1Field,
+                  {marginLeft: windowWidth * 0.57},
+                ]}>
+                Place of residence
+              </Text>
+              <View style={styles.view2in1Field}>
+                <TextInput
+                  style={[
+                    styles.inputField,
+                    {
+                      width: windowWidth * 0.3,
+                      marginTop: windowWidth * 0.05,
+                      borderColor: borderErrorColor,
+                    },
+                  ]}
+                  keyboardType="number-pad"
+                  value={daysOfStaying}
+                  onChangeText={text => setDaysOfStaying(text)}
+                />
+                <TextInput
+                  style={[
+                    styles.inputField,
+                    {
+                      width: windowWidth * 0.3,
+                      marginTop: windowWidth * 0.05,
+                      borderColor: borderErrorColor,
+                    },
+                  ]}
+                  keyboardType="default"
+                  value={placeOfResidence}
+                  onChangeText={text => setPlaceOfResidence(text)}
+                />
+              </View>
+              <View>
+                <Text style={styles.error}>{error}</Text>
+              </View>
+              <View style={styles.proceed}>
+                <Pressable onPress={() => handleSubmit()}>
+                  <Text style={styles.proceedButton}>Proceed</Text>
+                </Pressable>
+              </View>
+              <View>
+                <Text style={styles.txtAlreadyMember}>Already a member?</Text>
+                <Pressable onPress={() => navigation.navigate('Sign In')}>
+                  <Text style={styles.txtSignIn}>Sign In</Text>
+                </Pressable>
+              </View>
             </View>
-            <View>
-              <Text style={styles.error}>{error}</Text>
-            </View>
-            <View style={styles.proceed}>
-              <Pressable onPress={() => handleSubmit()}>
-                <Text style={styles.proceedButton}>Proceed</Text>
-              </Pressable>
-            </View>
-            <View>
-              <Text style={styles.txtAlreadyMember}>Already a member?</Text>
-              <Pressable onPress={() => navigation.navigate('Sign In')}>
-                <Text style={styles.txtSignIn}>Sign In</Text>
-              </Pressable>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </ThemeProvider>
     </>
   );
 };
@@ -238,7 +257,7 @@ const styles = StyleSheet.create({
     bottom: windowHeight * 0.25,
   },
   txtSignUp: {
-    color: '#fff',
+    color: 'white',
     fontSize: 36,
     fontWeight: 'bold',
     paddingLeft: 20,

@@ -30,8 +30,18 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+
+//svg
 import Svg, {Defs, G, Path} from 'react-native-svg';
+
+//divider
 import {Divider} from 'react-native-elements/dist/divider/Divider';
+
+//redux
+import {useSelector} from 'react-redux';
+
+//theme provider
+import {ThemeProvider} from 'styled-components';
 
 /* //dimension
 const windowWidth = Dimensions.get('window').width; */
@@ -154,56 +164,66 @@ export const SignIn = props => {
       });
   };
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={{height: windowHeight}}>
-          {/* <Waves navigate={'User'} /> */}
-          <View
-            style={{height: windowHeight * 0.3, backgroundColor: '#1F83BB'}}>
-            <TouchableOpacity
-              style={styles.arrowLeftIcon}
-              onPress={() => navigation.goBack()}>
-              <FontAwesomeIcon
-                color="white"
-                icon={faArrowLeft}
-                size={20}
-                style={{display: props.display}}
-              />
-            </TouchableOpacity>
-            <Text style={styles.txtSignIn}> Sign In</Text>
-          </View>
-          <Svg
-            style={styles.waves}
-            width="375"
-            height={windowHeight * 0.21}
-            viewBox={`0 0 375 ${windowHeight * 0.21}`}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <G filter="url(#filter0_i_718_2)">
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-                fill="white"
-              />
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-              />
-            </G>
-          </Svg>
+      <ThemeProvider theme={theme}>
+        <SafeAreaView
+          style={[
+            styles.container,
+            {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+          ]}>
+          <ScrollView style={{height: windowHeight}}>
+            {/* <Waves navigate={'User'} /> */}
+            <View
+              style={{
+                height: windowHeight * 0.3,
+                backgroundColor: theme.PRIMARY_BACKGROUND_COLOR,
+              }}>
+              <TouchableOpacity
+                style={styles.arrowLeftIcon}
+                onPress={() => navigation.goBack()}>
+                <FontAwesomeIcon
+                  color="white"
+                  icon={faArrowLeft}
+                  size={20}
+                  style={{display: props.display}}
+                />
+              </TouchableOpacity>
+              <Text style={styles.txtSignIn}> Sign In</Text>
+            </View>
+            <Svg
+              style={styles.waves}
+              width="375"
+              height={windowHeight * 0.21}
+              viewBox={`0 0 375 ${windowHeight * 0.21}`}
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <G filter="url(#filter0_i_718_2)">
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                  fill={theme.SECUNDARY_BACKGROUND_COLOR}
+                />
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                />
+              </G>
+            </Svg>
 
-          <View
-            style={{
-              bottom: windowWidth * 0.4,
-            }}>
-            <Text style={styles.txtGoogleLogin}>Login via Google</Text>
-          </View>
+            <View
+              style={{
+                bottom: windowWidth * 0.4,
+              }}>
+              <Text style={styles.txtGoogleLogin}>Login via Google</Text>
+            </View>
 
-          <View style={styles.googleLoginView}>
-            {/* <Pressable onPress={signIn}>
+            <View style={styles.googleLoginView}>
+              {/* <Pressable onPress={signIn}>
               <FontAwesomeIcon
                 style={styles.googleLogo}
                 icon={faGoogle}
@@ -211,58 +231,59 @@ export const SignIn = props => {
                 color={'#1F83BB'}
               />
             </Pressable> */}
-            <GoogleSigninButton
-              style={styles.googleLogo}
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={signIn}
-            />
-          </View>
-          <Divider style={{bottom: windowWidth * 0.3}} />
-          <View style={styles.signInScreen}>
-            <View>
-              <Text style={styles.txtWelcome}>Welcome back</Text>
+              <GoogleSigninButton
+                style={styles.googleLogo}
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Dark}
+                onPress={signIn}
+              />
             </View>
-            <View
-              style={{
-                bottom: windowWidth * 0.05,
-              }}>
-              <Text style={styles.placeholderEmail}>Email</Text>
-              <View style={styles.viewEmailPass}>
-                <TextInput
-                  style={styles.inputEmailPass}
-                  keyboardType="email-address"
-                  value={email}
-                  onChangeText={text => setEmail(text)}
-                />
+            <Divider style={{bottom: windowWidth * 0.3}} />
+            <View style={styles.signInScreen}>
+              <View>
+                <Text style={styles.txtWelcome}>Welcome back</Text>
               </View>
-              <Text style={styles.placeholderPassword}>Password</Text>
-              <View style={styles.viewEmailPass}>
-                <TextInput
-                  style={styles.inputEmailPass}
-                  secureTextEntry={true}
-                  value={password}
-                  onChangeText={text => setPassword(text)}
-                />
-              </View>
+              <View
+                style={{
+                  bottom: windowWidth * 0.05,
+                }}>
+                <Text style={styles.placeholderEmail}>Email</Text>
+                <View style={styles.viewEmailPass}>
+                  <TextInput
+                    style={styles.inputEmailPass}
+                    keyboardType="email-address"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                  />
+                </View>
+                <Text style={styles.placeholderPassword}>Password</Text>
+                <View style={styles.viewEmailPass}>
+                  <TextInput
+                    style={styles.inputEmailPass}
+                    secureTextEntry={true}
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                  />
+                </View>
 
-              <View style={styles.proceed}>
-                <Pressable onPress={() => handleSubmit()}>
-                  <Text style={styles.proceedButton}>Proceed</Text>
-                </Pressable>
-              </View>
-              <View style={styles.containerGoogleLoginOrSignUp}>
-                <View>
-                  <Text style={styles.txtNewMember}>New member?</Text>
-                  <Pressable onPress={() => navigation.navigate('Sign Up')}>
-                    <Text style={styles.txtSignUp}>Sign Up</Text>
+                <View style={styles.proceed}>
+                  <Pressable onPress={() => handleSubmit()}>
+                    <Text style={styles.proceedButton}>Proceed</Text>
                   </Pressable>
+                </View>
+                <View style={styles.containerGoogleLoginOrSignUp}>
+                  <View>
+                    <Text style={styles.txtNewMember}>New member?</Text>
+                    <Pressable onPress={() => navigation.navigate('Sign Up')}>
+                      <Text style={styles.txtSignUp}>Sign Up</Text>
+                    </Pressable>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView>
+      </ThemeProvider>
     </>
   );
 };

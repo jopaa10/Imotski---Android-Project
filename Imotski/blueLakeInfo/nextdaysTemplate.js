@@ -3,6 +3,10 @@ import {Text, View, StyleSheet, Image} from 'react-native';
 
 import moment from 'moment-timezone';
 
+//redux
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+
 const NextDaysTemplateItem = ({weatherData}) => {
   return (
     <View style={{flexDirection: 'column'}}>
@@ -19,31 +23,34 @@ const NextDaysTemplateItem = ({weatherData}) => {
 };
 
 const NextDaysTemplate = ({data}) => {
+  const theme = useSelector(state => state.themeReducer.theme);
   return (
-    <View style={styles.weekView}>
-      <View style={styles.textView}>
-        <Text style={styles.textDay}>
-          {moment(data.dt * 1000).format('dddd')}
-        </Text>
+    <ThemeProvider theme={theme}>
+      <View style={styles.weekView}>
+        <View style={styles.textView}>
+          <Text style={[styles.textDay, {color: theme.PRIMARY_TEXT_COLOR}]}>
+            {moment(data.dt * 1000).format('dddd')}
+          </Text>
+        </View>
+        <View style={styles.textView}>
+          <Text style={[styles.textTemp, {color: theme.PRIMARY_TEXT_COLOR}]}>
+            {data.temp.day}
+            {'°C'}
+          </Text>
+        </View>
+        <View style={styles.textView}>
+          <Image
+            style={styles.weekIcon}
+            source={{
+              uri:
+                'http://openweathermap.org/img/wn/' +
+                data.weather[0].icon +
+                '@2x.png',
+            }}
+          />
+        </View>
       </View>
-      <View style={styles.textView}>
-        <Text style={styles.textTemp}>
-          {data.temp.day}
-          {'°C'}
-        </Text>
-      </View>
-      <View style={styles.textView}>
-        <Image
-          style={styles.weekIcon}
-          source={{
-            uri:
-              'http://openweathermap.org/img/wn/' +
-              data.weather[0].icon +
-              '@2x.png',
-          }}
-        />
-      </View>
-    </View>
+    </ThemeProvider>
   );
 };
 export default NextDaysTemplateItem;
@@ -63,10 +70,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontWeight: 'bold',
     fontSize: 14,
+    color: 'black',
   },
   textTemp: {
     marginVertical: 10,
     fontSize: 14,
+    color: 'black',
   },
   weekIcon: {
     textAlignVertical: 'center',

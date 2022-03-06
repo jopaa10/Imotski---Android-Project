@@ -42,6 +42,8 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 //async storage to get token
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const commentStack = createStackNavigator();
 
@@ -103,111 +105,127 @@ export const CommentTemplate = ({
     setInterval(() => setCompleted(Math.floor(Math.random() * 100) + 1), 2000);
   }, []);
  */
+
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <ScrollView
-        style={{backgroundColor: 'white', height: windowHeight, flex: 1}}>
-        <Waves
-          display={'none'}
-          color={diffColorForPlace}
-          color2={diffColorForPlace2}
-        />
-        <Pressable
-          style={styles.arrowLeftIcon}
-          onPress={() => navigation.goBack()}>
-          <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-        </Pressable>
-
-        <View style={styles.container}>
-          <TextInput
-            style={styles.commentBox}
-            keyboardType={'default'}
-            multiline={true}
-            placeholder="Write your experience"
-            placeholderTextColor={'grey'}
-            onChangeText={text => setInput(text)}
-            blurOnSubmit={true}
-            onSubmitEditing={() => {
-              setInput('');
-              submitComment();
-            }}
-            value={input}
+      <ThemeProvider theme={theme}>
+        <ScrollView
+          style={{
+            backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR,
+            height: windowHeight,
+            flex: 1,
+          }}>
+          <Waves
+            display={'none'}
+            color={diffColorForPlace}
+            color2={diffColorForPlace2}
           />
-          <View>
-            <TouchableOpacity style={styles.btnLogout} onPress={submitComment}>
-              <Text style={styles.textBtnLogout}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <Modal
-          transparent={true}
-          visible={alertModal}
-          style={styles.alertModal}>
-          <View style={styles.centeredView}>
-            <View style={styles.alertModalContainer}>
-              {showMessage ? (
-                <>
-                  <View style={styles.alertIcon}>
-                    <FontAwesomeIcon
-                      icon={faCheckCircle}
-                      color={'green'}
-                      size={40}
-                    />
-                  </View>
-                  <View style={styles.alertMessage}>
-                    <Text
-                      style={{
-                        color: 'green',
-                        fontSize: 25,
-                        fontWeight: 'bold',
-                      }}>
-                      {' '}
-                      Success!{' '}
-                    </Text>
-                    <Text style={[styles.alertText, {color: '#468C4D'}]}>
-                      {`Your review has been successfully published!`}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    style={[
-                      styles.closeBtn,
-                      {backgroundColor: 'green', shadowColor: 'green'},
-                    ]}
-                    onPress={() => setAlertModal(false)}>
-                    <Text style={styles.closeBtnTxt}>Continue</Text>
-                  </TouchableOpacity>
-                </>
-              ) : (
-                <>
-                  <View style={styles.alertIcon}>
-                    <FontAwesomeIcon
-                      icon={faTimesCircle}
-                      color={'red'}
-                      size={40}
-                    />
-                  </View>
-                  <View style={styles.alertMessage}>
-                    <Text
-                      style={{color: 'red', fontSize: 25, fontWeight: 'bold'}}>
-                      {' '}
-                      Oh no!{' '}
-                    </Text>
-                    <Text style={styles.alertText}>
-                      {' '}
-                      There was error while posting a review. Please try again!{' '}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    style={styles.closeBtn}
-                    onPress={() => setAlertModal(false)}>
-                    <Text style={styles.closeBtnTxt}>Try again</Text>
-                  </TouchableOpacity>
-                </>
-              )}
+          <Pressable
+            style={styles.arrowLeftIcon}
+            onPress={() => navigation.goBack()}>
+            <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+          </Pressable>
+
+          <View style={styles.container}>
+            <TextInput
+              style={styles.commentBox}
+              keyboardType={'default'}
+              multiline={true}
+              placeholder="Write your experience"
+              placeholderTextColor={'grey'}
+              onChangeText={text => setInput(text)}
+              blurOnSubmit={true}
+              onSubmitEditing={() => {
+                setInput('');
+                submitComment();
+              }}
+              value={input}
+            />
+            <View>
+              <TouchableOpacity
+                style={styles.btnLogout}
+                onPress={submitComment}>
+                <Text style={styles.textBtnLogout}>Done</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </Modal>
-      </ScrollView>
+          <Modal
+            transparent={true}
+            visible={alertModal}
+            style={styles.alertModal}>
+            <View style={styles.centeredView}>
+              <View style={styles.alertModalContainer}>
+                {showMessage ? (
+                  <>
+                    <View style={styles.alertIcon}>
+                      <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        color={'green'}
+                        size={40}
+                      />
+                    </View>
+                    <View style={styles.alertMessage}>
+                      <Text
+                        style={{
+                          color: 'green',
+                          fontSize: 25,
+                          fontWeight: 'bold',
+                        }}>
+                        {' '}
+                        Success!{' '}
+                      </Text>
+                      <Text style={[styles.alertText, {color: '#468C4D'}]}>
+                        {`Your review has been successfully published!`}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      style={[
+                        styles.closeBtn,
+                        {backgroundColor: 'green', shadowColor: 'green'},
+                      ]}
+                      onPress={() => setAlertModal(false)}>
+                      <Text style={styles.closeBtnTxt}>Continue</Text>
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.alertIcon}>
+                      <FontAwesomeIcon
+                        icon={faTimesCircle}
+                        color={'red'}
+                        size={40}
+                      />
+                    </View>
+                    <View style={styles.alertMessage}>
+                      <Text
+                        style={{
+                          color: 'red',
+                          fontSize: 25,
+                          fontWeight: 'bold',
+                        }}>
+                        {' '}
+                        Oh no!{' '}
+                      </Text>
+                      <Text style={styles.alertText}>
+                        {' '}
+                        There was error while posting a review. Please try
+                        again!{' '}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.closeBtn}
+                      onPress={() => setAlertModal(false)}>
+                      <Text style={styles.closeBtnTxt}>Try again</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </View>
+          </Modal>
+        </ScrollView>
+      </ThemeProvider>
     </>
   );
 };

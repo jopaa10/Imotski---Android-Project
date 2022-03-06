@@ -31,6 +31,8 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo';
 
 //fetch route
 import {FetchRoute} from '../routeMap/fetchRoute';
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 export const KayakMap = () => {
   const [startPoint] = useState({
@@ -141,23 +143,27 @@ export const KayakMap = () => {
     handleLocationPermission();
   }, []);
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
-    <View style={styles.container}>
-      {location !== undefined ? (
-        <MapView
-          testID="map"
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation={true}
-          ref={mapRef}
-          initialRegion={{
-            latitude: 43.4347607,
-            longitude: 17.1964512,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          loadingEnabled={true}>
-          {/* {polylineCoordinates === undefined
+    <>
+      <ThemeProvider>
+        <View style={styles.container}>
+          {location !== undefined ? (
+            <MapView
+              testID="map"
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              ref={mapRef}
+              initialRegion={{
+                latitude: 43.4347607,
+                longitude: 17.1964512,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              loadingEnabled={true}>
+              {/* {polylineCoordinates === undefined
             ? route.length > 1 && (
                 <Polyline
                   testID="route"
@@ -174,241 +180,288 @@ export const KayakMap = () => {
                   strokeColor="red"
                 />
               )} */}
-          <Marker
-            coordinate={{
-              latitude: startPoint.latitude,
-              longitude: startPoint.longitude,
-            }}
-            onPress={() => setModalIsOpen(true)}>
-            <View>
-              <Image
-                source={require('../images/kayakColorIcon.png')}
-                style={styles.startPoint}
-              />
-            </View>
-          </Marker>
-          <Marker
-            coordinate={{
-              latitude: finishPoint.latitude,
-              longitude: finishPoint.longitude,
-            }}
-            onPress={() => setModalIsOpen(true)}>
-            <View>
-              <Image
-                source={require('../images/finishIcon.png')}
-                style={styles.destinationPoint}
-              />
-            </View>
-          </Marker>
-          <MapViewDirections
-            origin={startPoint}
-            destination={finishPoint}
-            apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={3}
-            strokeColor="blue"
-            waypoints={waypoints}
-            mode="WALKING"
-            onStart={params => {
-              console.log(
-                `Started routing between "${params.origin}" and "${params.destination}"`,
-              );
-            }}
-            onReady={result => {
-              console.log(`Distance: ${result.distance} km`);
-              console.log(`Duration: ${result.duration} min.`);
-              setRouteDistance(result.distance);
-              setRouteDuration(result.duration);
-
-              if (result.distance) {
-                setModalIsOpen(true);
-              }
-            }}
-          />
-          <MapViewDirections
-            origin={location}
-            destination={destinationPoint}
-            apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={3}
-            strokeColor="red"
-            mode="DRIVING"
-          />
-        </MapView>
-      ) : (
-        <MapView
-          testID="map"
-          ref={mapRef}
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation={true}
-          initialRegion={{
-            latitude: 43.4347607,
-            longitude: 17.1964512,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          loadingEnabled={true}>
-          <Marker
-            coordinate={{
-              latitude: startPoint.latitude,
-              longitude: startPoint.longitude,
-            }}
-            onPress={() => setModalIsOpen(true)}>
-            <View>
-              <Image
-                source={require('../images/kayakColorIcon.png')}
-                style={styles.startPoint}
-              />
-            </View>
-          </Marker>
-          <Marker
-            coordinate={{
-              latitude: finishPoint.latitude,
-              longitude: finishPoint.longitude,
-            }}
-            onPress={() => setModalIsOpen(true)}>
-            <View>
-              <Image
-                source={require('../images/finishIcon.png')}
-                style={styles.destinationPoint}
-              />
-            </View>
-          </Marker>
-          <MapViewDirections
-            origin={startPoint}
-            destination={finishPoint}
-            apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={3}
-            strokeColor="blue"
-            waypoints={waypoints}
-            mode="WALKING"
-            onStart={params => {
-              console.log(
-                `Started routing between "${params.origin}" and "${params.destination}"`,
-              );
-            }}
-            onReady={result => {
-              console.log(`Distance: ${result.distance} km`);
-              console.log(`Duration: ${result.duration} min.`);
-              setRouteDistance(result.distance);
-              setRouteDuration(result.duration);
-
-              if (result.distance) {
-                setModalIsOpen(true);
-              }
-            }}
-          />
-        </MapView>
-      )}
-
-      <Modal
-        isVisible={modalIsOpen}
-        onSwipeComplete={() => setModalIsOpen(false)}
-        swipeDirection="down"
-        statusBarTranslucent
-        deviceHeight={windowHeight}
-        style={{margin: 0}}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View
-              style={{
-                height: 'auto',
-                marginTop: 5,
-              }}>
-              <TouchableOpacity>
-                <View style={styles.btnCloseModal}>
-                  <Text style={styles.horizontalLine}>_____</Text>
-                </View>
-              </TouchableOpacity>
-
-              <View style={styles.placeNameContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <View style={styles.placeNameContainer}>
-                    <Text
-                      style={[
-                        styles.startDestinationPoint,
-                        {
-                          paddingTop: 10,
-                          paddingLeft: 5,
-                          fontSize: 18,
-                          fontWeight: 'bold',
-                        },
-                      ]}>
-                      Kayak Tour on river Vrljika
-                    </Text>
-                  </View>
-                  <TouchableOpacity onPress={getUserCurrentCoordinates}>
-                    <View style={styles.directionsStyle}>
-                      <FontAwesomeIcon
-                        icon={faDirections}
-                        size={25}
-                        style={{marginTop: 5}}
-                        color="blue"
-                      />
-                      <Text>Directions</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View style={styles.startDestinationPointContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 15}}>
+              <Marker
+                coordinate={{
+                  latitude: startPoint.latitude,
+                  longitude: startPoint.longitude,
+                }}
+                onPress={() => setModalIsOpen(true)}>
+                <View>
                   <Image
                     source={require('../images/kayakColorIcon.png')}
-                    style={styles.kayakIconStart}
+                    style={styles.startPoint}
                   />
-                  <Text
-                    style={[
-                      styles.startDestinationPoint,
-                      {paddingTop: 5, paddingLeft: 5},
-                    ]}>
-                    Izvor rijeke Vrljike
-                  </Text>
                 </View>
-              </View>
-
-              <View style={styles.startDestinationPointContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <FontAwesomeIcon
-                    icon={faFlagCheckered}
-                    size={20}
-                    color="black"
+              </Marker>
+              <Marker
+                coordinate={{
+                  latitude: finishPoint.latitude,
+                  longitude: finishPoint.longitude,
+                }}
+                onPress={() => setModalIsOpen(true)}>
+                <View>
+                  <Image
+                    source={require('../images/finishIcon.png')}
+                    style={styles.destinationPoint}
                   />
-                  <Text style={styles.startDestinationPoint}>
-                    Đogića Most - Zmijavci
-                  </Text>
                 </View>
-              </View>
+              </Marker>
+              <MapViewDirections
+                origin={startPoint}
+                destination={finishPoint}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="blue"
+                waypoints={waypoints}
+                mode="WALKING"
+                onStart={params => {
+                  console.log(
+                    `Started routing between "${params.origin}" and "${params.destination}"`,
+                  );
+                }}
+                onReady={result => {
+                  console.log(`Distance: ${result.distance} km`);
+                  console.log(`Duration: ${result.duration} min.`);
+                  setRouteDistance(result.distance);
+                  setRouteDuration(result.duration);
 
-              <View style={styles.startDestinationPointContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <FontAwesomeIcon icon={faClock} size={20} />
-                  <Text style={styles.startDestinationPoint}>
-                    {routeDuration} min
-                  </Text>
+                  if (result.distance) {
+                    setModalIsOpen(true);
+                  }
+                }}
+              />
+              <MapViewDirections
+                origin={location}
+                destination={destinationPoint}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="red"
+                mode="DRIVING"
+              />
+            </MapView>
+          ) : (
+            <MapView
+              testID="map"
+              ref={mapRef}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              initialRegion={{
+                latitude: 43.4347607,
+                longitude: 17.1964512,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              loadingEnabled={true}>
+              <Marker
+                coordinate={{
+                  latitude: startPoint.latitude,
+                  longitude: startPoint.longitude,
+                }}
+                onPress={() => setModalIsOpen(true)}>
+                <View>
+                  <Image
+                    source={require('../images/kayakColorIcon.png')}
+                    style={styles.startPoint}
+                  />
                 </View>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <FontAwesomeIcon icon={faRoute} size={20} color="black" />
-                  <Text style={styles.startDestinationPoint}>
-                    {routeDistance} km
-                  </Text>
+              </Marker>
+              <Marker
+                coordinate={{
+                  latitude: finishPoint.latitude,
+                  longitude: finishPoint.longitude,
+                }}
+                onPress={() => setModalIsOpen(true)}>
+                <View>
+                  <Image
+                    source={require('../images/finishIcon.png')}
+                    style={styles.destinationPoint}
+                  />
                 </View>
-              </View>
+              </Marker>
+              <MapViewDirections
+                origin={startPoint}
+                destination={finishPoint}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="blue"
+                waypoints={waypoints}
+                mode="WALKING"
+                onStart={params => {
+                  console.log(
+                    `Started routing between "${params.origin}" and "${params.destination}"`,
+                  );
+                }}
+                onReady={result => {
+                  console.log(`Distance: ${result.distance} km`);
+                  console.log(`Duration: ${result.duration} min.`);
+                  setRouteDistance(result.distance);
+                  setRouteDuration(result.duration);
 
-              <View style={styles.infoContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <FontAwesomeIcon icon={faInfoCircle} size={20} />
-                  <Text style={styles.startDestinationPoint}>
-                    The directions do not follow the river, they are similar so
-                    you can get an idea of where the route is going
-                    approximately
-                  </Text>
+                  if (result.distance) {
+                    setModalIsOpen(true);
+                  }
+                }}
+              />
+            </MapView>
+          )}
+
+          <Modal
+            isVisible={modalIsOpen}
+            onSwipeComplete={() => setModalIsOpen(false)}
+            swipeDirection="down"
+            statusBarTranslucent
+            deviceHeight={windowHeight}
+            style={{margin: 0}}>
+            <View style={styles.centeredView}>
+              <View
+                style={[
+                  styles.modalView,
+                  {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+                ]}>
+                <View
+                  style={{
+                    height: 'auto',
+                    marginTop: 5,
+                  }}>
+                  <TouchableOpacity>
+                    <View style={styles.btnCloseModal}>
+                      <Text
+                        style={[
+                          styles.horizontalLine,
+                          {color: theme.PRIMARY_TEXT_COLOR},
+                        ]}>
+                        _____
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <View style={styles.placeNameContainer}>
+                    <View style={{flexDirection: 'row', paddingTop: 10}}>
+                      <View style={styles.placeNameContainer}>
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {
+                              paddingTop: 10,
+                              paddingLeft: 5,
+                              fontSize: 18,
+                              fontWeight: 'bold',
+                              color: theme.PRIMARY_TEXT_COLOR,
+                            },
+                          ]}>
+                          Kayak Tour on river Vrljika
+                        </Text>
+                      </View>
+                      <TouchableOpacity onPress={getUserCurrentCoordinates}>
+                        <View style={styles.directionsStyle}>
+                          <FontAwesomeIcon
+                            icon={faDirections}
+                            size={25}
+                            style={{marginTop: 5}}
+                            color={theme.DIRECTION_ICON_COLOR}
+                          />
+                          <Text style={{color: theme.PRIMARY_TEXT_COLOR}}>
+                            Directions
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  <View style={styles.startDestinationPointContainer}>
+                    <View style={{flexDirection: 'row', paddingTop: 15}}>
+                      <Image
+                        source={require('../images/kayakColorIcon.png')}
+                        style={styles.kayakIconStart}
+                      />
+                      <Text
+                        style={[
+                          styles.startDestinationPoint,
+                          {
+                            paddingTop: 5,
+                            paddingLeft: 5,
+                            color: theme.PRIMARY_TEXT_COLOR,
+                          },
+                        ]}>
+                        Izvor rijeke Vrljike
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.startDestinationPointContainer}>
+                    <View style={{flexDirection: 'row', paddingTop: 10}}>
+                      <FontAwesomeIcon
+                        icon={faFlagCheckered}
+                        size={20}
+                        color={theme.FONTAWESOME_ICON_COLOR}
+                      />
+                      <Text
+                        style={[
+                          styles.startDestinationPoint,
+                          {color: theme.PRIMARY_TEXT_COLOR},
+                        ]}>
+                        Đogića Most - Zmijavci
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.startDestinationPointContainer}>
+                    <View style={{flexDirection: 'row', paddingTop: 10}}>
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        size={20}
+                        color={theme.FONTAWESOME_ICON_COLOR}
+                      />
+                      <Text
+                        style={[
+                          styles.startDestinationPoint,
+                          {color: theme.PRIMARY_TEXT_COLOR},
+                        ]}>
+                        {routeDuration} min
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row', paddingTop: 10}}>
+                      <FontAwesomeIcon
+                        icon={faRoute}
+                        size={20}
+                        color={theme.FONTAWESOME_ICON_COLOR}
+                      />
+                      <Text
+                        style={[
+                          styles.startDestinationPoint,
+                          {color: theme.PRIMARY_TEXT_COLOR},
+                        ]}>
+                        {routeDistance} km
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.infoContainer}>
+                    <View style={{flexDirection: 'row', paddingTop: 10}}>
+                      <FontAwesomeIcon
+                        icon={faInfoCircle}
+                        size={20}
+                        color={theme.FONTAWESOME_ICON_COLOR}
+                      />
+                      <Text
+                        style={[
+                          styles.startDestinationPoint,
+                          {color: theme.PRIMARY_TEXT_COLOR},
+                        ]}>
+                        The directions do not follow the river, they are similar
+                        so you can get an idea of where the route is going
+                        approximately
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
+          </Modal>
         </View>
-      </Modal>
-    </View>
+      </ThemeProvider>
+    </>
   );
 };
 

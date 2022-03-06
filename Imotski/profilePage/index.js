@@ -48,6 +48,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 //dialog
 import DialogInput from 'react-native-dialog-input';
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const ProfileStackNav = createStackNavigator();
 
@@ -226,139 +228,161 @@ export const ProfilePage = () => {
       });
   };
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <ScrollView style={{backgroundColor: 'grey'}}>
-        <View style={styles.containerWhite} />
-        <View>
-          <Svg
-            style={styles.waves}
-            viewBox={`0 0 ${windowWidth} 154`}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <Path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0 0L17.2987 9.05882C33.2667 18.1176 66.5333 34.7255 99.8 54.3529C133.067 73.9804 166.333 96.6274 199.6 99.6471C232.867 102.667 266.133 86.0588 299.4 63.4118C332.667 40.7647 365.933 12.0784 399.2 19.6275C432.467 28.6863 465.733 73.9804 483.032 96.6274L499 119.275V154H483.032C465.733 154 432.467 154 399.2 154C365.933 154 332.667 154 299.4 154C266.133 154 232.867 154 199.6 154C166.333 154 133.067 154 99.8 154C66.5333 154 33.2667 154 17.2987 154H0V0Z"
-              fill="#1F83BB"
-            />
-            <Image source={{uri: userPic}} style={styles.userProfilePic} />
-          </Svg>
-        </View>
-        {showUpdateBtn && (
-          <Pressable onPress={updateProfilePic} style={styles.updateBtn}>
-            <View>
-              <FontAwesomeIcon icon={faPen} size={20} color={'white'} />
-            </View>
-          </Pressable>
-        )}
-
-        <View style={styles.containerBlue}>
+      <ThemeProvider theme={theme}>
+        <ScrollView style={{backgroundColor: 'grey'}}>
           <View
-            style={[styles.viewUserInfo, {marginBottom: windowWidth * 0.05}]}>
-            <FontAwesomeIcon
-              icon={faUser}
-              size={22}
-              color={'white'}
-              style={{top: windowWidth * 0.08}}
-            />
-            <Text style={styles.textUserInfo}>Name</Text>
-            <Text style={styles.textName1}>
-              {' '}
-              {`${userData.name} ${userData.surname}`}{' '}
-            </Text>
+            style={[
+              styles.containerWhite,
+              {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+            ]}
+          />
+          <View>
+            <Svg
+              style={styles.waves}
+              viewBox={`0 0 ${windowWidth} 154`}
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <Path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M0 0L17.2987 9.05882C33.2667 18.1176 66.5333 34.7255 99.8 54.3529C133.067 73.9804 166.333 96.6274 199.6 99.6471C232.867 102.667 266.133 86.0588 299.4 63.4118C332.667 40.7647 365.933 12.0784 399.2 19.6275C432.467 28.6863 465.733 73.9804 483.032 96.6274L499 119.275V154H483.032C465.733 154 432.467 154 399.2 154C365.933 154 332.667 154 299.4 154C266.133 154 232.867 154 199.6 154C166.333 154 133.067 154 99.8 154C66.5333 154 33.2667 154 17.2987 154H0V0Z"
+                fill={theme.PRIMARY_BACKGROUND_COLOR}
+              />
+              <Image source={{uri: userPic}} style={styles.userProfilePic} />
+            </Svg>
           </View>
-          <View style={styles.viewUserInfo}>
-            <FontAwesomeIcon
-              icon={faMapMarkedAlt}
-              size={22}
-              color={'white'}
-              style={{top: windowWidth * 0.08}}
-            />
-            <Text style={styles.textUserInfo}>Place of residence</Text>
-            <Text style={styles.textName1}> {userData.placeOfResidence} </Text>
-            <Pressable style={styles.editBtn} onPress={() => setDialog(true)}>
-              <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
+          {showUpdateBtn && (
+            <Pressable onPress={updateProfilePic} style={styles.updateBtn}>
+              <View>
+                <FontAwesomeIcon icon={faPen} size={20} color={'white'} />
+              </View>
+            </Pressable>
+          )}
+
+          <View
+            style={[
+              styles.containerBlue,
+              {backgroundColor: theme.PRIMARY_BACKGROUND_COLOR},
+            ]}>
+            <View
+              style={[styles.viewUserInfo, {marginBottom: windowWidth * 0.05}]}>
+              <FontAwesomeIcon
+                icon={faUser}
+                size={22}
+                color={'white'}
+                style={{top: windowWidth * 0.08}}
+              />
+              <Text style={styles.textUserInfo}>Name</Text>
+              <Text style={styles.textName1}>
+                {' '}
+                {`${userData.name} ${userData.surname}`}{' '}
+              </Text>
+            </View>
+            <View style={styles.viewUserInfo}>
+              <FontAwesomeIcon
+                icon={faMapMarkedAlt}
+                size={22}
+                color={'white'}
+                style={{top: windowWidth * 0.08}}
+              />
+              <Text style={styles.textUserInfo}>Place of residence</Text>
+              <Text style={styles.textName1}>
+                {' '}
+                {userData.placeOfResidence}{' '}
+              </Text>
+              <Pressable style={styles.editBtn} onPress={() => setDialog(true)}>
+                <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
+              </Pressable>
+            </View>
+            <View style={styles.viewUserInfo}>
+              <FontAwesomeIcon
+                icon={faCalendarAlt}
+                size={22}
+                color={'white'}
+                style={{top: windowWidth * 0.08}}
+              />
+              <Text style={styles.textUserInfo}>Days of staying</Text>
+              <Text style={styles.textName1}> {userData.daysOfStaying} </Text>
+              <Pressable
+                style={styles.editBtn}
+                onPress={() => setDialogDays(true)}>
+                <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
+              </Pressable>
+            </View>
+            <View
+              style={[styles.viewUserInfo, {marginBottom: windowWidth * 0.05}]}>
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                size={22}
+                color={'white'}
+                style={{top: windowWidth * 0.08}}
+              />
+              <Text style={styles.textUserInfo}>Email</Text>
+              <Text style={styles.textName1}> {userData.email} </Text>
+            </View>
+            <View style={styles.viewUserInfo}>
+              <FontAwesomeIcon
+                icon={faLock}
+                size={22}
+                color={'white'}
+                style={{top: windowWidth * 0.08}}
+              />
+              <Text style={styles.textUserInfo}>New password</Text>
+              <Text style={styles.textName1}> ****** </Text>
+              <View style={styles.editBtn}>
+                <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor: theme.PRIMARY_BACKGROUND_COLOR,
+              alignItems: 'center',
+            }}>
+            <Pressable style={styles.btnLogout} onPress={handleLogOut}>
+              <Text style={styles.textBtnLogout}>LOGOUT</Text>
             </Pressable>
           </View>
-          <View style={styles.viewUserInfo}>
-            <FontAwesomeIcon
-              icon={faCalendarAlt}
-              size={22}
-              color={'white'}
-              style={{top: windowWidth * 0.08}}
-            />
-            <Text style={styles.textUserInfo}>Days of staying</Text>
-            <Text style={styles.textName1}> {userData.daysOfStaying} </Text>
-            <Pressable
-              style={styles.editBtn}
-              onPress={() => setDialogDays(true)}>
-              <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
-            </Pressable>
-          </View>
-          <View
-            style={[styles.viewUserInfo, {marginBottom: windowWidth * 0.05}]}>
-            <FontAwesomeIcon
-              icon={faEnvelope}
-              size={22}
-              color={'white'}
-              style={{top: windowWidth * 0.08}}
-            />
-            <Text style={styles.textUserInfo}>Email</Text>
-            <Text style={styles.textName1}> {userData.email} </Text>
-          </View>
-          <View style={styles.viewUserInfo}>
-            <FontAwesomeIcon
-              icon={faLock}
-              size={22}
-              color={'white'}
-              style={{top: windowWidth * 0.08}}
-            />
-            <Text style={styles.textUserInfo}>New password</Text>
-            <Text style={styles.textName1}> ****** </Text>
-            <View style={styles.editBtn}>
-              <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
-            </View>
-          </View>
-        </View>
-        <View style={{backgroundColor: '#1F83BB', alignItems: 'center'}}>
-          <Pressable style={styles.btnLogout} onPress={handleLogOut}>
-            <Text style={styles.textBtnLogout}>LOGOUT</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-      <DialogInput
-        isDialogVisible={dialog}
-        title={'Place of residence'}
-        message={
-          'Please input Your place of staying while You are on vacations'
-        }
-        hintInput={'HINT: Imotski'}
-        submitInput={inputText => {
-          submitPlace(inputText);
-          setDialog(false);
-          setInterval(() => {
-            setInfoData(!infoData);
-          }, 1000);
-        }}
-        closeDialog={() => setDialog(false)}
-      />
+        <DialogInput
+          isDialogVisible={dialog}
+          title={'Place of residence'}
+          message={
+            'Please input Your place of staying while You are on vacations'
+          }
+          hintInput={'HINT: Imotski'}
+          submitInput={inputText => {
+            submitPlace(inputText);
+            setDialog(false);
+            setInterval(() => {
+              setInfoData(!infoData);
+            }, 1000);
+          }}
+          closeDialog={() => setDialog(false)}
+        />
 
-      <DialogInput
-        isDialogVisible={dialogDays}
-        title={'Days of staying'}
-        message={'Please input Your days of staying while You are on vacations'}
-        hintInput={'HINT: 5'}
-        submitInput={inputTextDays => {
-          submitDays(inputTextDays);
-          setDialogDays(false);
-          setInterval(() => {
-            setInfoData(!infoData);
-          }, 1000);
-        }}
-        closeDialog={() => setDialogDays(false)}
-      />
+        <DialogInput
+          isDialogVisible={dialogDays}
+          title={'Days of staying'}
+          message={
+            'Please input Your days of staying while You are on vacations'
+          }
+          hintInput={'HINT: 5'}
+          submitInput={inputTextDays => {
+            submitDays(inputTextDays);
+            setDialogDays(false);
+            setInterval(() => {
+              setInfoData(!infoData);
+            }, 1000);
+          }}
+          closeDialog={() => setDialogDays(false)}
+        />
+      </ThemeProvider>
     </>
   );
 };

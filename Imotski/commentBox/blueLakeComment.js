@@ -12,37 +12,12 @@ import {
   ProgressBarAndroidComponent,
 } from 'react-native';
 
-//fontawesome
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faArrowLeft,
-  faCheckCircle,
-  faCircle,
-  faCircleNotch,
-  faCross,
-  faExclamationCircle,
-  faExclamationTriangle,
-  faSpinner,
-  faTimesCircle,
-} from '@fortawesome/free-solid-svg-icons';
-
-//Dimensions
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
 //comment navigation
 import {createStackNavigator} from '@react-navigation/stack';
 
-//bottom sheet modal
-import {useNavigation} from '@react-navigation/core';
-
-//waves
-import Waves from '../wavesTemplate';
-import {ScrollView} from 'react-native-gesture-handler';
-
-//async storage to get token
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommentTemplate} from '../commentScreenTemplate';
+import {useSelector} from 'react-redux';
+import {ThemeProvider} from '@react-navigation/native';
 
 const commentStack = createStackNavigator();
 
@@ -63,11 +38,18 @@ export const BlueLakeComment = () => {
     setInterval(() => setCompleted(Math.floor(Math.random() * 100) + 1), 2000);
   }, []);
  */
+
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
-    <CommentTemplate
-      diffColorForPlace={'#1F83BB'}
-      diffColorForPlace2={'#1F83BB'}
-      category={'blue lake'}
-    />
+    <>
+      <ThemeProvider theme={theme}>
+        <CommentTemplate
+          diffColorForPlace={theme.PRIMARY_BACKGROUND_COLOR}
+          diffColorForPlace2={'#1F83BB'}
+          category={'blue lake'}
+        />
+      </ThemeProvider>
+    </>
   );
 };

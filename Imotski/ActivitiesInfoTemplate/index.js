@@ -20,6 +20,8 @@ const windowWidth = Dimensions.get('window').width;
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 export const ActivitiesInfoTemplate = props => {
   const navigation = useNavigation();
@@ -47,33 +49,46 @@ export const ActivitiesInfoTemplate = props => {
     },
   ];
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <ScrollView style={{backgroundColor: 'white'}}>
-        <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        <View>
-          <Image style={styles.image} source={props.image} />
-          <Pressable
-            style={styles.arrowLeftIcon}
-            onPress={() => navigation.goBack()}>
-            <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-          </Pressable>
-          <Text style={styles.txtCity}>{props.city}</Text>
-          <Text style={styles.txtBlueLake}>
-            <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} />
-            {props.sight}
-          </Text>
-        </View>
-
-        <View style={styles.container}>
-          <View style={styles.horizontalTabs}>
-            <Text>Overview</Text>
-            <Text>Gallery</Text>
+      <ThemeProvider theme={theme}>
+        <ScrollView style={{backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR}}>
+          <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+          <View>
+            <Image style={styles.image} source={props.image} />
+            <Pressable
+              style={styles.arrowLeftIcon}
+              onPress={() => navigation.goBack()}>
+              <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+            </Pressable>
+            <Text style={styles.txtCity}>{props.city}</Text>
+            <Text style={styles.txtBlueLake}>
+              <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} />
+              {props.sight}
+            </Text>
           </View>
-          <Text style={styles.txtTitle}> {props.title}</Text>
-          <Text style={styles.txtInfoBL}>{props.details}</Text>
-        </View>
-      </ScrollView>
+
+          <View
+            style={[
+              styles.container,
+              {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+            ]}>
+            <View style={styles.horizontalTabs}>
+              <Text style={{color: theme.PRIMARY_TEXT_COLOR}}>Overview</Text>
+              <Text>Gallery</Text>
+            </View>
+            <Text style={[styles.txtTitle, {color: theme.PRIMARY_TEXT_COLOR}]}>
+              {' '}
+              {props.title}
+            </Text>
+            <Text style={[styles.txtInfoBL, {color: theme.PRIMARY_TEXT_COLOR}]}>
+              {props.details}
+            </Text>
+          </View>
+        </ScrollView>
+      </ThemeProvider>
     </>
   );
 };

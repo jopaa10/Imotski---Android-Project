@@ -30,6 +30,10 @@ import {BlueLakeInfo} from '../blueLakeInfo';
 import {Gallery} from '../blueLakeInfo/gallery';
 import {ReviewScreen} from '../reviewScreen';
 
+//redux
+import {useSelector} from 'react-redux';
+import {ThemeProvider} from '@react-navigation/native';
+
 /* const TopTabs = createMaterialTopTabNavigator();
 
 export const blueLakeTopTabsNav = () => {
@@ -75,92 +79,65 @@ export const TemplateInfo = props => {
     },
   ];
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <ScrollView style={{backgroundColor: 'white'}}>
-        <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        <View>
-          <Image style={styles.image} source={props.image} />
-          <Pressable
-            style={styles.arrowLeftIcon}
-            onPress={() => navigation.navigate('Explore Imotski')}>
-            <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-          </Pressable>
-          <Text style={styles.txtCity}>{props.city}</Text>
-          <Text style={styles.txtBlueLake}>
-            <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} />{' '}
-            {props.sight}
-          </Text>
-        </View>
-
-        <View style={styles.container}>
-          <View style={styles.horizontalTabs}>
-            {DATA.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                active={item}
-                onPress={() => {
-                  navigation.navigate(item.navigate);
-                }}>
-                <Text
-                  style={[
-                    styles.horizotalTab,
-                    {
-                      color: item.color,
-                    },
-                  ]}>
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
-
-            {/* <Pressable
-            onPress={() => {
-              navigation.navigate('Blue Lake Info');
-              setIndex(1);
-            }}>
-            <Text
-              style={[
-                styles.horizotalTab,
-                {
-                  color: activeTabColor,
-                },
-              ]}>
-              Overview
+      <ThemeProvider theme={theme}>
+        <ScrollView style={{backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR}}>
+          <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+          <View>
+            <Image style={styles.image} source={props.image} />
+            <Pressable
+              style={styles.arrowLeftIcon}
+              onPress={() => navigation.navigate('Explore Imotski')}>
+              <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+            </Pressable>
+            <Text style={styles.txtCity}>{props.city}</Text>
+            <Text style={styles.txtBlueLake}>
+              <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} />{' '}
+              {props.sight}
             </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('Gallery');
-              setIndex(2);
-            }}>
-            <Text
-              style={[
-                styles.horizotalTab,
-                {
-                  color: activeTabColor2,
-                },
-              ]}>
-              Gallery
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              navigation.navigate('Review');
-              setIndex(3);
-            }}>
-            <Text style={[styles.horizotalTab, {color: activeTabColor3}]}>
-              Review
-            </Text>
-          </Pressable> */}
           </View>
-          <Text style={styles.txtTitle}> {props.title}</Text>
-          <Text style={styles.txtInfoBL}>{props.details}</Text>
-        </View>
-        {props.gallery}
-        {props.weather}
-        {props.review}
-      </ScrollView>
+
+          <View
+            style={[
+              styles.container,
+              {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+            ]}>
+            <View style={styles.horizontalTabs}>
+              {DATA.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  active={item}
+                  onPress={() => {
+                    navigation.navigate(item.navigate);
+                  }}>
+                  <Text
+                    style={[
+                      styles.horizotalTab,
+                      {
+                        color: item.color,
+                      },
+                    ]}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={[styles.txtTitle, {color: theme.PRIMARY_TEXT_COLOR}]}>
+              {' '}
+              {props.title}
+            </Text>
+            <Text style={[styles.txtInfoBL, {color: theme.PRIMARY_TEXT_COLOR}]}>
+              {props.details}
+            </Text>
+          </View>
+          {props.gallery}
+          {props.weather}
+          {props.review}
+        </ScrollView>
+      </ThemeProvider>
     </>
   );
 };
@@ -199,6 +176,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   txtInfoBL: {
+    color: 'black',
     flex: 1,
     textAlign: 'justify',
     marginTop: 10,

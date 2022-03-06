@@ -39,6 +39,8 @@ import {
   faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 export const QuadMap = () => {
   const [quadFirstPoint] = useState({
@@ -123,265 +125,308 @@ export const QuadMap = () => {
     handleLocationPermission();
   }, []);
 
+  const theme = useSelector(state => state.themeReducer.theme);
+
   return (
     <>
-      <View style={styles.container}>
-        {location !== undefined ? (
-          <MapView
-            testID="map"
-            ref={mapRef}
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation={true}
-            initialRegion={{
-              latitude: 43.4571647,
-              longitude: 17.1839588,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.1,
-            }}
-            loadingEnabled={true}>
-            <Marker
-              coordinate={{
-                latitude: quadFirstPoint.latitude,
-                longitude: quadFirstPoint.longitude,
+      <ThemeProvider theme={theme}>
+        <View style={styles.container}>
+          {location !== undefined ? (
+            <MapView
+              testID="map"
+              ref={mapRef}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              initialRegion={{
+                latitude: 43.4571647,
+                longitude: 17.1839588,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.1,
               }}
-              onPress={() => {
-                openModal('Pro Paradise', quadFirstPoint);
-              }}>
-              <View style={{borderColor: 'rgba(0,0,0,0)', borderWidth: 1}}>
-                <Image
-                  source={require('../images/quadIcon.jpg')}
-                  style={styles.quadPoint}
-                />
-              </View>
-            </Marker>
-            <Marker
-              coordinate={{
-                latitude: quadSecondPoint.latitude,
-                longitude: quadSecondPoint.longitude,
-              }}
-              onPress={() => {
-                openModal('Vinarija Matkovic', quadSecondPoint);
-              }}>
-              <View style={{borderColor: 'transparent', borderWidth: 1}}>
-                <Image
-                  source={require('../images/quadIcon.jpg')}
-                  style={styles.quadPoint}
-                />
-              </View>
-            </Marker>
-            <MapViewDirections
-              origin={location}
-              destination={destinationPoint}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={3}
-              strokeColor="red"
-              mode="DRIVING"
-            />
-          </MapView>
-        ) : (
-          <MapView
-            testID="map"
-            ref={mapRef}
-            style={styles.map}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation={true}
-            initialRegion={{
-              latitude: 43.4571647,
-              longitude: 17.1839588,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.1,
-            }}
-            loadingEnabled={true}>
-            <Marker
-              coordinate={{
-                latitude: quadFirstPoint.latitude,
-                longitude: quadFirstPoint.longitude,
-              }}
-              onPress={() => {
-                openModal('Pro Paradise', quadFirstPoint);
-              }}>
-              <View style={{borderColor: 'rgba(0,0,0,0)', borderWidth: 1}}>
-                <Image
-                  source={require('../images/quadIcon.jpg')}
-                  style={styles.quadPoint}
-                />
-              </View>
-            </Marker>
-            <Marker
-              coordinate={{
-                latitude: quadSecondPoint.latitude,
-                longitude: quadSecondPoint.longitude,
-              }}
-              onPress={() => {
-                openModal('Vinarija Matkovic', quadSecondPoint);
-              }}>
-              <View style={{borderColor: 'transparent', borderWidth: 1}}>
-                <Image
-                  source={require('../images/quadIcon.jpg')}
-                  style={styles.quadPoint}
-                />
-              </View>
-            </Marker>
-          </MapView>
-        )}
-      </View>
-
-      <Modal
-        isVisible={modalIsOpen}
-        onSwipeComplete={() => setModalIsOpen(false)}
-        swipeDirection="down"
-        statusBarTranslucent
-        deviceHeight={windowHeight}
-        style={{margin: 0}}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TouchableOpacity
-              style={styles.btnClose}
-              onPress={() => setModalIsOpen(false)}>
-              <View>
-                <FontAwesomeIcon icon={faTimesCircle} size={20} />
-              </View>
-            </TouchableOpacity>
-
-            <View style={{bottom: windowWidth * 0.3, alignItems: 'center'}}>
-              <Image
-                source={require('../images/quadBikeIcon.png')}
-                style={styles.imageModal}
+              loadingEnabled={true}>
+              <Marker
+                coordinate={{
+                  latitude: quadFirstPoint.latitude,
+                  longitude: quadFirstPoint.longitude,
+                }}
+                onPress={() => {
+                  openModal('Pro Paradise', quadFirstPoint);
+                }}>
+                <View style={{borderColor: 'rgba(0,0,0,0)', borderWidth: 1}}>
+                  <Image
+                    source={require('../images/quadIcon.jpg')}
+                    style={styles.quadPoint}
+                  />
+                </View>
+              </Marker>
+              <Marker
+                coordinate={{
+                  latitude: quadSecondPoint.latitude,
+                  longitude: quadSecondPoint.longitude,
+                }}
+                onPress={() => {
+                  openModal('Vinarija Matkovic', quadSecondPoint);
+                }}>
+                <View style={{borderColor: 'transparent', borderWidth: 1}}>
+                  <Image
+                    source={require('../images/quadIcon.jpg')}
+                    style={styles.quadPoint}
+                  />
+                </View>
+              </Marker>
+              <MapViewDirections
+                origin={location}
+                destination={destinationPoint}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="red"
+                mode="DRIVING"
               />
-            </View>
+            </MapView>
+          ) : (
+            <MapView
+              testID="map"
+              ref={mapRef}
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              showsUserLocation={true}
+              initialRegion={{
+                latitude: 43.4571647,
+                longitude: 17.1839588,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.1,
+              }}
+              loadingEnabled={true}>
+              <Marker
+                coordinate={{
+                  latitude: quadFirstPoint.latitude,
+                  longitude: quadFirstPoint.longitude,
+                }}
+                onPress={() => {
+                  openModal('Pro Paradise', quadFirstPoint);
+                }}>
+                <View style={{borderColor: 'rgba(0,0,0,0)', borderWidth: 1}}>
+                  <Image
+                    source={require('../images/quadIcon.jpg')}
+                    style={styles.quadPoint}
+                  />
+                </View>
+              </Marker>
+              <Marker
+                coordinate={{
+                  latitude: quadSecondPoint.latitude,
+                  longitude: quadSecondPoint.longitude,
+                }}
+                onPress={() => {
+                  openModal('Vinarija Matkovic', quadSecondPoint);
+                }}>
+                <View style={{borderColor: 'transparent', borderWidth: 1}}>
+                  <Image
+                    source={require('../images/quadIcon.jpg')}
+                    style={styles.quadPoint}
+                  />
+                </View>
+              </Marker>
+            </MapView>
+          )}
+        </View>
 
+        <Modal
+          isVisible={modalIsOpen}
+          onSwipeComplete={() => setModalIsOpen(false)}
+          swipeDirection="down"
+          statusBarTranslucent
+          deviceHeight={windowHeight}
+          style={{margin: 0}}>
+          <View style={styles.centeredView}>
             <View
-              style={{
-                height: 'auto',
-                marginTop: 5,
-                bottom: windowWidth * 0.4,
-              }}>
-              <TouchableOpacity>
-                <View style={styles.btnCloseModal}>
-                  <Text style={styles.horizontalLine}>_____</Text>
+              style={[
+                styles.modalView,
+                {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+              ]}>
+              <TouchableOpacity
+                style={styles.btnClose}
+                onPress={() => setModalIsOpen(false)}>
+                <View>
+                  <FontAwesomeIcon
+                    icon={faTimesCircle}
+                    size={20}
+                    color={theme.FONTAWESOME_ICON_COLOR}
+                  />
                 </View>
               </TouchableOpacity>
 
-              <View style={styles.placeNameContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <Text
-                    style={[
-                      styles.placeName,
-                      {
-                        paddingTop: 10,
-                        paddingLeft: 10,
-                        fontSize: 18,
-                        fontWeight: 'bold',
-                        marginBottom: windowWidth * 0.05,
-                      },
-                    ]}>
-                    Rent a Quad - {modalTitle}
-                  </Text>
-                </View>
+              <View style={{bottom: windowWidth * 0.3, alignItems: 'center'}}>
+                <Image
+                  source={require('../images/quadBikeIcon.png')}
+                  style={styles.imageModal}
+                />
               </View>
 
-              <Divider />
-
-              <View style={styles.startDestinationPointContainer}>
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    paddingTop: 15,
-                  }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      paddingTop: 15,
-                      justifyContent: 'space-between',
-                      marginLeft: windowWidth * 0.02,
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faUserAlt}
-                        size={20}
-                        color="black"
-                      />
-                      <Text style={[styles.startDestinationPoint]}>
-                        2 Persons
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        marginRight: windowWidth * 0.06,
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faDirections}
-                        size={20}
-                        color="black"
-                      />
-                      <Text style={[styles.startDestinationPoint]}>
-                        Red, Blue, Green lake
-                      </Text>
-                    </View>
+              <View
+                style={{
+                  height: 'auto',
+                  marginTop: 5,
+                  bottom: windowWidth * 0.4,
+                }}>
+                <TouchableOpacity>
+                  <View style={styles.btnCloseModal}>
+                    <Text
+                      style={[
+                        styles.horizontalLine,
+                        {color: theme.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      _____
+                    </Text>
                   </View>
+                </TouchableOpacity>
 
+                <View style={styles.placeNameContainer}>
+                  <View style={{flexDirection: 'row', paddingTop: 10}}>
+                    <Text
+                      style={[
+                        styles.placeName,
+                        {
+                          paddingTop: 10,
+                          paddingLeft: 10,
+                          fontSize: 18,
+                          fontWeight: 'bold',
+                          marginBottom: windowWidth * 0.05,
+                          color: theme.PRIMARY_TEXT_COLOR,
+                        },
+                      ]}>
+                      Rent a Quad - {modalTitle}
+                    </Text>
+                  </View>
+                </View>
+
+                <Divider />
+
+                <View style={styles.startDestinationPointContainer}>
                   <View
                     style={{
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       paddingTop: 15,
-                      justifyContent: 'space-between',
-                      marginBottom: windowWidth * 0.05,
                     }}>
                     <View
                       style={{
                         flexDirection: 'row',
+                        paddingTop: 15,
+                        justifyContent: 'space-between',
                         marginLeft: windowWidth * 0.02,
                       }}>
-                      <FontAwesomeIcon icon={faClock} size={20} color="black" />
-                      <Text style={styles.startDestinationPoint}>
-                        cca 2-3 h
-                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faUserAlt}
+                          size={20}
+                          color={theme.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: theme.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          2 Persons
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          marginRight: windowWidth * 0.06,
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faDirections}
+                          size={20}
+                          color={theme.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: theme.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          Red, Blue, Green lake
+                        </Text>
+                      </View>
                     </View>
+
                     <View
                       style={{
                         flexDirection: 'row',
-                        marginRight: windowWidth * 0.25,
+                        paddingTop: 15,
+                        justifyContent: 'space-between',
+                        marginBottom: windowWidth * 0.05,
                       }}>
-                      <FontAwesomeIcon
-                        icon={faMoneyBill}
-                        size={20}
-                        color="black"
-                      />
-                      <Text style={styles.startDestinationPoint}>
-                        cca 100 €
-                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          marginLeft: windowWidth * 0.02,
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          size={20}
+                          color={theme.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: theme.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          cca 2-3 h
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          marginRight: windowWidth * 0.25,
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faMoneyBill}
+                          size={20}
+                          color={theme.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: theme.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          cca 100 €
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
 
-              <Divider />
-              <View style={styles.infoContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <Text style={styles.startDestinationPoint}>
-                    Experience and feel the beautiful Imotski and Imotski region
-                    completely by visiting as many as 8 lakes and the river
-                    Vrljika by riding a Quad motor. For you, family or friends,
-                    we organize a Quad tour throughout the area lasting about 4
-                    hours.
-                  </Text>
+                <Divider />
+                <View style={styles.infoContainer}>
+                  <View style={{flexDirection: 'row', paddingTop: 10}}>
+                    <Text
+                      style={[
+                        styles.startDestinationPoint,
+                        {color: theme.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      Experience and feel the beautiful Imotski and Imotski
+                      region completely by visiting as many as 8 lakes and the
+                      river Vrljika by riding a Quad motor. For you, family or
+                      friends, we organize a Quad tour throughout the area
+                      lasting about 4 hours.
+                    </Text>
+                  </View>
                 </View>
-              </View>
 
-              <TouchableOpacity onPress={getUserCurrentCoordinates}>
-                <View style={styles.proceed}>
-                  <Text style={styles.proceedButton}>Directions</Text>
-                </View>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={getUserCurrentCoordinates}>
+                  <View style={styles.proceed}>
+                    <Text style={styles.proceedButton}>Directions</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </ThemeProvider>
     </>
   );
 };

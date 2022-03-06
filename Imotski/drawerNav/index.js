@@ -1,5 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Switch,
+} from 'react-native';
 
 //drawer components
 import {DrawerItem} from '@react-navigation/drawer';
@@ -18,12 +25,45 @@ import {
   faAdjust,
 } from '@fortawesome/free-solid-svg-icons';
 import {UserContext} from '../App';
+
+//dimensions
 import {windowHeight, windowWidth} from '../constants/global';
+
+//theme elements
+import styled, {ThemeProvider} from 'styled-components';
+import {useSelector, useDispatch} from 'react-redux';
+import {switchTheme} from '../reducers/themeActions';
+import {lightTheme, darkTheme} from '../DarkMode/Theme';
 
 export const DrawerContent = props => {
   const [userImage, setUserImage] = useState('');
   const [userName, setUserName] = useState('');
-  const {state, dispatch} = useContext(UserContext);
+  const {state} = useContext(UserContext);
+
+  const [isDarkTheme, setDarkTheme] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const theme = useSelector(state => state.themeReducer.theme);
+  const dispatch = useDispatch();
+
+  const [bgColor, setBgColor] = useState(lightTheme.PRIMARY_BACKGROUND_COLOR);
+  const [bgColorWhite, setBgWhiteColor] = useState(
+    lightTheme.SECUNDARY_BACKGROUND_COLOR,
+  );
+
+  const toggleSwitchDark = () => {
+    setDarkTheme(!isDarkTheme);
+    dispatch(switchTheme(darkTheme));
+    setBgColor(darkTheme.PRIMARY_BACKGROUND_COLOR);
+    setBgWhiteColor(darkTheme.SECUNDARY_BACKGROUND_COLOR);
+  };
+
+  const toggleSwitchLight = () => {
+    setDarkTheme(!isDarkTheme);
+    dispatch(switchTheme(lightTheme));
+    setBgColor(lightTheme.PRIMARY_BACKGROUND_COLOR);
+    setBgWhiteColor(lightTheme.SECUNDARY_BACKGROUND_COLOR);
+  };
 
   if (state) {
     fetch('http://192.168.1.2:5000/protected', {
@@ -42,117 +82,148 @@ export const DrawerContent = props => {
 
   return (
     <>
-      <View style={styles.whiteContainer}>
-        {!state ? (
-          <>
-            <TouchableOpacity onPress={() => props.navigation.navigate('User')}>
-              <Image
-                style={styles.image}
-                source={require('../images/userPhoto.jpg')}
-              />
-              <Text style={styles.loginTxt}>Login</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
+      <ThemeProvider theme={theme}>
+        <View style={[styles.whiteContainer, {backgroundColor: bgColorWhite}]}>
+          {!state ? (
+            <>
+              <TouchableOpacity
+                style={{bottom: windowWidth * 0.05}}
+                onPress={() => props.navigation.navigate('User')}>
+                <Image
+                  style={styles.image}
+                  source={require('../images/userPhoto.jpg')}
+                />
+                <Text style={styles.loginTxt}>Login</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <TouchableOpacity
+                style={{bottom: windowWidth * 0.05}}
+                onPress={() => props.navigation.navigate('Profile Page')}>
+                <Image source={{uri: userImage}} style={styles.image} />
+                <Text style={styles.loginTxt}>{userName}</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+
+        <Svg
+          width="252"
+          height="130"
+          viewBox="0 0 252 130"
+          fill="none"
+          style={{bottom: windowWidth * 0.25}}
+          xmlns="http://www.w3.org/2000/svg">
+          <Path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M0 76.8649L10.5833 62.1051C21.1667 47.3454 42.3333 17.8259 63.5 6.01806C84.6667 -5.78974 105.833 0.114158 127 20.7778C148.167 41.4415 169.333 76.8649 190.5 85.7207C211.667 94.5766 232.833 76.8649 243.417 68.009L254 59.1532V130H243.417C232.833 130 211.667 130 190.5 130C169.333 130 148.167 130 127 130C105.833 130 84.6667 130 63.5 130C42.3333 130 21.1667 130 10.5833 130H0L0 76.8649Z"
+            fill={bgColor}
+          />
+        </Svg>
+
+        <View style={[styles.blueContainer, {backgroundColor: bgColor}]}>
+          <View style={{bottom: windowWidth * 0.09}}>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('Profile Page')}>
-              <Image source={{uri: userImage}} style={styles.image} />
-              <Text style={styles.loginTxt}>{userName}</Text>
+              style={styles.container}
+              onPress={() => props.navigation.navigate('Explore Imotski')}>
+              <FontAwesomeIcon
+                style={styles.icon}
+                icon={faHome}
+                color={'#fff'}
+                size={20}
+              />
+
+              <Text style={styles.text}>Home</Text>
             </TouchableOpacity>
-          </>
-        )}
-      </View>
 
-      <Svg
-        width="252"
-        height="130"
-        viewBox="0 0 252 130"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg">
-        <Path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M0 76.8649L10.5833 62.1051C21.1667 47.3454 42.3333 17.8259 63.5 6.01806C84.6667 -5.78974 105.833 0.114158 127 20.7778C148.167 41.4415 169.333 76.8649 190.5 85.7207C211.667 94.5766 232.833 76.8649 243.417 68.009L254 59.1532V130H243.417C232.833 130 211.667 130 190.5 130C169.333 130 148.167 130 127 130C105.833 130 84.6667 130 63.5 130C42.3333 130 21.1667 130 10.5833 130H0L0 76.8649Z"
-          fill="#1F83BB"
-        />
-      </Svg>
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() => props.navigation.navigate('MarkedPlaces')}>
+              <FontAwesomeIcon
+                style={styles.icon}
+                icon={faFlag}
+                color={'#fff'}
+                size={20}
+              />
+              <Text style={styles.text}>Info</Text>
+            </TouchableOpacity>
 
-      <View style={styles.blueContainer}>
-        <View style={{bottom: windowWidth * 0.09}}>
-          <TouchableOpacity
-            style={styles.container}
-            onPress={() => props.navigation.navigate('Explore Imotski')}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              icon={faHome}
-              color={'#fff'}
-              size={20}
-            />
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() => props.navigation.navigate('User')}>
+              <FontAwesomeIcon
+                style={styles.icon}
+                icon={faUserAlt}
+                color={'#fff'}
+                size={20}
+              />
+              <Text style={styles.text}>User</Text>
+            </TouchableOpacity>
 
-            <Text style={styles.text}>Home</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.container, {marginTop: windowWidth * 0.1}]}
+              onPress={() => props.navigation.navigate('Profile Page')}>
+              <FontAwesomeIcon
+                style={styles.icon}
+                icon={faPhoneAlt}
+                color={'#fff'}
+                size={20}
+              />
+              <Text style={styles.text}>Emergency</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() => props.navigation.navigate('Profile Page')}>
+              <FontAwesomeIcon
+                style={styles.icon}
+                icon={faInfo}
+                color={'#fff'}
+                size={20}
+              />
+              <Text style={styles.text}>About Us</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.container}
-            onPress={() => props.navigation.navigate('MarkedPlaces')}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              icon={faFlag}
-              color={'#fff'}
-              size={20}
-            />
-            <Text style={styles.text}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.container}
-            onPress={() => props.navigation.navigate('User')}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              icon={faUserAlt}
-              color={'#fff'}
-              size={20}
-            />
-            <Text style={styles.text}>User</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.container, {marginTop: windowWidth * 0.1}]}
-            onPress={() => props.navigation.navigate('Profile Page')}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              icon={faPhoneAlt}
-              color={'#fff'}
-              size={20}
-            />
-            <Text style={styles.text}>Emergency</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.container}
-            onPress={() => props.navigation.navigate('Profile Page')}>
-            <FontAwesomeIcon
-              style={styles.icon}
-              icon={faInfo}
-              color={'#fff'}
-              size={20}
-            />
-            <Text style={styles.text}>About Us</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.container, {marginTop: windowWidth * 0.1}]}
-            onPress={() => props.navigation.navigate('Profile Page')}>
-            <FontAwesomeIcon
+            <View style={[styles.container, {marginTop: windowWidth * 0.1}]}>
+              {/*  <FontAwesomeIcon
               style={styles.icon}
               icon={faAdjust}
               color={'#fff'}
               size={20}
-            />
-            <Text style={styles.text}>Dark Mode</Text>
-          </TouchableOpacity>
+            /> */}
+
+              {theme.mode === 'light' ? (
+                <>
+                  <Switch
+                    trackColor={{false: '#767577', true: '#81b0ff'}}
+                    style={[styles.icon, {marginLeft: windowWidth * 0.07}]}
+                    thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                    onValueChange={toggleSwitchDark}
+                    value={isDarkTheme}
+                  />
+                  <Text style={[styles.text, {marginLeft: windowWidth * 0.01}]}>
+                    Dark Mode
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Switch
+                    trackColor={{false: '#767577', true: '#81b0ff'}}
+                    style={[styles.icon, {marginLeft: windowWidth * 0.07}]}
+                    thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                    onValueChange={toggleSwitchLight}
+                    value={isDarkTheme}
+                  />
+                  <Text style={[styles.text, {marginLeft: windowWidth * 0.01}]}>
+                    Light Mode
+                  </Text>
+                </>
+              )}
+            </View>
+          </View>
         </View>
-      </View>
+      </ThemeProvider>
     </>
   );
 };
@@ -160,7 +231,8 @@ export const DrawerContent = props => {
 const styles = StyleSheet.create({
   blueContainer: {
     height: windowHeight,
-    backgroundColor: '#1F83BB',
+    backgroundColor: 'white',
+    bottom: windowWidth * 0.25,
   },
   container: {
     height: windowHeight * 0.08,
@@ -177,10 +249,12 @@ const styles = StyleSheet.create({
   },
   whiteContainer: {
     backgroundColor: 'white',
-    height: windowHeight * 0.25,
+    height: windowHeight * 0.37,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: windowWidth * 0.1,
+    //paddingTop: windowWidth * 0.01,
+    borderColor: 'black',
+    borderWidth: 1,
   },
   image: {
     width: windowWidth * 0.22,

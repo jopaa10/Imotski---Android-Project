@@ -3,6 +3,10 @@ import React from 'react';
 
 import moment from 'moment-timezone';
 
+//redux
+import {ThemeProvider} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+
 const FutureWeather = ({weatherData}) => {
   return (
     <View style={{flexDirection: 'row'}}>
@@ -22,21 +26,29 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const FutureWeatherItem = ({data}) => {
-  return (
-    <View style={styles.viewWeatherTemp}>
-      <Text style={styles.hour}>{moment(data.dt * 1000).format('HH:mm')}</Text>
+  const theme = useSelector(state => state.themeReducer.theme);
 
-      <Image
-        source={{
-          uri:
-            'http://openweathermap.org/img/wn/' +
-            data.weather[0].icon +
-            '@2x.png',
-        }}
-        style={styles.imageIcons}
-      />
-      <Text style={styles.temp}>{data.temp + '°C'}</Text>
-    </View>
+  return (
+    <ThemeProvider>
+      <View style={styles.viewWeatherTemp}>
+        <Text style={[styles.hour, {color: theme.PRIMARY_TEXT_COLOR}]}>
+          {moment(data.dt * 1000).format('HH:mm')}
+        </Text>
+
+        <Image
+          source={{
+            uri:
+              'http://openweathermap.org/img/wn/' +
+              data.weather[0].icon +
+              '@2x.png',
+          }}
+          style={styles.imageIcons}
+        />
+        <Text style={[styles.temp, {color: theme.PRIMARY_TEXT_COLOR}]}>
+          {data.temp + '°C'}
+        </Text>
+      </View>
+    </ThemeProvider>
   );
 };
 
