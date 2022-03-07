@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {createContext, useContext, useEffect, useReducer} from 'react';
+import React, {createContext, useState, useEffect, useReducer} from 'react';
 
 import {DarkTheme, NavigationContainer} from '@react-navigation/native';
 
@@ -19,7 +19,8 @@ import {Provider, useSelector} from 'react-redux';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import themeReducer from './reducers/themeReducer';
-import {darkTheme} from './DarkMode/Theme';
+import {darkTheme, lightTheme} from './DarkMode/Theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const store = createStore(
   combineReducers({themeReducer}),
@@ -28,6 +29,43 @@ const store = createStore(
 
 export const UserContext = createContext();
 
+const AppWrapper = () => {
+  const theme = useSelector(state => state.themeReducer.theme);
+  const [themeMode, setThemeMode] = useState('');
+
+  //console.log(theme.mode);
+
+  useEffect(async () => {
+    const themeMode = await AsyncStorage.getItem('theme');
+    setThemeMode(themeMode);
+  }, []);
+
+  setInterval(async () => {
+    const themeMode = await AsyncStorage.getItem('theme');
+    setThemeMode(themeMode);
+  }, 1000);
+
+  //console.log(themeTempl);
+
+  return (
+    <>
+      {themeMode === 'light' ? (
+        <ThemeProvider theme={lightTheme}>
+          <NavigationContainer theme={lightTheme}>
+            <AppDrawerScreen />
+          </NavigationContainer>
+        </ThemeProvider>
+      ) : (
+        <ThemeProvider theme={darkTheme}>
+          <NavigationContainer theme={darkTheme}>
+            <AppDrawerScreen />
+          </NavigationContainer>
+        </ThemeProvider>
+      )}
+    </>
+  );
+};
+
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -35,9 +73,7 @@ const App = () => {
     <>
       <Provider store={store}>
         <UserContext.Provider value={{state, dispatch}}>
-          <NavigationContainer>
-            <AppDrawerScreen />
-          </NavigationContainer>
+          <AppWrapper />
         </UserContext.Provider>
       </Provider>
     </>

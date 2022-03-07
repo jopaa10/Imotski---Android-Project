@@ -23,6 +23,7 @@ import {ThemeProvider, useNavigation} from '@react-navigation/native';
 
 //redux
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 export const NextSevenDaysForecastTemplate = ({
   placeTempLat,
@@ -31,6 +32,8 @@ export const NextSevenDaysForecastTemplate = ({
 }) => {
   const [dailyData, setDailyData] = useState([]);
   const navigation = useNavigation();
+
+  const {colors} = useTheme();
 
   const dailyWeather = () => {
     fetch(
@@ -93,7 +96,7 @@ export const NextSevenDaysForecastTemplate = ({
           styles.container,
           {
             flexDirection: 'column',
-            backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR,
+            backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
           },
         ]}>
         {/* <Waves navigate={'Weather Data'} /> */}
@@ -121,7 +124,7 @@ export const NextSevenDaysForecastTemplate = ({
               fill-rule="evenodd"
               clip-rule="evenodd"
               d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-              fill={theme.SECUNDARY_BACKGROUND_COLOR}
+              fill={colors.SECUNDARY_BACKGROUND_COLOR}
             />
             <Path
               fill-rule="evenodd"

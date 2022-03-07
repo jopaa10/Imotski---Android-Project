@@ -26,7 +26,7 @@ const windowWidth = Dimensions.get('window').width; */
 import Svg, {G, Path} from 'react-native-svg';
 
 //navigation
-import styled, {ThemeProvider} from 'styled-components';
+import styled, {ThemeProvider, useTheme} from 'styled-components';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -47,6 +47,7 @@ export const SignUp = props => {
   const [borderErrorColor, setBorderErrorColor] = useState('white');
 
   const theme = useSelector(state => state.themeReducer.theme);
+  const {colors} = useTheme();
 
   const handleSubmit = async () => {
     if (
@@ -99,14 +100,14 @@ export const SignUp = props => {
         <SafeAreaView
           style={[
             styles.container,
-            {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+            {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
           ]}>
           <ScrollView style={{height: windowHeight}}>
             {/* <Waves navigate={'User'} /> */}
             <View
               style={{
                 height: windowHeight * 0.35,
-                backgroundColor: theme.PRIMARY_BACKGROUND_COLOR,
+                backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
               }}>
               <TouchableOpacity
                 style={styles.arrowLeftIcon}
@@ -132,7 +133,7 @@ export const SignUp = props => {
                   fill-rule="evenodd"
                   clip-rule="evenodd"
                   d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-                  fill={theme.SECUNDARY_BACKGROUND_COLOR}
+                  fill={colors.SECUNDARY_BACKGROUND_COLOR}
                 />
                 <Path
                   fill-rule="evenodd"

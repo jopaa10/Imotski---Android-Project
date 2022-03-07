@@ -33,6 +33,7 @@ import {ReviewScreen} from '../reviewScreen';
 //redux
 import {useSelector} from 'react-redux';
 import {ThemeProvider} from '@react-navigation/native';
+import {useTheme} from 'styled-components';
 
 /* const TopTabs = createMaterialTopTabNavigator();
 
@@ -81,10 +82,13 @@ export const TemplateInfo = props => {
 
   const theme = useSelector(state => state.themeReducer.theme);
 
+  const {colors} = useTheme();
+
   return (
     <>
       <ThemeProvider theme={theme}>
-        <ScrollView style={{backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR}}>
+        <ScrollView
+          style={{backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR}}>
           <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
           <View>
             <Image style={styles.image} source={props.image} />
@@ -103,7 +107,7 @@ export const TemplateInfo = props => {
           <View
             style={[
               styles.container,
-              {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+              {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
             ]}>
             <View style={styles.horizontalTabs}>
               {DATA.map((item, index) => (
@@ -125,11 +129,12 @@ export const TemplateInfo = props => {
                 </TouchableOpacity>
               ))}
             </View>
-            <Text style={[styles.txtTitle, {color: theme.PRIMARY_TEXT_COLOR}]}>
+            <Text style={[styles.txtTitle, {color: colors.PRIMARY_TEXT_COLOR}]}>
               {' '}
               {props.title}
             </Text>
-            <Text style={[styles.txtInfoBL, {color: theme.PRIMARY_TEXT_COLOR}]}>
+            <Text
+              style={[styles.txtInfoBL, {color: colors.PRIMARY_TEXT_COLOR}]}>
               {props.details}
             </Text>
           </View>

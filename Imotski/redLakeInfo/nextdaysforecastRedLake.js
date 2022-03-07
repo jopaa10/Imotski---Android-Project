@@ -1,11 +1,14 @@
 import {ThemeProvider} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 import {NextSevenDaysForecastTemplate} from '../nextSevenDaysTempTemplate/nextSevenDaysTemp';
 
 export const NextDaysForecastRedLake = () => {
   const theme = useSelector(state => state.themeReducer.theme);
+
+  const {colors} = useTheme();
 
   return (
     <>
@@ -13,7 +16,7 @@ export const NextDaysForecastRedLake = () => {
         <NextSevenDaysForecastTemplate
           placeTempLat={43.4471}
           placeTempLong={17.214}
-          bgColor={theme.TEMPLATE_BACKGROUND_COLOR}
+          bgColor={colors.TEMPLATE_BACKGROUND_COLOR}
         />
       </ThemeProvider>
     </>

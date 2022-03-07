@@ -47,6 +47,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 //drawer actions
 import {DrawerActions, ThemeProvider} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useTheme} from 'styled-components';
 
 export const AppDrawerScreen = () => {
   return (
@@ -64,6 +65,8 @@ export const TemplateExploreImotski = props => {
   const navigation = useNavigation();
   const [userPhoto, setUserPhoto] = useState('');
   const {state, dispatch} = useContext(UserContext);
+
+  const {colors} = useTheme();
 
   //console.log(state);
 
@@ -90,13 +93,13 @@ export const TemplateExploreImotski = props => {
           <ScrollView
             style={[
               styles.container,
-              {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+              {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
             ]}>
             <View style={{zIndex: -1}}>
               <View
                 style={[
                   styles.avatarContainer,
-                  {backgroundColor: theme.PRIMARY_BACKGROUND_COLOR},
+                  {backgroundColor: colors.PRIMARY_BACKGROUND_COLOR},
                 ]}>
                 <TouchableOpacity
                   onPress={() =>
@@ -137,12 +140,12 @@ export const TemplateExploreImotski = props => {
                   fill-rule="evenodd"
                   clip-rule="evenodd"
                   d="M415 53.1351L397.5 67.8949C380 82.6546 345 112.174 310 123.982C275 135.79 240 129.886 205 109.222C170 88.5585 135 53.1351 100 44.2793C65 35.4234 30 53.1351 12.5 61.991L-5.00001 70.8468L-5.00001 -4.43602e-06L12.5 -4.43602e-06C30 -4.43602e-06 65 -4.43602e-06 100 -4.43602e-06C135 -4.43602e-06 170 -4.43602e-06 205 -4.43602e-06C240 -4.43602e-06 275 -4.43602e-06 310 -4.43602e-06C345 -4.43602e-06 380 -4.43602e-06 397.5 -4.43602e-06H415L415 53.1351Z"
-                  fill={theme.PRIMARY_BACKGROUND_COLOR}
+                  fill={colors.PRIMARY_BACKGROUND_COLOR}
                 />
                 <View
                   style={[
                     styles.containerDiscover,
-                    {borderColor: theme.PRIMARY_BACKGROUND_COLOR},
+                    {borderColor: colors.PRIMARY_BACKGROUND_COLOR},
                   ]}>
                   <FontAwesomeIcon
                     icon={faSearchLocation}

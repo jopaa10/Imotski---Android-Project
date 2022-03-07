@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ import {
   faInfo,
   faPhoneAlt,
   faAdjust,
+  faSun,
 } from '@fortawesome/free-solid-svg-icons';
 import {UserContext} from '../App';
 
@@ -30,39 +31,51 @@ import {UserContext} from '../App';
 import {windowHeight, windowWidth} from '../constants/global';
 
 //theme elements
-import styled, {ThemeProvider} from 'styled-components';
+import styled, {ThemeProvider, useTheme} from 'styled-components';
 import {useSelector, useDispatch} from 'react-redux';
 import {switchTheme} from '../reducers/themeActions';
 import {lightTheme, darkTheme} from '../DarkMode/Theme';
+
+//local storage for theme
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//switch dark mode
+import SwitchWithIcons from 'react-native-switch-with-icons';
 
 export const DrawerContent = props => {
   const [userImage, setUserImage] = useState('');
   const [userName, setUserName] = useState('');
   const {state} = useContext(UserContext);
 
-  const [isDarkTheme, setDarkTheme] = useState(false);
+  //const [isDarkTheme, setDarkTheme] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
 
   const theme = useSelector(state => state.themeReducer.theme);
   const dispatch = useDispatch();
 
-  const [bgColor, setBgColor] = useState(lightTheme.PRIMARY_BACKGROUND_COLOR);
+  const {colors} = useTheme();
+
+  const [bgColor, setBgColor] = useState(colors.PRIMARY_BACKGROUND_COLOR);
   const [bgColorWhite, setBgWhiteColor] = useState(
-    lightTheme.SECUNDARY_BACKGROUND_COLOR,
+    colors.SECUNDARY_BACKGROUND_COLOR,
   );
 
-  const toggleSwitchDark = () => {
-    setDarkTheme(!isDarkTheme);
+  const toggleSwitchDark = async () => {
+    setIsEnabled(true);
     dispatch(switchTheme(darkTheme));
-    setBgColor(darkTheme.PRIMARY_BACKGROUND_COLOR);
-    setBgWhiteColor(darkTheme.SECUNDARY_BACKGROUND_COLOR);
+    await AsyncStorage.setItem('theme', darkTheme.mode);
+
+    //setBgColor(colors.PRIMARY_BACKGROUND_COLOR);
+    //setBgWhiteColor(colors.SECUNDARY_BACKGROUND_COLOR);
   };
 
-  const toggleSwitchLight = () => {
-    setDarkTheme(!isDarkTheme);
+  const toggleSwitchLight = async () => {
+    setIsEnabled(false);
     dispatch(switchTheme(lightTheme));
-    setBgColor(lightTheme.PRIMARY_BACKGROUND_COLOR);
-    setBgWhiteColor(lightTheme.SECUNDARY_BACKGROUND_COLOR);
+    await AsyncStorage.setItem('theme', lightTheme.mode);
+
+    //setBgColor(colors.PRIMARY_BACKGROUND_COLOR);
+    //setBgWhiteColor(colors.SECUNDARY_BACKGROUND_COLOR);
   };
 
   if (state) {
@@ -80,10 +93,28 @@ export const DrawerContent = props => {
       });
   }
 
+  //console.log(theme);
+
+  useEffect(async () => {
+    const getButton = await AsyncStorage.getItem('theme');
+
+    console.log(getButton);
+
+    if (getButton === 'dark') {
+      setIsEnabled(true);
+    } else if (getButton === 'light') {
+      setIsEnabled(false);
+    }
+  }, []);
+
   return (
     <>
       <ThemeProvider theme={theme}>
-        <View style={[styles.whiteContainer, {backgroundColor: bgColorWhite}]}>
+        <View
+          style={[
+            styles.whiteContainer,
+            {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+          ]}>
           {!state ? (
             <>
               <TouchableOpacity
@@ -119,11 +150,15 @@ export const DrawerContent = props => {
             fill-rule="evenodd"
             clip-rule="evenodd"
             d="M0 76.8649L10.5833 62.1051C21.1667 47.3454 42.3333 17.8259 63.5 6.01806C84.6667 -5.78974 105.833 0.114158 127 20.7778C148.167 41.4415 169.333 76.8649 190.5 85.7207C211.667 94.5766 232.833 76.8649 243.417 68.009L254 59.1532V130H243.417C232.833 130 211.667 130 190.5 130C169.333 130 148.167 130 127 130C105.833 130 84.6667 130 63.5 130C42.3333 130 21.1667 130 10.5833 130H0L0 76.8649Z"
-            fill={bgColor}
+            fill={colors.PRIMARY_BACKGROUND_COLOR}
           />
         </Svg>
 
-        <View style={[styles.blueContainer, {backgroundColor: bgColor}]}>
+        <View
+          style={[
+            styles.blueContainer,
+            {backgroundColor: colors.PRIMARY_BACKGROUND_COLOR},
+          ]}>
           <View style={{bottom: windowWidth * 0.09}}>
             <TouchableOpacity
               style={styles.container}
@@ -185,7 +220,11 @@ export const DrawerContent = props => {
               <Text style={styles.text}>About Us</Text>
             </TouchableOpacity>
 
-            <View style={[styles.container, {marginTop: windowWidth * 0.1}]}>
+            <View
+              style={[
+                styles.container,
+                {marginTop: windowWidth * 0.1, marginLeft: windowWidth * 0.1},
+              ]}>
               {/*  <FontAwesomeIcon
               style={styles.icon}
               icon={faAdjust}
@@ -193,31 +232,61 @@ export const DrawerContent = props => {
               size={20}
             /> */}
 
-              {theme.mode === 'light' ? (
+              {theme.mode === 'light' && isEnabled === false ? (
                 <>
-                  <Switch
+                  {/* <Switch
                     trackColor={{false: '#767577', true: '#81b0ff'}}
                     style={[styles.icon, {marginLeft: windowWidth * 0.07}]}
                     thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
                     onValueChange={toggleSwitchDark}
-                    value={isDarkTheme}
-                  />
-                  <Text style={[styles.text, {marginLeft: windowWidth * 0.01}]}>
-                    Dark Mode
-                  </Text>
+                    value={isEnabled}
+                  /> */}
+
+                  <FontAwesomeIcon icon={faAdjust} color={'#fff'} size={20} />
+                  <Text style={[styles.text]}>Dark Mode</Text>
+
+                  <View style={{marginLeft: windowWidth * 0.08}}>
+                    <SwitchWithIcons
+                      value={isEnabled}
+                      onValueChange={toggleSwitchDark}
+                      iconColor={{
+                        true: 'rgb(247, 202, 0)',
+                        false: 'rgb(9, 33, 71)',
+                      }}
+                      icon={{
+                        true: require('../images/sunIcon.png'),
+                        false: require('../images/moonIcon.png'),
+                      }}
+                    />
+                  </View>
                 </>
               ) : (
                 <>
-                  <Switch
+                  {/* <Switch
                     trackColor={{false: '#767577', true: '#81b0ff'}}
                     style={[styles.icon, {marginLeft: windowWidth * 0.07}]}
                     thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
                     onValueChange={toggleSwitchLight}
-                    value={isDarkTheme}
-                  />
-                  <Text style={[styles.text, {marginLeft: windowWidth * 0.01}]}>
-                    Light Mode
-                  </Text>
+                    value={isEnabled}
+                    
+                  /> */}
+                  <FontAwesomeIcon icon={faAdjust} color={'#fff'} size={20} />
+                  <Text style={[styles.text]}>Light Mode</Text>
+
+                  <View style={{marginLeft: windowWidth * 0.08}}>
+                    <SwitchWithIcons
+                      value={isEnabled}
+                      onValueChange={toggleSwitchLight}
+                      iconColor={{
+                        true: 'rgb(247, 202, 0)',
+                        false: 'rgb(9, 33, 71)',
+                      }}
+                      icon={{
+                        true: require('../images/sunIcon.png'),
+                        false: require('../images/moonIcon.png'),
+                      }}
+                    />
+                  </View>
                 </>
               )}
             </View>

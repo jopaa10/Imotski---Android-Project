@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 //redux
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 const NextDaysTemplateItem = ({weatherData}) => {
   return (
@@ -24,16 +25,17 @@ const NextDaysTemplateItem = ({weatherData}) => {
 
 const NextDaysTemplate = ({data}) => {
   const theme = useSelector(state => state.themeReducer.theme);
+  const {colors} = useTheme();
   return (
     <ThemeProvider theme={theme}>
       <View style={styles.weekView}>
         <View style={styles.textView}>
-          <Text style={[styles.textDay, {color: theme.PRIMARY_TEXT_COLOR}]}>
+          <Text style={[styles.textDay, {color: colors.PRIMARY_TEXT_COLOR}]}>
             {moment(data.dt * 1000).format('dddd')}
           </Text>
         </View>
         <View style={styles.textView}>
-          <Text style={[styles.textTemp, {color: theme.PRIMARY_TEXT_COLOR}]}>
+          <Text style={[styles.textTemp, {color: colors.PRIMARY_TEXT_COLOR}]}>
             {data.temp.day}
             {'°C'}
           </Text>

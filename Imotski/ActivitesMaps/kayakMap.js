@@ -33,6 +33,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo';
 import {FetchRoute} from '../routeMap/fetchRoute';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 export const KayakMap = () => {
   const [startPoint] = useState({
@@ -144,10 +145,11 @@ export const KayakMap = () => {
   }, []);
 
   const theme = useSelector(state => state.themeReducer.theme);
+  const {colors} = useTheme();
 
   return (
     <>
-      <ThemeProvider>
+      <ThemeProvider theme={theme}>
         <View style={styles.container}>
           {location !== undefined ? (
             <MapView
@@ -317,7 +319,7 @@ export const KayakMap = () => {
               <View
                 style={[
                   styles.modalView,
-                  {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+                  {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
                 ]}>
                 <View
                   style={{
@@ -329,7 +331,7 @@ export const KayakMap = () => {
                       <Text
                         style={[
                           styles.horizontalLine,
-                          {color: theme.PRIMARY_TEXT_COLOR},
+                          {color: colors.PRIMARY_TEXT_COLOR},
                         ]}>
                         _____
                       </Text>
@@ -347,7 +349,7 @@ export const KayakMap = () => {
                               paddingLeft: 5,
                               fontSize: 18,
                               fontWeight: 'bold',
-                              color: theme.PRIMARY_TEXT_COLOR,
+                              color: colors.PRIMARY_TEXT_COLOR,
                             },
                           ]}>
                           Kayak Tour on river Vrljika
@@ -359,9 +361,9 @@ export const KayakMap = () => {
                             icon={faDirections}
                             size={25}
                             style={{marginTop: 5}}
-                            color={theme.DIRECTION_ICON_COLOR}
+                            color={colors.DIRECTION_ICON_COLOR}
                           />
-                          <Text style={{color: theme.PRIMARY_TEXT_COLOR}}>
+                          <Text style={{color: colors.PRIMARY_TEXT_COLOR}}>
                             Directions
                           </Text>
                         </View>
@@ -381,7 +383,7 @@ export const KayakMap = () => {
                           {
                             paddingTop: 5,
                             paddingLeft: 5,
-                            color: theme.PRIMARY_TEXT_COLOR,
+                            color: colors.PRIMARY_TEXT_COLOR,
                           },
                         ]}>
                         Izvor rijeke Vrljike
@@ -394,12 +396,12 @@ export const KayakMap = () => {
                       <FontAwesomeIcon
                         icon={faFlagCheckered}
                         size={20}
-                        color={theme.FONTAWESOME_ICON_COLOR}
+                        color={colors.FONTAWESOME_ICON_COLOR}
                       />
                       <Text
                         style={[
                           styles.startDestinationPoint,
-                          {color: theme.PRIMARY_TEXT_COLOR},
+                          {color: colors.PRIMARY_TEXT_COLOR},
                         ]}>
                         Đogića Most - Zmijavci
                       </Text>
@@ -411,12 +413,12 @@ export const KayakMap = () => {
                       <FontAwesomeIcon
                         icon={faClock}
                         size={20}
-                        color={theme.FONTAWESOME_ICON_COLOR}
+                        color={colors.FONTAWESOME_ICON_COLOR}
                       />
                       <Text
                         style={[
                           styles.startDestinationPoint,
-                          {color: theme.PRIMARY_TEXT_COLOR},
+                          {color: colors.PRIMARY_TEXT_COLOR},
                         ]}>
                         {routeDuration} min
                       </Text>
@@ -425,12 +427,12 @@ export const KayakMap = () => {
                       <FontAwesomeIcon
                         icon={faRoute}
                         size={20}
-                        color={theme.FONTAWESOME_ICON_COLOR}
+                        color={colors.FONTAWESOME_ICON_COLOR}
                       />
                       <Text
                         style={[
                           styles.startDestinationPoint,
-                          {color: theme.PRIMARY_TEXT_COLOR},
+                          {color: colors.PRIMARY_TEXT_COLOR},
                         ]}>
                         {routeDistance} km
                       </Text>
@@ -442,12 +444,12 @@ export const KayakMap = () => {
                       <FontAwesomeIcon
                         icon={faInfoCircle}
                         size={20}
-                        color={theme.FONTAWESOME_ICON_COLOR}
+                        color={colors.FONTAWESOME_ICON_COLOR}
                       />
                       <Text
                         style={[
                           styles.startDestinationPoint,
-                          {color: theme.PRIMARY_TEXT_COLOR},
+                          {color: colors.PRIMARY_TEXT_COLOR},
                         ]}>
                         The directions do not follow the river, they are similar
                         so you can get an idea of where the route is going

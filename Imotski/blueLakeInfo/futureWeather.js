@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 //redux
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 const FutureWeather = ({weatherData}) => {
   return (
@@ -27,11 +28,12 @@ const windowHeight = Dimensions.get('window').height;
 
 const FutureWeatherItem = ({data}) => {
   const theme = useSelector(state => state.themeReducer.theme);
+  const {colors} = useTheme();
 
   return (
     <ThemeProvider>
       <View style={styles.viewWeatherTemp}>
-        <Text style={[styles.hour, {color: theme.PRIMARY_TEXT_COLOR}]}>
+        <Text style={[styles.hour, {color: colors.PRIMARY_TEXT_COLOR}]}>
           {moment(data.dt * 1000).format('HH:mm')}
         </Text>
 
@@ -44,7 +46,7 @@ const FutureWeatherItem = ({data}) => {
           }}
           style={styles.imageIcons}
         />
-        <Text style={[styles.temp, {color: theme.PRIMARY_TEXT_COLOR}]}>
+        <Text style={[styles.temp, {color: colors.PRIMARY_TEXT_COLOR}]}>
           {data.temp + '°C'}
         </Text>
       </View>

@@ -41,6 +41,7 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 export const QuadMap = () => {
   const [quadFirstPoint] = useState({
@@ -126,6 +127,7 @@ export const QuadMap = () => {
   }, []);
 
   const theme = useSelector(state => state.themeReducer.theme);
+  const {colors} = useTheme();
 
   return (
     <>
@@ -243,7 +245,7 @@ export const QuadMap = () => {
             <View
               style={[
                 styles.modalView,
-                {backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR},
+                {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
               ]}>
               <TouchableOpacity
                 style={styles.btnClose}
@@ -252,7 +254,7 @@ export const QuadMap = () => {
                   <FontAwesomeIcon
                     icon={faTimesCircle}
                     size={20}
-                    color={theme.FONTAWESOME_ICON_COLOR}
+                    color={colors.FONTAWESOME_ICON_COLOR}
                   />
                 </View>
               </TouchableOpacity>
@@ -275,7 +277,7 @@ export const QuadMap = () => {
                     <Text
                       style={[
                         styles.horizontalLine,
-                        {color: theme.PRIMARY_TEXT_COLOR},
+                        {color: colors.PRIMARY_TEXT_COLOR},
                       ]}>
                       _____
                     </Text>
@@ -293,7 +295,7 @@ export const QuadMap = () => {
                           fontSize: 18,
                           fontWeight: 'bold',
                           marginBottom: windowWidth * 0.05,
-                          color: theme.PRIMARY_TEXT_COLOR,
+                          color: colors.PRIMARY_TEXT_COLOR,
                         },
                       ]}>
                       Rent a Quad - {modalTitle}
@@ -323,12 +325,12 @@ export const QuadMap = () => {
                         <FontAwesomeIcon
                           icon={faUserAlt}
                           size={20}
-                          color={theme.FONTAWESOME_ICON_COLOR}
+                          color={colors.FONTAWESOME_ICON_COLOR}
                         />
                         <Text
                           style={[
                             styles.startDestinationPoint,
-                            {color: theme.PRIMARY_TEXT_COLOR},
+                            {color: colors.PRIMARY_TEXT_COLOR},
                           ]}>
                           2 Persons
                         </Text>
@@ -341,12 +343,12 @@ export const QuadMap = () => {
                         <FontAwesomeIcon
                           icon={faDirections}
                           size={20}
-                          color={theme.FONTAWESOME_ICON_COLOR}
+                          color={colors.FONTAWESOME_ICON_COLOR}
                         />
                         <Text
                           style={[
                             styles.startDestinationPoint,
-                            {color: theme.PRIMARY_TEXT_COLOR},
+                            {color: colors.PRIMARY_TEXT_COLOR},
                           ]}>
                           Red, Blue, Green lake
                         </Text>
@@ -368,12 +370,12 @@ export const QuadMap = () => {
                         <FontAwesomeIcon
                           icon={faClock}
                           size={20}
-                          color={theme.FONTAWESOME_ICON_COLOR}
+                          color={colors.FONTAWESOME_ICON_COLOR}
                         />
                         <Text
                           style={[
                             styles.startDestinationPoint,
-                            {color: theme.PRIMARY_TEXT_COLOR},
+                            {color: colors.PRIMARY_TEXT_COLOR},
                           ]}>
                           cca 2-3 h
                         </Text>
@@ -386,12 +388,12 @@ export const QuadMap = () => {
                         <FontAwesomeIcon
                           icon={faMoneyBill}
                           size={20}
-                          color={theme.FONTAWESOME_ICON_COLOR}
+                          color={colors.FONTAWESOME_ICON_COLOR}
                         />
                         <Text
                           style={[
                             styles.startDestinationPoint,
-                            {color: theme.PRIMARY_TEXT_COLOR},
+                            {color: colors.PRIMARY_TEXT_COLOR},
                           ]}>
                           cca 100 €
                         </Text>
@@ -406,7 +408,7 @@ export const QuadMap = () => {
                     <Text
                       style={[
                         styles.startDestinationPoint,
-                        {color: theme.PRIMARY_TEXT_COLOR},
+                        {color: colors.PRIMARY_TEXT_COLOR},
                       ]}>
                       Experience and feel the beautiful Imotski and Imotski
                       region completely by visiting as many as 8 lakes and the

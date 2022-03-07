@@ -14,6 +14,7 @@ const windowHeight = Dimensions.get('window').height;
 
 //redux
 import {useSelector} from 'react-redux';
+import {useTheme} from 'styled-components';
 
 const Next48Hours = ({
   weatherData,
@@ -23,6 +24,8 @@ const Next48Hours = ({
   txtColor,
 }) => {
   const navigation = useNavigation();
+
+  const {colors} = useTheme();
 
   const weatherDataArray = [
     {
@@ -60,19 +63,19 @@ const Next48Hours = ({
                   key={index}
                   icon={item.icon}
                   size={40}
-                  color={theme.FONTAWESOME_ICON_COLOR}
+                  color={colors.FONTAWESOME_ICON_COLOR}
                 />
                 <Text
                   style={[
                     styles.textWeatherInfo,
-                    {color: theme.PRIMARY_TEXT_COLOR},
+                    {color: colors.PRIMARY_TEXT_COLOR},
                   ]}>
                   {item.text}
                 </Text>
                 <Text
                   style={[
                     styles.weatherInfo,
-                    {color: theme.PRIMARY_TEXT_COLOR},
+                    {color: colors.PRIMARY_TEXT_COLOR},
                   ]}>
                   {item.weatherD}
                 </Text>
@@ -81,7 +84,7 @@ const Next48Hours = ({
           ))}
         </View>
         <View style={styles.containerWeatherByHour}>
-          <Text style={[styles.todayW, {color: theme.PRIMARY_TEXT_COLOR}]}>
+          <Text style={[styles.todayW, {color: colors.PRIMARY_TEXT_COLOR}]}>
             {today}
           </Text>
           <Pressable onPress={() => navigation.navigate(navigate)}>
