@@ -14,8 +14,8 @@ export const NextDaysForecastRedLake = () => {
     <>
       <ThemeProvider theme={theme}>
         <NextSevenDaysForecastTemplate
-          placeTempLat={43.4471}
-          placeTempLong={17.214}
+          placeTempLat={43.455}
+          placeTempLong={17.1982}
           bgColor={colors.TEMPLATE_BACKGROUND_COLOR}
         />
       </ThemeProvider>

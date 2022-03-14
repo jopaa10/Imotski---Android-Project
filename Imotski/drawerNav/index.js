@@ -96,13 +96,13 @@ export const DrawerContent = props => {
   //console.log(theme);
 
   useEffect(async () => {
-    const getButton = await AsyncStorage.getItem('theme');
+    const getTheme = await AsyncStorage.getItem('theme');
 
-    console.log(getButton);
+    console.log(getTheme);
 
-    if (getButton === 'dark') {
+    if (getTheme === 'dark') {
       setIsEnabled(true);
-    } else if (getButton === 'light') {
+    } else if (getTheme === 'light') {
       setIsEnabled(false);
     }
   }, []);
@@ -119,7 +119,7 @@ export const DrawerContent = props => {
             <>
               <TouchableOpacity
                 style={{bottom: windowWidth * 0.05}}
-                onPress={() => props.navigation.navigate('User')}>
+                onPress={() => props.navigation.navigate('Sign In')}>
                 <Image
                   style={styles.image}
                   source={require('../images/userPhoto.jpg')}
@@ -184,18 +184,31 @@ export const DrawerContent = props => {
               />
               <Text style={styles.text}>Info</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.container}
-              onPress={() => props.navigation.navigate('User')}>
-              <FontAwesomeIcon
-                style={styles.icon}
-                icon={faUserAlt}
-                color={'#fff'}
-                size={20}
-              />
-              <Text style={styles.text}>User</Text>
-            </TouchableOpacity>
+            {!state ? (
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() => props.navigation.navigate('Sign In')}>
+                <FontAwesomeIcon
+                  style={styles.icon}
+                  icon={faUserAlt}
+                  color={'#fff'}
+                  size={20}
+                />
+                <Text style={styles.text}>User</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() => props.navigation.navigate('Profile Page')}>
+                <FontAwesomeIcon
+                  style={styles.icon}
+                  icon={faUserAlt}
+                  color={'#fff'}
+                  size={20}
+                />
+                <Text style={styles.text}>User</Text>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
               style={[styles.container, {marginTop: windowWidth * 0.1}]}

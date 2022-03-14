@@ -6,6 +6,9 @@ import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
 //tab for bottom tab navigation
 const QuadBottomTab = createBottomTabNavigator();
 
+//stack navigator for Overview and Gallery screens
+const QuadHorizontalStack = createStackNavigator();
+
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
@@ -17,15 +20,19 @@ import {windowWidth} from '../constants/global';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RedLakeInfo} from '../redLakeInfo';
 import {QuadMap} from '../ActivitesMaps/quadMap';
+import {createStackNavigator} from '@react-navigation/stack';
+import {QuadGallery} from './quadGallery';
+import {useTheme} from 'styled-components';
 
 //blue lake - details
 export const QuadBottomNav = () => {
   return (
     <QuadBottomTab.Navigator
+      screenOptions={{unmountOnBlur: true}}
       tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
       <QuadBottomTab.Screen
         name="Quad Screen"
-        component={QuadScreen}
+        component={QuadHorizontalNav}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -59,13 +66,35 @@ export const QuadBottomNav = () => {
   );
 };
 
+export const QuadHorizontalNav = () => {
+  return (
+    <QuadHorizontalStack.Navigator>
+      <QuadHorizontalStack.Screen
+        name="Overview"
+        component={QuadScreen}
+        options={{headerShown: false}}
+      />
+      <QuadHorizontalStack.Screen
+        name="Gallery"
+        component={QuadGallery}
+        options={{headerShown: false}}
+      />
+    </QuadHorizontalStack.Navigator>
+  );
+};
+
 export const QuadScreen = () => {
+  const {colors} = useTheme();
+
   return (
     <ActivitiesInfoTemplate
       image={require('../images/quadActivity.jpg')}
       city={'Imotski'}
       sight={'Green Lake'}
+      color2={'grey'}
+      color={colors.PRIMARY_TEXT_COLOR}
       title={'Tour by Quad'}
+      navigate={'Gallery'}
       details={`Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`}
     />
   );

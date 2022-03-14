@@ -6,6 +6,9 @@ import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
 //tab for bottom tab navigation
 const KayakBottomTab = createBottomTabNavigator();
 
+//stack navigator for Overview and Gallery screens
+const KayakHorizontalStack = createStackNavigator();
+
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
@@ -17,15 +20,19 @@ import {windowWidth} from '../constants/global';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RedLakeInfo} from '../redLakeInfo';
 import {KayakMap} from '../ActivitesMaps/kayakMap';
+import {createStackNavigator} from '@react-navigation/stack';
+import {KayakGallery} from './kayakGallery';
+import {useTheme} from 'styled-components';
 
 //blue lake - details
 export const KayakBottomNav = () => {
   return (
     <KayakBottomTab.Navigator
+      screenOptions={{unmountOnBlur: true}}
       tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
       <KayakBottomTab.Screen
         name="Kayak Screen"
-        component={Kayaking}
+        component={KayakHorizontalNav}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -59,11 +66,32 @@ export const KayakBottomNav = () => {
   );
 };
 
+export const KayakHorizontalNav = () => {
+  return (
+    <KayakHorizontalStack.Navigator>
+      <KayakHorizontalStack.Screen
+        name="Overview"
+        component={Kayaking}
+        options={{headerShown: false}}
+      />
+      <KayakHorizontalStack.Screen
+        name="Gallery"
+        component={KayakGallery}
+        options={{headerShown: false}}
+      />
+    </KayakHorizontalStack.Navigator>
+  );
+};
+
 export const Kayaking = () => {
+  const {colors} = useTheme();
+
   return (
     <ActivitiesInfoTemplate
       image={require('../images/kayakAdventure.jpg')}
       city={'Imotski'}
+      color={colors.PRIMARY_TEXT_COLOR}
+      color2={'grey'}
       sight={'Vrljika river'}
       title={'Kayak adventures on Vrljika river'}
       details={`Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`}

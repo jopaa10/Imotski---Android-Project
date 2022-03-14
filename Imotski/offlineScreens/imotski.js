@@ -36,16 +36,11 @@ import Swiper from 'react-native-swiper';
 
 //animatable
 import * as Animatable from 'react-native-animatable';
+import {SwiperTemplate} from '../swiperTemplate';
 
 export const Imotski = () => {
   const navigation = useNavigation();
   const [displayAnimation, setDisplayAnimation] = useState('flex');
-
-  //measure where is second view
-  const [measureView, setMeasure] = useState({
-    width: null,
-    height: null,
-  });
 
   const DATA = [
     {
@@ -71,211 +66,67 @@ export const Imotski = () => {
     {
       key: 3,
       name: 'Fortress Topana',
-      image: require('../images/topanaFortressH.jpg'),
-      screen: '',
-      bgColor: '#CA9A8C',
+      image: require('../images/fortressImotski.jpg'),
+      screen: 'Fortress Topana Info',
+      bgColor: '#7d8572',
+      fontAwBgColor: '#7d8572',
+      fontAwColor: 'white',
       display: 'none',
     },
   ];
 
-  /*   const scrollToView = index => {
-    //console.log(index);
-    ref.scrollTo({
-      x: 0,
-      y: windowHeight * index,
-      animated: true,
-    });
-  }; */
-
-  /* const scrollUpDown = index => {
-    console.log(index);
-
-    if (index === 3) {
-      ref.scrollTo({
-        x: 0,
-        y: windowHeight * (index - 2),
-        animated: true,
-      });
-    }
-    if (index === 1) {
-      ref.scrollTo({
-        x: 0,
-        y: windowHeight * (index - 1),
-        animated: true,
-      });
-    } else {
-      ref.scrollTo({
-        x: 0,
-        y: windowHeight * (index - 1),
-        animated: true,
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (viewRef.current && textRef.current) {
-      textRef.current.measureLayout(viewRef.current, (width, height) => {
-        setMeasure({width: width, height: height});
-      });
-    }
-  }, [measureView]); */
-
   return (
     <>
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        <Swiper
-          horizontal={false}
-          loop={false}
-          removeClippedSubviews={false}
-          showsHorizontalScrollIndicator={true}
-          paginationStyle={{
-            justifyContent: 'flex-start',
-            paddingTop: windowWidth * 0.22,
-          }}
-          dot={
-            <View
-              style={{
-                backgroundColor: '#fff',
-                width: 9,
-                height: 9,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: 3,
-              }}
-            />
-          }
-          activeDot={
-            <View
-              style={{
-                backgroundColor: '#8E8E8E',
-                width: 9,
-                height: 9,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: 3,
-              }}
-            />
-          }>
-          {DATA.map((item, index, indexAnimated) => (
-            <>
-              <View key={index}>
-                <Image style={styles.image} source={item.image} />
-                <View
-                  style={{
-                    width: windowWidth,
-                  }}>
-                  <Text style={styles.txt}>{item.name}</Text>
-                  <Pressable
-                    style={[styles.btn, {backgroundColor: item.bgColor}]}
-                    onPress={() => navigation.navigate(item.screen)}>
-                    <Text style={styles.txtBtn}>Explore</Text>
-                  </Pressable>
-                  <Pressable
-                    style={[
-                      styles.btnCircle,
-                      {backgroundColor: item.fontAwBgColor},
-                    ]}
-                    onPress={() => navigation.goBack()}>
-                    <FontAwesomeIcon
-                      icon={faReply}
-                      style={[styles.btnCircleIcon, {color: item.fontAwColor}]}
-                      size={30}
-                    />
-                  </Pressable>
-                </View>
-              </View>
-              <Animatable.View
-                key={indexAnimated}
-                animation={'bounce'}
-                easing={'ease-out'}
-                iterationCount={3}
-                onAnimationEnd={() => setDisplayAnimation('none')}
+      <SwiperTemplate
+        content={DATA.map((item, index, indexAnimated) => (
+          <>
+            <View key={index}>
+              <Image style={styles.image} source={item.image} />
+              <View
                 style={{
-                  bottom: windowHeight * 0.4,
-                  alignItems: 'center',
-                  display: item.display,
+                  width: windowWidth,
                 }}>
-                <FontAwesomeIcon
-                  icon={faAngleDoubleDown}
-                  color={'white'}
-                  size={40}
-                />
-                <Text style={{color: 'white'}}>Swipe down for more</Text>
-              </Animatable.View>
-            </>
-          ))}
-        </Swiper>
-      </View>
-
-      {/*  <ScrollView ref={ref => setViewRef(ref)}>
-        {DATA.map(
-          (item, i) => (
-            (index = i),
-            (
-              <TouchableOpacity onPress={() => scrollToView(item.key)}>
-                <View key={index} ref={item.ref}>
-                  <Image style={styles.image} source={item.image} />
-
-                   <TouchableOpacity
-                    style={[
-                      styles.dots,
-                      {
-                        backgroundColor: item.bgDot,
-                      },
-                    ]}
-                    onPress={() => scrollUpDown((index = 1))}
+                <Text style={styles.txt}>{item.name}</Text>
+                <Pressable
+                  style={[styles.btn, {backgroundColor: item.bgColor}]}
+                  onPress={() => navigation.navigate(item.screen)}>
+                  <Text style={styles.txtBtn}>Explore</Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    styles.btnCircle,
+                    {backgroundColor: item.fontAwBgColor},
+                  ]}
+                  onPress={() => navigation.goBack()}>
+                  <FontAwesomeIcon
+                    icon={faReply}
+                    style={[styles.btnCircleIcon, {color: item.fontAwColor}]}
+                    size={30}
                   />
-
-                  <TouchableOpacity
-                    style={[
-                      styles.dots,
-                      {
-                        backgroundColor: item.bgDot2,
-                        //top: windowWidth * 0.15,
-                      },
-                    ]}
-                    onPress={() => scrollUpDown((index = 2))}
-                  />
-
-                  <TouchableOpacity
-                    style={[
-                      styles.dots,
-                      {
-                        backgroundColor: item.bgDot3,
-                        //top: windowWidth * 0.2,
-                      },
-                    ]}
-                    onPress={() => scrollUpDown((index = 3))}
-                  /> 
-
-                  <Text style={styles.txt}>{item.name}</Text>
-                  <Pressable
-                    style={[styles.btn, {backgroundColor: item.bgColor}]}
-                    onPress={() => navigation.navigate(item.screen)}>
-                    <Text style={styles.txtBtn}>Explore</Text>
-                  </Pressable>
-                  <Pressable
-                    style={[
-                      styles.btnCircle,
-                      {backgroundColor: item.fontAwBgColor},
-                    ]}
-                    onPress={() => navigation.goBack()}>
-                    <FontAwesomeIcon
-                      icon={faReply}
-                      style={[styles.btnCircleIcon, {color: item.fontAwColor}]}
-                      size={30}
-                    />
-                  </Pressable>
-                </View>
-              </TouchableOpacity>
-            )
-          ),
-        )}
-      </ScrollView> */}
+                </Pressable>
+              </View>
+            </View>
+            <Animatable.View
+              key={indexAnimated}
+              animation={'bounce'}
+              easing={'ease-out'}
+              iterationCount={3}
+              onAnimationEnd={() => setDisplayAnimation('none')}
+              style={{
+                bottom: windowHeight * 0.4,
+                alignItems: 'center',
+                display: item.display,
+              }}>
+              <FontAwesomeIcon
+                icon={faAngleDoubleDown}
+                color={'white'}
+                size={40}
+              />
+              <Text style={{color: 'white'}}>Swipe down for more</Text>
+            </Animatable.View>
+          </>
+        ))}
+      />
     </>
   );
 };

@@ -165,10 +165,11 @@ const styles = StyleSheet.create({
   container: {
     flexWrap: 'wrap',
     height: 'auto',
+    width: windowWidth * 0.9,
+    //flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     bottom: windowWidth * 0.2,
-    elevation: 5,
   },
 
   centeredView: {

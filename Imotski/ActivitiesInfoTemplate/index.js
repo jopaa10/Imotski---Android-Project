@@ -30,7 +30,7 @@ export const ActivitiesInfoTemplate = props => {
   const DATA = [
     {
       index: 1,
-      navigate: 'Blue Lake Info',
+      navigate: 'Overview',
       title: 'Overview',
       color: props.color,
     },
@@ -40,13 +40,6 @@ export const ActivitiesInfoTemplate = props => {
       navigate: 'Gallery',
       title: 'Gallery',
       color: props.color2,
-    },
-
-    {
-      index: 3,
-      navigate: 'Review',
-      title: 'Review',
-      color: props.color3,
     },
   ];
 
@@ -63,7 +56,7 @@ export const ActivitiesInfoTemplate = props => {
             <Image style={styles.image} source={props.image} />
             <Pressable
               style={styles.arrowLeftIcon}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.navigate('Explore Imotski')}>
               <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
             </Pressable>
             <Text style={styles.txtCity}>{props.city}</Text>
@@ -79,17 +72,36 @@ export const ActivitiesInfoTemplate = props => {
               {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
             ]}>
             <View style={styles.horizontalTabs}>
-              <Text style={{color: colors.PRIMARY_TEXT_COLOR}}>Overview</Text>
-              <Text>Gallery</Text>
+              {DATA.map((item, index) => (
+                <>
+                  <Pressable
+                    key={index}
+                    onPress={() => navigation.navigate(item.navigate)}>
+                    <Text style={{color: item.color}}>{item.title}</Text>
+                  </Pressable>
+                </>
+              ))}
             </View>
             <Text style={[styles.txtTitle, {color: colors.PRIMARY_TEXT_COLOR}]}>
               {' '}
               {props.title}
             </Text>
-            <Text
-              style={[styles.txtInfoBL, {color: colors.PRIMARY_TEXT_COLOR}]}>
-              {props.details}
-            </Text>
+            <View
+              style={{
+                width: windowWidth,
+                flex: 1,
+                flexDirection: 'row',
+                height: 'auto',
+                justifyContent: 'center',
+                alignItems: 'center',
+                //marginHorizontal: windowWidth * 0.05,
+                marginBottom: windowWidth * 0.05,
+              }}>
+              <Text
+                style={[styles.txtInfoBL, {color: colors.PRIMARY_TEXT_COLOR}]}>
+                {props.details}
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </ThemeProvider>
@@ -135,12 +147,12 @@ const styles = StyleSheet.create({
     borderWidth: 1, */
   },
   txtInfoBL: {
-    flex: 1,
+    //flex: 1,
     textAlign: 'justify',
     marginTop: 10,
     fontSize: 15,
     marginHorizontal: 20,
-    marginVertical: 20,
+    //marginVertical: 20,
   },
   image: {
     width: windowWidth,

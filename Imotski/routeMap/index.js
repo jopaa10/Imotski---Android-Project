@@ -13,24 +13,10 @@ import Geolocation from 'react-native-geolocation-service';
 //fetch route for drawing route from current position to destination
 import {FetchRoute} from './fetchRoute';
 
-//mapbox
-import MapboxGL from '@react-native-mapbox-gl/maps';
-
-//mapbox directions
-import MapboxDirectionsFactory from '@mapbox/mapbox-sdk/services/directions';
-import {lineString as makeLineString} from '@turf/helpers';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 import {useNavigation} from '@react-navigation/core';
-
-//mapbox token
-const accessToken =
-  'pk.eyJ1Ijoiam9wYWExMCIsImEiOiJja3RuZHRwaHMwMXY3MnBqbTBibDZjb2JmIn0.NoaI49NCq87KwpDClETgmg';
-
-MapboxGL.setAccessToken(accessToken);
-
-//set mapbox token
-const directionsClient = MapboxDirectionsFactory({accessToken});
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const RouteMap = ({destinationCoordLat, destinationCoordLong}) => {
   const navigation = useNavigation();
@@ -65,23 +51,182 @@ export const RouteMap = ({destinationCoordLat, destinationCoordLong}) => {
     }
   };
 
-  /* const renderAnotation = () => {
-    return (
-      <MapboxGL.PointAnnotation
-        key="pointAnnotation"
-        id="pointAnnotation"
-        coordinate={destinationPoint}>
-        <View style={styles.destinationPoint} />
+  const [isEnabled, setIsEnabled] = useState(false);
 
-        <View>
-          <FontAwesomeIcon icon={faMapMarkerAlt} color={'red'} size={25} />
-        </View>
-      </MapboxGL.PointAnnotation>
-    );
-  }; */
+  const mapStyleDarkMode = [
+    {
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#263c3f',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#6b9a76',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#38414e',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#212a37',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#9ca5b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#1f2835',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#f3d19c',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#2f3948',
+        },
+      ],
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#515c6d',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+  ];
 
-  useEffect(() => {
+  const mapStyleCustomeMode = [];
+
+  useEffect(async () => {
     handleLocationPermission();
+
+    const getTheme = await AsyncStorage.getItem('theme');
+
+    if (getTheme === 'dark') {
+      setIsEnabled(true);
+    } else if (getTheme === 'light') {
+      setIsEnabled(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -164,46 +309,12 @@ export const RouteMap = ({destinationCoordLat, destinationCoordLong}) => {
 
   return (
     <View style={styles.container}>
-      {/* <MapboxGL.MapView
-        style={styles.map}
-        centerCoordinate={currentCoord}
-        userTrackingMode={1}>
-        <MapboxGL.UserLocation
-          renderMode={'normal'}
-          visible={true}
-          onUpdate={location => {
-            const currentCoords = [
-              location.coords.longitude,
-              location.coords.latitude,
-            ];
-            setCurrentCoord(currentCoords);
-          }}
-        /> */}
-      {/* {route && (
-          <MapboxGL.ShapeSource id="shapeSource" shape={route}>
-            <MapboxGL.LineLayer
-              id="routeFill"
-              style={{
-                lineWidth: 5,
-                lineJoin: 'bevel',
-                lineColor: 'red',
-              }}
-            />
-          </MapboxGL.ShapeSource>
-        )}
-        <MapboxGL.Camera
-          animationMode={'flyTo'}
-          followUserLocation={true}
-          centerCoordinate={currentCoord}
-          animationDuration={1100}
-        />
-        {renderAnotation()}
-      </MapboxGL.MapView> */}
       {location && (
         <MapView
           testID="map"
           ref={mapRef}
           style={styles.map}
+          customMapStyle={isEnabled ? mapStyleDarkMode : mapStyleCustomeMode}
           provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           initialRegion={{

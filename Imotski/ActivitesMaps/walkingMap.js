@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,8 @@ import MapViewDirections from 'react-native-maps-directions';
 import Modal from 'react-native-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTheme} from 'styled-components';
 
 export const WalkingMap = () => {
   const viewRef = useRef(null);
@@ -40,6 +42,172 @@ export const WalkingMap = () => {
   const [distance, setDistance] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const mapStyleDarkMode = [
+    {
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#263c3f',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#6b9a76',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#38414e',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#212a37',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#9ca5b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#1f2835',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#f3d19c',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#2f3948',
+        },
+      ],
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#515c6d',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+  ];
+
+  const mapStyleCustomeMode = [];
 
   const DATA = [
     {
@@ -229,6 +397,18 @@ export const WalkingMap = () => {
     setDescription(description);
   };
 
+  useEffect(async () => {
+    const getTheme = await AsyncStorage.getItem('theme');
+
+    if (getTheme === 'dark') {
+      setIsEnabled(true);
+    } else if (getTheme === 'light') {
+      setIsEnabled(false);
+    }
+  }, []);
+
+  const {colors} = useTheme();
+
   return (
     <>
       <Swiper
@@ -274,6 +454,9 @@ export const WalkingMap = () => {
                 testID="map"
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
+                customMapStyle={
+                  isEnabled ? mapStyleDarkMode : mapStyleCustomeMode
+                }
                 showsUserLocation={true}
                 initialRegion={{
                   latitude: item.initialRegion.latitude,
@@ -314,19 +497,59 @@ export const WalkingMap = () => {
                   </View>
                 </Marker>
               </MapView>
-              <View style={styles.bikeRouteDetails}>
+              <View
+                style={[
+                  styles.bikeRouteDetails,
+                  {backgroundColor: colors.MODAL_BACKGROUND_COLOR},
+                ]}>
                 <View style={styles.bikeRouteDetailsColumn}>
                   <View style={styles.bikeSingleDetail}>
-                    <Text style={styles.bikeRouteTitle}>Distance</Text>
-                    <Text style={styles.bikeRouteInfo}>{item.distance} km</Text>
+                    <Text
+                      style={[
+                        styles.bikeRouteTitle,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      Distance
+                    </Text>
+                    <Text
+                      style={[
+                        styles.bikeRouteInfo,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      {item.distance} km
+                    </Text>
                   </View>
                   <View style={styles.bikeSingleDetail}>
-                    <Text style={styles.bikeRouteTitle}>Time</Text>
-                    <Text style={styles.bikeRouteInfo}>{item.time}</Text>
+                    <Text
+                      style={[
+                        styles.bikeRouteTitle,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      Time
+                    </Text>
+                    <Text
+                      style={[
+                        styles.bikeRouteInfo,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      {item.time}
+                    </Text>
                   </View>
                   <View style={styles.bikeSingleDetail}>
-                    <Text style={styles.bikeRouteTitle}>Weight</Text>
-                    <Text style={styles.bikeRouteInfo}>{item.weight}</Text>
+                    <Text
+                      style={[
+                        styles.bikeRouteTitle,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      Weight
+                    </Text>
+                    <Text
+                      style={[
+                        styles.bikeRouteInfo,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      {item.weight}
+                    </Text>
                   </View>
                 </View>
               </View>

@@ -5,8 +5,11 @@ import {TemplateInfo} from '../infoTemplate';
 
 //gallery template
 import GalleryTemplate from '../galleryTemplate';
+import {useTheme} from 'styled-components';
 
 export const GalleryRedLake = () => {
+  const {colors} = useTheme();
+
   return (
     <>
       <TemplateInfo
@@ -15,7 +18,7 @@ export const GalleryRedLake = () => {
         sight={'Red Lake'}
         title={'Red Lake'}
         color={'grey'}
-        color2={'black'}
+        color2={colors.PRIMARY_TEXT_COLOR}
         color3={'grey'}
         gallery={
           <GalleryTemplate

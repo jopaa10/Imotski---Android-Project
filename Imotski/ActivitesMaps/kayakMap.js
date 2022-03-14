@@ -34,6 +34,7 @@ import {FetchRoute} from '../routeMap/fetchRoute';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const KayakMap = () => {
   const [startPoint] = useState({
@@ -84,6 +85,172 @@ export const KayakMap = () => {
       longitude: 17.214988,
     },
   ]);
+
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const mapStyleDarkMode = [
+    {
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#263c3f',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#6b9a76',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#38414e',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#212a37',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#9ca5b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#1f2835',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#f3d19c',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#2f3948',
+        },
+      ],
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#515c6d',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+  ];
+
+  const mapStyleCustomeMode = [];
 
   const getUserCurrentCoordinates = () => {
     Geolocation.getCurrentPosition(
@@ -140,8 +307,15 @@ export const KayakMap = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     handleLocationPermission();
+    const getTheme = await AsyncStorage.getItem('theme');
+
+    if (getTheme === 'dark') {
+      setIsEnabled(true);
+    } else if (getTheme === 'light') {
+      setIsEnabled(false);
+    }
   }, []);
 
   const theme = useSelector(state => state.themeReducer.theme);
@@ -157,6 +331,9 @@ export const KayakMap = () => {
               style={styles.map}
               provider={PROVIDER_GOOGLE}
               showsUserLocation={true}
+              customMapStyle={
+                isEnabled ? mapStyleDarkMode : mapStyleCustomeMode
+              }
               ref={mapRef}
               initialRegion={{
                 latitude: 43.4347607,
@@ -204,7 +381,10 @@ export const KayakMap = () => {
                 <View>
                   <Image
                     source={require('../images/finishIcon.png')}
-                    style={styles.destinationPoint}
+                    style={[
+                      styles.destinationPoint,
+                      {tintColor: colors.PRIMARY_TEXT_COLOR},
+                    ]}
                   />
                 </View>
               </Marker>
@@ -247,6 +427,9 @@ export const KayakMap = () => {
               ref={mapRef}
               style={styles.map}
               provider={PROVIDER_GOOGLE}
+              customMapStyle={
+                isEnabled ? mapStyleDarkMode : mapStyleCustomeMode
+              }
               showsUserLocation={true}
               initialRegion={{
                 latitude: 43.4347607,

@@ -17,6 +17,7 @@ const windowHeight = Dimensions.get('window').height;
 
 //navigation
 import {useNavigation} from '@react-navigation/native';
+import {useTheme} from 'styled-components';
 
 export const ReviewScreen = () => {
   const [reviewData, setReviewData] = useState([]);
@@ -48,6 +49,8 @@ export const ReviewScreen = () => {
 
   console.log(reviewData.length);
 
+  const {colors} = useTheme();
+
   return (
     <>
       <TemplateInfo
@@ -56,7 +59,7 @@ export const ReviewScreen = () => {
         sight={'Blue Lake'}
         color={'grey'}
         color2={'grey'}
-        color3={'black'}
+        color3={colors.PRIMARY_TEXT_COLOR}
         review={
           <>
             {reviewData.length < 1 ? (
@@ -68,11 +71,27 @@ export const ReviewScreen = () => {
                   />
                 </View>
                 <View style={styles.reviewText}>
-                  <Text style={styles.reviewNameContainer}>Petar</Text>
-                  <Text style={styles.reviewCommentContainer}>
+                  <Text
+                    style={[
+                      styles.reviewNameContainer,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    Petar
+                  </Text>
+                  <Text
+                    style={[
+                      styles.reviewCommentContainer,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
                     There is no reviews at this moment!
                   </Text>
-                  <Text style={styles.reviewDateContainer}>2021-10-10</Text>
+                  <Text
+                    style={[
+                      styles.reviewDateContainer,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    2021-10-10
+                  </Text>
                 </View>
               </View>
             ) : (
@@ -88,13 +107,25 @@ export const ReviewScreen = () => {
                       />
                     </View>
                     <View style={styles.reviewText}>
-                      <Text style={styles.reviewNameContainer}>
+                      <Text
+                        style={[
+                          styles.reviewNameContainer,
+                          {color: colors.PRIMARY_TEXT_COLOR},
+                        ]}>
                         {item.postedBy.name}
                       </Text>
-                      <Text style={styles.reviewCommentContainer}>
+                      <Text
+                        style={[
+                          styles.reviewCommentContainer,
+                          {color: colors.PRIMARY_TEXT_COLOR},
+                        ]}>
                         {item.body}
                       </Text>
-                      <Text style={styles.reviewDateContainer}>
+                      <Text
+                        style={[
+                          styles.reviewDateContainer,
+                          {color: colors.PRIMARY_TEXT_COLOR},
+                        ]}>
                         {item.time.substring(0, 10)}
                       </Text>
                     </View>

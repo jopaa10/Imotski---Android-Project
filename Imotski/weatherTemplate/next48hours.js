@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -87,11 +94,11 @@ const Next48Hours = ({
           <Text style={[styles.todayW, {color: colors.PRIMARY_TEXT_COLOR}]}>
             {today}
           </Text>
-          <Pressable onPress={() => navigation.navigate(navigate)}>
+          <TouchableOpacity onPress={() => navigation.navigate(navigate)}>
             <Text style={[styles.followingDaysW, {color: txtColor}]}>
               {followingDays}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </ThemeProvider>
     </>
@@ -107,14 +114,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
-    bottom: windowWidth * 0.25,
-    alignItems: 'center',
+    bottom: windowWidth * 0.3,
+    alignContent: 'center',
   },
   containerWeatherByHour: {
     flexDirection: 'row',
     width: windowWidth,
     height: 'auto',
-    bottom: windowWidth * 0.28,
+    bottom: windowWidth * 0.3,
     marginLeft: windowWidth * 0.1,
   },
   viewWeatherInfo: {
@@ -139,12 +146,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
     marginRight: 20,
+    top: windowWidth * 0.05,
   },
   followingDaysW: {
     fontSize: 15,
     color: '#1F83BB',
     fontWeight: 'bold',
     marginLeft: windowWidth * 0.3,
+    paddingTop: windowWidth * 0.05,
   },
   hourWeatherView: {
     width: windowWidth,

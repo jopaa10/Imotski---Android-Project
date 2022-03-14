@@ -106,7 +106,7 @@ export const SignUp = props => {
             {/* <Waves navigate={'User'} /> */}
             <View
               style={{
-                height: windowHeight * 0.35,
+                height: windowHeight * 0.3,
                 backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
               }}>
               <TouchableOpacity
@@ -123,9 +123,9 @@ export const SignUp = props => {
             </View>
             <Svg
               style={styles.waves}
-              width="375"
+              width={windowWidth}
               height={windowHeight * 0.21}
-              viewBox={`0 0 375 ${windowHeight * 0.21}`}
+              viewBox={`0 0 ${windowWidth} ${windowHeight * 0.21}`}
               fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <G filter="url(#filter0_i_718_2)">
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     bottom: windowHeight * 0.2,
   },
   arrowLeftIcon: {
-    marginTop: windowWidth * 0.15,
+    marginTop: windowWidth * 0.1,
     marginHorizontal: windowWidth * 0.05,
   },
 });

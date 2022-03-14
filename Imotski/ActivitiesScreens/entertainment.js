@@ -120,7 +120,7 @@ export const EntertainmentScreen = props => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{height: windowHeight}}>
-        <View style={{height: windowHeight * 0.27, backgroundColor: '#1F83BB'}}>
+        <View style={{height: windowHeight * 0.27, backgroundColor: '#BB22AC'}}>
           <TouchableOpacity
             style={styles.arrowLeftIcon}
             onPress={() => navigation.goBack()}>

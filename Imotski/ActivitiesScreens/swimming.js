@@ -12,18 +12,25 @@ import {RedLakeInfo} from '../redLakeInfo';
 //tab for bottom tab navigation
 const SwimmingBottomTab = createBottomTabNavigator();
 
+//stack navigator for Overview and Gallery screens
+const SwimmingHorizontalStack = createStackNavigator();
+
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
+import {createStackNavigator} from '@react-navigation/stack';
+import {SwimmingGallery} from './swimmingGallery';
+import {useTheme} from 'styled-components';
 
 //blue lake - details
 export const SwimmingBottomNav = () => {
   return (
     <SwimmingBottomTab.Navigator
+      screenOptions={{unmountOnBlur: true}}
       tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
       <SwimmingBottomTab.Screen
         name="Swimming Screen"
-        component={SwimmingScreen}
+        component={SwimmingHorizontalNav}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -57,12 +64,34 @@ export const SwimmingBottomNav = () => {
   );
 };
 
+export const SwimmingHorizontalNav = () => {
+  return (
+    <SwimmingHorizontalStack.Navigator>
+      <SwimmingHorizontalStack.Screen
+        name="Overview"
+        component={SwimmingScreen}
+        options={{headerShown: false}}
+      />
+      <SwimmingHorizontalStack.Screen
+        name="Gallery"
+        component={SwimmingGallery}
+        options={{headerShown: false}}
+      />
+    </SwimmingHorizontalStack.Navigator>
+  );
+};
+
 export const SwimmingScreen = () => {
+  const {colors} = useTheme();
+
   return (
     <ActivitiesInfoTemplate
       image={require('../images/swimBlueLake.jpg')}
       city={'Imotski'}
       sight={'Blue Lake'}
+      color2={'grey'}
+      color={colors.PRIMARY_TEXT_COLOR}
+      navigate={'Gallery'}
       title={'Swimming in Lake'}
       details={`Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`}
     />

@@ -42,6 +42,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const QuadMap = () => {
   const [quadFirstPoint] = useState({
@@ -60,6 +61,172 @@ export const QuadMap = () => {
   const [destinationPoint, setDestinationPoint] = useState([]);
   let [polylineCoordinates, setPolylineCoordinates] = useState(0);
   let [route, setRoute] = useState(0);
+
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const mapStyleDarkMode = [
+    {
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#263c3f',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#6b9a76',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#38414e',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#212a37',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#9ca5b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#1f2835',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#f3d19c',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#2f3948',
+        },
+      ],
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#515c6d',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+  ];
+
+  const mapStyleCustomeMode = [];
 
   const openModal = (title, destinationCoords) => {
     setModalIsOpen(true);
@@ -122,8 +289,16 @@ export const QuadMap = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     handleLocationPermission();
+
+    const getTheme = await AsyncStorage.getItem('theme');
+
+    if (getTheme === 'dark') {
+      setIsEnabled(true);
+    } else if (getTheme === 'light') {
+      setIsEnabled(false);
+    }
   }, []);
 
   const theme = useSelector(state => state.themeReducer.theme);
@@ -138,6 +313,9 @@ export const QuadMap = () => {
               testID="map"
               ref={mapRef}
               style={styles.map}
+              customMapStyle={
+                isEnabled ? mapStyleDarkMode : mapStyleCustomeMode
+              }
               provider={PROVIDER_GOOGLE}
               showsUserLocation={true}
               initialRegion={{
@@ -158,7 +336,10 @@ export const QuadMap = () => {
                 <View style={{borderColor: 'rgba(0,0,0,0)', borderWidth: 1}}>
                   <Image
                     source={require('../images/quadIcon.jpg')}
-                    style={styles.quadPoint}
+                    style={[
+                      styles.quadPoint,
+                      {tintColor: colors.PRIMARY_TEXT_COLOR},
+                    ]}
                   />
                 </View>
               </Marker>
@@ -173,7 +354,10 @@ export const QuadMap = () => {
                 <View style={{borderColor: 'transparent', borderWidth: 1}}>
                   <Image
                     source={require('../images/quadIcon.jpg')}
-                    style={styles.quadPoint}
+                    style={[
+                      styles.quadPoint,
+                      {tintColor: colors.PRIMARY_TEXT_COLOR},
+                    ]}
                   />
                 </View>
               </Marker>
@@ -189,6 +373,9 @@ export const QuadMap = () => {
           ) : (
             <MapView
               testID="map"
+              customMapStyle={
+                isEnabled ? mapStyleDarkMode : mapStyleCustomeMode
+              }
               ref={mapRef}
               style={styles.map}
               provider={PROVIDER_GOOGLE}

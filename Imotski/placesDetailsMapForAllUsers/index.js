@@ -36,6 +36,8 @@ import {
   faStar,
   faDirections,
 } from '@fortawesome/free-solid-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTheme} from 'styled-components';
 
 Geocoder.init('AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo');
 
@@ -49,7 +51,171 @@ const MarkedPlaces = () => {
   });
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [directionModal, setDirectionModal] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const mapStyleDarkMode = [
+    {
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#242f3e',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative.locality',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#263c3f',
+        },
+      ],
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#6b9a76',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#38414e',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#212a37',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#9ca5b3',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#746855',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [
+        {
+          color: '#1f2835',
+        },
+      ],
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#f3d19c',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#2f3948',
+        },
+      ],
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#d59563',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [
+        {
+          color: '#515c6d',
+        },
+      ],
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.stroke',
+      stylers: [
+        {
+          color: '#17263c',
+        },
+      ],
+    },
+  ];
+
+  const mapStyleCustomeMode = [];
 
   const [location, setLocation] = useState(null);
   const [destinationPoint, setDestinationPoint] = useState([]);
@@ -152,9 +318,21 @@ const MarkedPlaces = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     getUserCurrentCoordinates();
+
+    const getTheme = await AsyncStorage.getItem('theme');
+
+    console.log(getTheme);
+
+    if (getTheme === 'dark') {
+      setIsEnabled(true);
+    } else if (getTheme === 'light') {
+      setIsEnabled(false);
+    }
   }, []);
+
+  const {colors} = useTheme();
 
   return (
     <>
@@ -165,6 +343,7 @@ const MarkedPlaces = () => {
             testID="map"
             style={styles.map}
             provider={PROVIDER_GOOGLE}
+            customMapStyle={isEnabled ? mapStyleDarkMode : mapStyleCustomeMode}
             showsUserLocation={true}
             initialRegion={{
               latitude: 43.4471,
@@ -198,6 +377,7 @@ const MarkedPlaces = () => {
             testID="map"
             style={styles.map}
             provider={PROVIDER_GOOGLE}
+            customMapStyle={isEnabled ? mapStyleDarkMode : mapStyleCustomeMode}
             showsUserLocation={true}
             initialRegion={{
               latitude: 43.4471,
@@ -219,7 +399,11 @@ const MarkedPlaces = () => {
         deviceHeight={windowHeight}
         style={{margin: 0}}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <View
+            style={[
+              styles.modalView,
+              {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+            ]}>
             <View
               style={{
                 height: 'auto',
@@ -227,7 +411,13 @@ const MarkedPlaces = () => {
               }}>
               <TouchableOpacity>
                 <View style={styles.btnCloseModal}>
-                  <Text style={styles.horizontalLine}>_____</Text>
+                  <Text
+                    style={[
+                      styles.horizontalLine,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    _____
+                  </Text>
                 </View>
               </TouchableOpacity>
 
@@ -239,32 +429,62 @@ const MarkedPlaces = () => {
                     style={{marginTop: 5}}
                     color="red"
                   />
-                  <Text style={styles.placeName}>{placeDetails.name}</Text>
+                  <Text
+                    style={[
+                      styles.placeName,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    {placeDetails.name}
+                  </Text>
                   <TouchableOpacity onPress={handleLocationPermission}>
                     <View style={styles.directionsStyle}>
                       <FontAwesomeIcon
                         icon={faDirections}
                         size={25}
                         style={{marginTop: 5}}
-                        color="blue"
+                        color={colors.DIRECTION_ICON_COLOR}
                       />
-                      <Text>Directions</Text>
+                      <Text style={{color: colors.PRIMARY_TEXT_COLOR}}>
+                        Directions
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
               </View>
               <View style={styles.placeDetailsContainer}>
                 <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <FontAwesomeIcon icon={faBuilding} size={20} />
-                  <Text style={styles.placeRating}>{placeDetails.type}</Text>
+                  <FontAwesomeIcon
+                    icon={faBuilding}
+                    size={20}
+                    color={colors.PRIMARY_TEXT_COLOR}
+                  />
+                  <Text
+                    style={[
+                      styles.placeRating,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    {placeDetails.type}
+                  </Text>
                 </View>
                 <View style={{flexDirection: 'row', paddingTop: 5}}>
                   <FontAwesomeIcon icon={faStar} size={20} color="#F5D402" />
-                  <Text style={styles.placeRating}>{placeDetails.rating}</Text>
+                  <Text
+                    style={[
+                      styles.placeRating,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    {placeDetails.rating}
+                  </Text>
                 </View>
               </View>
               <View style={styles.workingTimeContainer}>
-                <Text style={styles.workingTimeStyle}>Working time:</Text>
+                <Text
+                  style={[
+                    styles.workingTimeStyle,
+                    {color: colors.PRIMARY_TEXT_COLOR},
+                  ]}>
+                  Working time:
+                </Text>
                 <PlaceWorkTime workDay={placeWorkTime} />
               </View>
             </View>

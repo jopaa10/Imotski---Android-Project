@@ -44,6 +44,8 @@ import {ScrollView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import Svg, {G, Path} from 'react-native-svg';
+import {useTheme} from 'styled-components';
 
 const commentStack = createStackNavigator();
 
@@ -59,11 +61,7 @@ export const CommentNav = () => {
   );
 };
 
-export const CommentTemplate = ({
-  diffColorForPlace,
-  diffColorForPlace2,
-  category,
-}) => {
+export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
   const [input, setInput] = useState('');
   const navigation = useNavigation();
   const [alertModal, setAlertModal] = useState(false);
@@ -107,30 +105,70 @@ export const CommentTemplate = ({
  */
 
   const theme = useSelector(state => state.themeReducer.theme);
+  const {colors} = useTheme();
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <ScrollView
+        <View
           style={{
-            backgroundColor: theme.SECUNDARY_BACKGROUND_COLOR,
-            height: windowHeight,
-            flex: 1,
+            backgroundColor: bgCommColor,
+            paddingTop: windowHeight * 0.05,
+            height: windowHeight * 0.3,
           }}>
-          <Waves
+          {/* <Waves
             display={'none'}
             color={diffColorForPlace}
             color2={diffColorForPlace2}
-          />
-          <Pressable
-            style={styles.arrowLeftIcon}
-            onPress={() => navigation.goBack()}>
-            <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-          </Pressable>
+          /> */}
+          <Text style={styles.txtSignUp}>
+            {' '}
+            {`Write Your review ${'\n'} for ${name}`}
+          </Text>
+        </View>
+        <Svg
+          style={styles.waves}
+          width={windowWidth}
+          height={windowHeight * 0.2}
+          viewBox={`0 0 ${windowWidth} ${windowHeight * 0.2}`}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <G filter="url(#filter0_i_718_2)">
+            <Path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+              fill={waveColor}
+            />
+            <Path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+            />
+          </G>
+        </Svg>
+        <Pressable
+          style={styles.arrowLeftIcon}
+          onPress={() => navigation.goBack()}>
+          <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+        </Pressable>
 
-          <View style={styles.container}>
+        <View
+          style={{
+            backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+            height: windowHeight,
+            //flex: 1,
+            bottom: windowWidth * 0.35,
+          }}>
+          <View
+            style={[
+              styles.container,
+              {
+                backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+              },
+            ]}>
             <TextInput
-              style={styles.commentBox}
+              style={[styles.commentBox, {color: colors.PRIMARY_TEXT_COLOR}]}
               keyboardType={'default'}
               multiline={true}
               placeholder="Write your experience"
@@ -156,7 +194,11 @@ export const CommentTemplate = ({
             visible={alertModal}
             style={styles.alertModal}>
             <View style={styles.centeredView}>
-              <View style={styles.alertModalContainer}>
+              <View
+                style={[
+                  styles.alertModalContainer,
+                  {backgroundColor: colors.MODAL_BACKGROUND_COLOR},
+                ]}>
                 {showMessage ? (
                   <>
                     <View style={styles.alertIcon}>
@@ -198,7 +240,11 @@ export const CommentTemplate = ({
                         size={40}
                       />
                     </View>
-                    <View style={styles.alertMessage}>
+                    <View
+                      style={[
+                        styles.alertMessage,
+                        {backgroundColor: colors.MODAL_BACKGROUND_COLOR},
+                      ]}>
                       <Text
                         style={{
                           color: 'red',
@@ -224,7 +270,7 @@ export const CommentTemplate = ({
               </View>
             </View>
           </Modal>
-        </ScrollView>
+        </View>
       </ThemeProvider>
     </>
   );
@@ -242,16 +288,19 @@ const styles = StyleSheet.create({
   },
   container: {
     //width: windowWidth,
-    flex: 1,
+    //flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: windowWidth * 0.2,
+    //justifyContent: 'flex-start',
+    height: windowHeight,
   },
   reviewContainer: {
     alignItems: 'center',
     flex: 1,
     //marginTop: windowWidth * 0.2,
-    bottom: windowWidth * 0.3,
+    //bottom: windowWidth * 0.3,
+  },
+  waves: {
+    bottom: windowHeight * 0.18,
   },
   reviewTitle: {
     color: 'white',
@@ -263,7 +312,7 @@ const styles = StyleSheet.create({
   },
   arrowLeftIcon: {
     position: 'absolute',
-    marginTop: windowWidth * 0.1,
+    marginTop: windowWidth * 0.13,
     marginHorizontal: windowWidth * 0.05,
   },
   btnLogout: {
@@ -330,5 +379,12 @@ const styles = StyleSheet.create({
   closeBtnTxt: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  txtSignUp: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingLeft: 20,
+    top: windowHeight * 0.08,
   },
 });

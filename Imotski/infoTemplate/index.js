@@ -138,8 +138,20 @@ export const TemplateInfo = props => {
               {props.details}
             </Text>
           </View>
-          {props.gallery}
-          {props.weather}
+          <View
+            style={{
+              width: windowWidth,
+              flex: 1,
+              flexDirection: 'row',
+              height: 'auto',
+              justifyContent: 'center',
+              alignItems: 'center',
+              //marginHorizontal: windowWidth * 0.05,
+              marginBottom: windowWidth * 0.05,
+            }}>
+            {props.gallery}
+          </View>
+          <View style={{height: 'auto'}}>{props.weather}</View>
           {props.review}
         </ScrollView>
       </ThemeProvider>

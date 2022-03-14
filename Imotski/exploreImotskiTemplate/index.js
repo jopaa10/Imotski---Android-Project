@@ -111,7 +111,7 @@ export const TemplateExploreImotski = props => {
                   <>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate(!state ? 'User' : 'Profile Page')
+                        navigation.navigate(!state ? 'Sign In' : 'Profile Page')
                       }>
                       {!state ? (
                         <Image
