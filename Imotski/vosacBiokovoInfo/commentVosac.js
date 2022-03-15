@@ -43,7 +43,7 @@ export const VosacComment = () => {
       <ThemeProvider theme={theme}>
         <CommentTemplate
           waveColor={colors.SECUNDARY_BACKGROUND_COLOR}
-          bgCommColor={colors.PRIMARY_BACKGROUND_COLOR}
+          bgCommColor={colors.TEMPLATE_BACKGROUND_COLOR}
           name={'Vosac'}
           category={'vosac'}
         />

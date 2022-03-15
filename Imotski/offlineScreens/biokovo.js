@@ -40,29 +40,33 @@ import {SkywalkBiokovoInfo} from '../skywalkBiokovoInfo';
 import {VosacBiokovoInfo} from '../vosacBiokovoInfo';
 import {StJureInfo} from '../svJureBiokovoInfo';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  CommentSkywalk,
-  CommentSkywalkNav,
-} from '../skywalkBiokovoInfo/commentSkywalk';
+import {CommentSkywalkNav} from '../skywalkBiokovoInfo/commentSkywalk';
 import {RedLakeInfo} from '../redLakeInfo';
 import {BlueLakeInfo} from '../blueLakeInfo';
 import {SkywalkNavRoute} from '../skywalkBiokovoInfo/skywalkNav';
 import {WeatherSkywalk} from '../skywalkBiokovoInfo/weatherSkywalk';
-import {
-  CommentNavStJure,
-  StJureComment,
-} from '../svJureBiokovoInfo/commentStJure';
+
+//screens st Jure
+import {CommentNavStJure} from '../svJureBiokovoInfo/commentStJure';
 import {WeatherStJure} from '../svJureBiokovoInfo/weatherStJure';
-import {StJureNavRoute} from '../svJureBiokovoInfo/stJurenav';
+import {StJureNavRoute} from '../svJureBiokovoInfo/stJureNav';
+
+//screens vosac
 import {CommentNavVosac} from '../vosacBiokovoInfo/commentVosac';
 import {WeatherVosac} from '../vosacBiokovoInfo/weatherVosac';
 import {VosacNavRoute} from '../vosacBiokovoInfo/vosacNav';
+
+//screens skywalk
 import {GallerySkywalk} from '../skywalkBiokovoInfo/gallery';
 import {ReviewSkywalk} from '../skywalkBiokovoInfo/reviewSkywalk';
 import {GalleryVosac} from '../vosacBiokovoInfo/gallery';
 import {ReviewVosac} from '../vosacBiokovoInfo/reviewVosac';
 import {ReviewStJure} from '../svJureBiokovoInfo/reviewStJure';
 import {GalleryStJure} from '../svJureBiokovoInfo/gallery';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NextDaysForecastSkywalk} from '../skywalkBiokovoInfo/nextDaysForecast';
+import {NextDaysForecastVosac} from '../vosacBiokovoInfo/nextDaysForecast';
+import {NextDaysForecastStJure} from '../svJureBiokovoInfo/nextDaysForecast';
 
 //stack navigator
 const BiokovoStack = createStackNavigator();
@@ -71,6 +75,66 @@ const BiokovoStack = createStackNavigator();
 const SkywalkBottomStack = createBottomTabNavigator();
 const VosacBottomStack = createBottomTabNavigator();
 const StJureBottomStack = createBottomTabNavigator();
+
+//weather stack for Skywalk
+const WeatherStackSkywalk = createStackNavigator();
+
+//next 7 days forecast for Skywalk
+export const FutureDayForecastSkywalk = () => (
+  <WeatherStackSkywalk.Navigator>
+    <WeatherStackSkywalk.Screen
+      name="Weather Data"
+      component={WeatherSkywalk}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackSkywalk.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastSkywalk}
+      options={{headerShown: false}}
+    />
+  </WeatherStackSkywalk.Navigator>
+);
+
+//weather stack for Vosac
+const WeatherStackVosac = createStackNavigator();
+
+//next 7 days forecast for Vosac
+export const FutureDayForecastVosac = () => (
+  <WeatherStackVosac.Navigator>
+    <WeatherStackVosac.Screen
+      name="Weather Data"
+      component={WeatherVosac}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackVosac.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastVosac}
+      options={{headerShown: false}}
+    />
+  </WeatherStackVosac.Navigator>
+);
+
+//weather stack for St Jure
+const WeatherStackStJure = createStackNavigator();
+
+//next 7 days forecast for St Jure
+export const FutureDayForecastStJure = () => (
+  <WeatherStackStJure.Navigator>
+    <WeatherStackStJure.Screen
+      name="Weather Data"
+      component={WeatherStJure}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackStJure.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastStJure}
+      options={{headerShown: false}}
+    />
+  </WeatherStackStJure.Navigator>
+);
 
 //skywalk horizontal stack nav
 const SkywalkHorizontalStack = createStackNavigator();
@@ -291,7 +355,7 @@ const SkywalkBiokovoBottomNav = () => {
 
       <SkywalkBottomStack.Screen
         name="Weather"
-        component={WeatherSkywalk}
+        component={FutureDayForecastSkywalk}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -419,7 +483,10 @@ const VosacBiokovoBottomNav = () => {
 
   return (
     <VosacBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: '#CA9A8C'}],
+      }}>
       <VosacBottomStack.Screen
         name="Vosac Biokovo Info"
         component={VosacHorizontalNav}
@@ -532,7 +599,7 @@ const VosacBiokovoBottomNav = () => {
 
       <VosacBottomStack.Screen
         name="Weather"
-        component={WeatherVosac}
+        component={FutureDayForecastVosac}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -660,7 +727,10 @@ const StJureBiokovoBottomNav = () => {
 
   return (
     <StJureBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: '#7d8572'}],
+      }}>
       <StJureBottomStack.Screen
         name="St Jure Biokovo Info"
         component={StJureHorizontalNav}
@@ -773,7 +843,7 @@ const StJureBiokovoBottomNav = () => {
 
       <StJureBottomStack.Screen
         name="Weather"
-        component={WeatherStJure}
+        component={FutureDayForecastStJure}
         options={{
           tabBarIcon: ({focused}) => (
             <View>

@@ -40,6 +40,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 //stack screens
 import {DvaOkaInfo} from '../dvaOkaInfo';
 import {BadnjeviceInfo} from '../badnjeviceInfo';
+
+//green cathedral screens
 import {GreenCathedralInfo} from '../zelenaKatedralaInfo';
 import {GalleryGreenCathedral} from '../zelenaKatedralaInfo/gallery';
 import {ReviewGreenCathedral} from '../zelenaKatedralaInfo/reviewGreenCathedral';
@@ -49,16 +51,26 @@ import {WeatherGreenCathedral} from '../zelenaKatedralaInfo/weatherGreenCathedra
 import {GreenCathedralNavRoute} from '../zelenaKatedralaInfo/greenCathedralNav';
 import {BlueLakeInfo} from '../blueLakeInfo';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+//dva oka screens
 import {CommentDvaOkaNav} from '../dvaOkaInfo/commentDvaOka';
 import {WeatherDvaOka} from '../dvaOkaInfo/weatherDvaOka';
 import {DvaOkaNavRoute} from '../dvaOkaInfo/dvaOkaNav';
 import {ReviewDvaOka} from '../dvaOkaInfo/reviewDvaOka';
 import {GalleryDvaOka} from '../dvaOkaInfo/gallery';
+
+//badnjevice screens
 import {GalleryBadnjevice} from '../badnjeviceInfo/galleryBadnjevice';
 import {ReviewBadnjevice} from '../badnjeviceInfo/reviewBadnjevice';
 import {BadnjeviceNavRoute} from '../badnjeviceInfo/badnjeviceNav';
 import {CommentBadnjeviceNav} from '../badnjeviceInfo/commentBadnjevice';
 import {WeatherBadnjevice} from '../badnjeviceInfo/weatherBadnjevice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//next 7 days forecast
+import {NextDaysForecastGreenCathedral} from '../zelenaKatedralaInfo/nextDaysForecast';
+import {NextDaysForecastDvaOka} from '../dvaOkaInfo/nextDaysForecast';
+import {NextDaysForecastBadnjevice} from '../badnjeviceInfo/nextDaysForecast';
 
 //stack navigator
 const ProlozacStack = createStackNavigator();
@@ -67,6 +79,66 @@ const ProlozacStack = createStackNavigator();
 const GreenCathedralBottomStack = createBottomTabNavigator();
 const DvaOkaBottomStack = createBottomTabNavigator();
 const BadnjeviceBottomStack = createBottomTabNavigator();
+
+//weather stack for Green Cathedral
+const WeatherStackGreenCathedral = createStackNavigator();
+
+//next 7 days forecast for Green Cathedral
+export const FutureDayForecastGreenCathedral = () => (
+  <WeatherStackGreenCathedral.Navigator>
+    <WeatherStackGreenCathedral.Screen
+      name="Weather Data"
+      component={WeatherGreenCathedral}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackGreenCathedral.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastGreenCathedral}
+      options={{headerShown: false}}
+    />
+  </WeatherStackGreenCathedral.Navigator>
+);
+
+//weather stack for Dva Oka
+const WeatherStackDvaOka = createStackNavigator();
+
+//next 7 days forecast for Badnjevice
+export const FutureDayForecastDvaOka = () => (
+  <WeatherStackDvaOka.Navigator>
+    <WeatherStackDvaOka.Screen
+      name="Weather Data"
+      component={WeatherDvaOka}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackDvaOka.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastDvaOka}
+      options={{headerShown: false}}
+    />
+  </WeatherStackDvaOka.Navigator>
+);
+
+//weather stack for Badnjevice
+const WeatherStackBadnjevice = createStackNavigator();
+
+//next 7 days forecast for Dva Oka
+export const FutureDayForecastBadnjevice = () => (
+  <WeatherStackBadnjevice.Navigator>
+    <WeatherStackBadnjevice.Screen
+      name="Weather Data"
+      component={WeatherBadnjevice}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackBadnjevice.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastBadnjevice}
+      options={{headerShown: false}}
+    />
+  </WeatherStackBadnjevice.Navigator>
+);
 
 //skywalk horizontal stack nav
 const GreenCathedralHorizontalStack = createStackNavigator();
@@ -174,7 +246,10 @@ const GreenCathedralBottomNav = () => {
 
   return (
     <GreenCathedralBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: '#a69244'}],
+      }}>
       <GreenCathedralBottomStack.Screen
         name="Green Cathedral Info"
         component={GreenCathedralHorizontalNav}
@@ -287,7 +362,7 @@ const GreenCathedralBottomNav = () => {
 
       <GreenCathedralBottomStack.Screen
         name="Weather"
-        component={WeatherGreenCathedral}
+        component={FutureDayForecastGreenCathedral}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -415,7 +490,10 @@ const DvaOkaBottomNav = () => {
 
   return (
     <DvaOkaBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: '#866926'}],
+      }}>
       <DvaOkaBottomStack.Screen
         name="Dva Oka Info"
         component={DvaOkaHorizontalNav}
@@ -528,7 +606,7 @@ const DvaOkaBottomNav = () => {
 
       <DvaOkaBottomStack.Screen
         name="Weather"
-        component={WeatherDvaOka}
+        component={FutureDayForecastDvaOka}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -656,7 +734,10 @@ const BadnjeviceBottomNav = () => {
 
   return (
     <BadnjeviceBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: '#adbab3'}],
+      }}>
       <BadnjeviceBottomStack.Screen
         name="Badnjevice Info"
         component={BadnjeviceHorizontalNav}
@@ -769,7 +850,7 @@ const BadnjeviceBottomNav = () => {
 
       <BadnjeviceBottomStack.Screen
         name="Weather"
-        component={WeatherBadnjevice}
+        component={FutureDayForecastBadnjevice}
         options={{
           tabBarIcon: ({focused}) => (
             <View>

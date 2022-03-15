@@ -59,9 +59,52 @@ import {WeatherGalipovac} from '../galipovacInfo/weather';
 import {ReviewGalipovac} from '../galipovacInfo/reviewGalipovac';
 import {GalipovacNavRoute} from '../galipovacInfo/galipovacNav';
 import {GalleryGalipovac} from '../galipovacInfo/gallery';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {NextDaysForecastGreenLake} from '../greenLakeInfo/nextDaysForecast';
+import {NextDaysForecastGalipovac} from '../galipovacInfo/nextDaysForecast';
 
 //green lake horizontal stack nav
 const GreenLakeHorizontalStack = createStackNavigator();
+
+//weather stack for Green Cathedral
+const WeatherStackGreenLake = createStackNavigator();
+
+//next 7 days forecast for Green Cathedral
+export const FutureDayForecastGreenLake = () => (
+  <WeatherStackGreenLake.Navigator>
+    <WeatherStackGreenLake.Screen
+      name="Weather Data"
+      component={WeatherGreenLake}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackGreenLake.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastGreenLake}
+      options={{headerShown: false}}
+    />
+  </WeatherStackGreenLake.Navigator>
+);
+
+//weather stack for Green Cathedral
+const WeatherStackGalipovac = createStackNavigator();
+
+//next 7 days forecast for Green Cathedral
+export const FutureDayForecastGalipovac = () => (
+  <WeatherStackGalipovac.Navigator>
+    <WeatherStackGalipovac.Screen
+      name="Weather Data"
+      component={WeatherGalipovac}
+      options={{headerShown: false}}
+    />
+
+    <WeatherStackGalipovac.Screen
+      name="Next Days Forecast"
+      component={NextDaysForecastGalipovac}
+      options={{headerShown: false}}
+    />
+  </WeatherStackGalipovac.Navigator>
+);
 
 //green lake - details horizontal nav
 const GreenLakeHorizontalNav = () => (
@@ -138,7 +181,10 @@ const GreenLakeBottomNav = () => {
 
   return (
     <GreenLakeBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: '#6ba4a1'}],
+      }}>
       <GreenLakeBottomStack.Screen
         name="Green Lake Info"
         component={GreenLakeHorizontalNav}
@@ -251,7 +297,7 @@ const GreenLakeBottomNav = () => {
 
       <GreenLakeBottomStack.Screen
         name="Weather"
-        component={WeatherGreenLake}
+        component={FutureDayForecastGreenLake}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -379,7 +425,10 @@ const GalipovacBiokovoBottomNav = () => {
 
   return (
     <GalipovacBottomStack.Navigator
-      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      tabBarOptions={{
+        showLabel: false,
+        style: [styles.blueLakeTab, {backgroundColor: 'rgb(126,150,85)'}],
+      }}>
       <GalipovacBottomStack.Screen
         name="Galipovac Info"
         component={GalipovacHorizontalNav}
@@ -492,7 +541,7 @@ const GalipovacBiokovoBottomNav = () => {
 
       <GalipovacBottomStack.Screen
         name="Weather"
-        component={WeatherGalipovac}
+        component={FutureDayForecastGalipovac}
         options={{
           tabBarIcon: ({focused}) => (
             <View>

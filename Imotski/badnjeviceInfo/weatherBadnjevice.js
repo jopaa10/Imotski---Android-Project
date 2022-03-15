@@ -12,7 +12,7 @@ export const WeatherBadnjevice = () => {
         image={require('../images/badnjevice.jpg')}
         weatherLat={'43.4564873'}
         weatherLong={'17.1749875'}
-        txtColor={'#CA9A8C'}
+        txtColor={'#adbab3'}
         navigate={'Next Days Forecast'}
         navigateBack={'Explore Prolozac'}
       />

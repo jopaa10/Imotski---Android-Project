@@ -12,7 +12,7 @@ export const WeatherGreenLake = () => {
         image={require('../images/greenLake.jpg')}
         weatherLat={'43.5035'}
         weatherLong={'17.1256'}
-        txtColor={'#CA9A8C'}
+        txtColor={'#6ba4a1'}
         navigate={'Next Days Forecast'}
         navigateBack={'Explore Ricice'}
       />

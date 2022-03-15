@@ -12,8 +12,9 @@ export const WeatherStJure = () => {
         image={require('../images/biokovoSvJure.jpg')}
         weatherLat={'43.3423'}
         weatherLong={'17.0539'}
-        txtColor={'#CA9A8C'}
+        txtColor={'#7d8572'}
         navigate={'Next Days Forecast'}
+        navigateBack={'Explore Biokovo'}
       />
     </>
   );

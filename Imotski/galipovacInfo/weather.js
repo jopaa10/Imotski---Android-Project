@@ -12,7 +12,7 @@ export const WeatherGalipovac = () => {
         image={require('../images/galipovacView.jpg')}
         weatherLat={'43.4779796'}
         weatherLong={'17.1159147'}
-        txtColor={'#CA9A8C'}
+        txtColor={'rgb(126,150,85)'}
         navigate={'Next Days Forecast'}
         navigateBack={'Explore Ricice'}
       />

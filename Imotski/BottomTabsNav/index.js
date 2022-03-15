@@ -37,9 +37,9 @@ import {windowWidth, windowHeight} from '../constants/global';
 //Main page: Explore Imotski & region
 import ExploreImotski from '../Explore Imotski/index';
 import {Imotski} from '../offlineScreens/imotski';
-import {Biokovo, BiokovoInfo} from '../offlineScreens/biokovo';
-import {Prolozac, ProlozacInfo} from '../offlineScreens/prolozac';
-import {Ricice, RiciceInfo} from '../offlineScreens/ricice';
+import {BiokovoInfo} from '../offlineScreens/biokovo';
+import {ProlozacInfo} from '../offlineScreens/prolozac';
+import {RiciceInfo} from '../offlineScreens/ricice';
 
 //blue lake info in Imotski screen
 import {BlueLakeInfo} from '../blueLakeInfo';
