@@ -8,10 +8,19 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faAngleDoubleDown, faReply} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleDown,
+  faCloudSun,
+  faComment,
+  faHeart,
+  faReply,
+  faRoute,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 //useNav hookd
 import {useNavigation} from '@react-navigation/core';
@@ -30,9 +39,564 @@ import {createStackNavigator} from '@react-navigation/stack';
 //stack navigator
 const RiciceStack = createStackNavigator();
 
+//bottom stack navigator
+const GreenLakeBottomStack = createBottomTabNavigator();
+const GalipovacBottomStack = createBottomTabNavigator();
+
 //stack screens
 import {GreenLakeInfo} from '../greenLakeInfo';
-import {GalipovacInfo} from '../galipovacInfo';
+import {GalipovacInfo} from '../galipovacInfo/index';
+import {CommentGreenLakeNav} from '../greenLakeInfo/commentGreenLake';
+import {RedLakeInfo} from '../redLakeInfo';
+import {WeatherGreenLake} from '../greenLakeInfo/weatherGreenLake';
+import {BlueLakeInfo} from '../blueLakeInfo';
+import {GreenLakeNavRoute} from '../greenLakeInfo/greenLakeNav';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {GalleryGreenLake} from '../greenLakeInfo/gallery';
+import {ReviewGreenLake} from '../greenLakeInfo/reviewGreenLake';
+import {CommentGalipovacNav} from '../galipovacInfo/comment';
+import {WeatherGalipovac} from '../galipovacInfo/weather';
+import {ReviewGalipovac} from '../galipovacInfo/reviewGalipovac';
+import {GalipovacNavRoute} from '../galipovacInfo/galipovacNav';
+import {GalleryGalipovac} from '../galipovacInfo/gallery';
+
+//green lake horizontal stack nav
+const GreenLakeHorizontalStack = createStackNavigator();
+
+//green lake - details horizontal nav
+const GreenLakeHorizontalNav = () => (
+  <GreenLakeHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Green Lake Info">
+    <GreenLakeHorizontalStack.Screen
+      name="Overview"
+      component={GreenLakeInfo}
+      options={{headerShown: false}}
+    />
+
+    <GreenLakeHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryGreenLake}
+    />
+
+    <GreenLakeHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewGreenLake}
+    />
+  </GreenLakeHorizontalStack.Navigator>
+);
+
+//galipovac horizontal stack nav
+const GalipovacHorizontalStack = createStackNavigator();
+
+//galipovac - details horizontal nav
+const GalipovacHorizontalNav = () => (
+  <GalipovacHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Galipovac Info">
+    <GalipovacHorizontalStack.Screen
+      name="Overview"
+      component={GalipovacInfo}
+      options={{headerShown: false}}
+    />
+
+    <GalipovacHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryGalipovac}
+    />
+
+    <GalipovacHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewGalipovac}
+    />
+  </GalipovacHorizontalStack.Navigator>
+);
+
+//skywalk biokovo - details
+const GreenLakeBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <GreenLakeBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <GreenLakeBottomStack.Screen
+        name="Green Lake Info"
+        component={GreenLakeHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <GreenLakeBottomStack.Screen
+          name="Comment Section"
+          component={CommentGreenLakeNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <GreenLakeBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <GreenLakeBottomStack.Screen
+        name="Weather"
+        component={WeatherGreenLake}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <GreenLakeBottomStack.Screen
+          name="Navigation"
+          component={GreenLakeNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <GreenLakeBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </GreenLakeBottomStack.Navigator>
+  );
+};
+
+//vosac biokovo - details
+const GalipovacBiokovoBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <GalipovacBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <GalipovacBottomStack.Screen
+        name="Galipovac Info"
+        component={GalipovacHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <GalipovacBottomStack.Screen
+          name="Comment Section"
+          component={CommentGalipovacNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <GalipovacBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <GalipovacBottomStack.Screen
+        name="Weather"
+        component={WeatherGalipovac}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <GalipovacBottomStack.Screen
+          name="Navigation"
+          component={GalipovacNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <GalipovacBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </GalipovacBottomStack.Navigator>
+  );
+};
 
 //places which user can visited - Imotski screen
 export const RiciceInfo = () => (
@@ -44,12 +608,12 @@ export const RiciceInfo = () => (
     />
     <RiciceStack.Screen
       name="Green Lake Info"
-      component={GreenLakeInfo}
+      component={GreenLakeBottomNav}
       options={{headerShown: false}}
     />
     <RiciceStack.Screen
       name="Galipovac Info"
-      component={GalipovacInfo}
+      component={GalipovacBiokovoBottomNav}
       options={{headerShown: false}}
     />
   </RiciceStack.Navigator>
@@ -192,5 +756,97 @@ const styles = StyleSheet.create({
     height: 12,
     backgroundColor: 'white',
     /* right: windowWidth * 0.05, */
+  },
+  tabContainer: {
+    position: 'absolute',
+    left: windowWidth * 0.25,
+    right: windowWidth * 0.25,
+    width: windowWidth * 0.5,
+    height: 45,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  tabIcon: {
+    color: '#A1A1A1',
+  },
+  tabIconFocused: {
+    color: '#1F83BB',
+  },
+  blueLakeTab: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.9,
+    height: 50,
+    position: 'absolute',
+    left: windowWidth * 0.05,
+    right: windowWidth * 0.05,
+    marginBottom: 20,
+    borderRadius: 20,
+  },
+  faHeartIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCommentIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCloudIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faRouteIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  alertModal: {
+    width: windowWidth,
+    height: windowHeight,
+  },
+  centeredView: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: windowWidth,
+    height: windowHeight,
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+  },
+  alertModalContainer: {
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.35,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  alertIcon: {
+    //flex: 1,
+    //justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    marginRight: windowWidth * 0.05,
+    marginTop: windowWidth * 0.02,
+  },
+  alertMessage: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: windowWidth * 0.05,
+  },
+  alertText: {
+    textAlign: 'center',
+    color: '#1F83BB',
+    fontSize: 13,
+    fontWeight: 'bold',
+    paddingTop: windowWidth * 0.03,
+  },
+  closeBtn: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.5,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 0.7,
+    marginBottom: windowWidth * 0.1,
+    justifyContent: 'center',
+    elevation: 10,
+    shadowColor: '#1F83BB',
+    bottom: windowWidth * 0.05,
+  },
+  closeBtnTxt: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

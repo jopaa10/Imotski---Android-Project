@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import React from 'react';
 
 //template
 import {WeatherTemplate} from '../weatherTemplate/weatherTemp';
@@ -15,6 +14,7 @@ export const WeatherRedLake = () => {
         weatherLong={'17.1982'}
         txtColor={'#CA9A8C'}
         navigate={'Next Days Forecast'}
+        navigateBack={'Explore Imotski'}
       />
     </>
   );

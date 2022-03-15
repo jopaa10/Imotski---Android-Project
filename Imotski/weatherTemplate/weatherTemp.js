@@ -22,6 +22,7 @@ export const WeatherTemplate = ({
   weatherLong,
   navigate,
   txtColor,
+  navigateBack,
 }) => {
   const [weatherData, setweatherData] = useState({
     uvIndex: null,
@@ -70,6 +71,7 @@ export const WeatherTemplate = ({
         image={image}
         city={city}
         sight={sight}
+        navigateBack={navigateBack}
         weather={
           <>
             <Next48Hours

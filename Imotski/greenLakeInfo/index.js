@@ -9,6 +9,7 @@ export const GreenLakeInfo = () => {
   return (
     <TemplateInfo
       image={require('../images/greenLake.jpg')}
+      navigateBack={'Explore Ricice'}
       city={'Ricice'}
       sight={'Green Lake'}
       title={'Green Lake - History'}

@@ -94,7 +94,7 @@ export const TemplateInfo = props => {
             <Image style={styles.image} source={props.image} />
             <Pressable
               style={styles.arrowLeftIcon}
-              onPress={() => navigation.navigate('Explore Imotski')}>
+              onPress={() => navigation.navigate(props.navigateBack)}>
               <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
             </Pressable>
             <Text style={styles.txtCity}>{props.city}</Text>

@@ -17,6 +17,7 @@ export const Gallery = () => {
         city={'Imotski'}
         sight={'Blue Lake'}
         title={'Blue Lake'}
+        navigateBack={'Explore Imotski'}
         color={'grey'}
         color2={colors.PRIMARY_TEXT_COLOR}
         color3={'grey'}

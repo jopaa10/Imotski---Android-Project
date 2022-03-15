@@ -13,6 +13,7 @@ export const BlueLakeWeather = () => {
         weatherLong={17.21}
         txtColor={'#1F83BB'}
         navigate={'Next Days Forecast'}
+        navigateBack={'Explore Imotski'}
       />
     </>
   );

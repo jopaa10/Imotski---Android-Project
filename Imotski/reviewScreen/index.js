@@ -19,7 +19,7 @@ const windowHeight = Dimensions.get('window').height;
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from 'styled-components';
 
-export const ReviewScreen = () => {
+export const ReviewScreen = ({placeCategory, city, sight, image, navigate}) => {
   const [reviewData, setReviewData] = useState([]);
   const navigation = useNavigation();
 
@@ -30,7 +30,7 @@ export const ReviewScreen = () => {
       .then(res => res.json())
       .then(data => {
         const placeFilter = data.comments.filter(
-          places => places.catg === 'blue lake',
+          places => places.catg === placeCategory,
         );
 
         setReviewData(placeFilter);
@@ -54,9 +54,10 @@ export const ReviewScreen = () => {
   return (
     <>
       <TemplateInfo
-        image={require('../images/blueLakeArticle.jpg')}
-        city={'Imotski'}
-        sight={'Blue Lake'}
+        image={image}
+        city={city}
+        sight={sight}
+        navigateBack={navigate}
         color={'grey'}
         color2={'grey'}
         color3={colors.PRIMARY_TEXT_COLOR}

@@ -17,6 +17,7 @@ export const GalleryRedLake = () => {
         city={'Imotski'}
         sight={'Red Lake'}
         title={'Red Lake'}
+        navigateBack={'Explore Imotski'}
         color={'grey'}
         color2={colors.PRIMARY_TEXT_COLOR}
         color3={'grey'}

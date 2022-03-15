@@ -9,6 +9,7 @@ export const SkywalkBiokovoInfo = () => {
   return (
     <TemplateInfo
       image={require('../images/skywalkBiokovo.jpg')}
+      navigateBack={'Explore Biokovo'}
       city={'Biokovo'}
       sight={'Skywalk Biokovo'}
       title={'Skywalk Biokovo - History'}

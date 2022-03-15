@@ -35,11 +35,6 @@ export const CommentNavBlueLake = () => {
 };
 
 export const BlueLakeComment = () => {
-  /*  useEffect(() => {
-    setInterval(() => setCompleted(Math.floor(Math.random() * 100) + 1), 2000);
-  }, []);
- */
-
   const theme = useSelector(state => state.themeReducer.theme);
   const {colors} = useTheme();
 

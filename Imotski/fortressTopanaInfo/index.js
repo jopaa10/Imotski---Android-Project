@@ -17,14 +17,43 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {windowHeight, windowWidth} from '../constants/global';
 import {RedLakeInfo} from '../redLakeInfo';
-import {FutureDayForecastRedLake} from '../BottomTabsNav';
-import {RedLakeNavRoute} from '../routeMap/redLakeNav';
 import {FortressTopanaRoute} from './fortressTopanaNav';
 import {FortressTopanaComment} from './fortressTopanaComment';
 import {FortressTopanaWeatherNav} from './fortressTopanaWeather';
+import {GalleryFortressTopana} from './galleryFortressTopana';
+import {ReviewFortressTopana} from './reviewFortressTopana';
+import {createStackNavigator} from '@react-navigation/stack';
 
 //tab stack for bottom navigation
 const FortressBottomTabStack = createBottomTabNavigator();
+
+//skywalk horizontal stack nav
+const FortressTopanaHorizontalStack = createStackNavigator();
+
+//skywalk - details horizontal nav
+const FortressTopanaHorizontalNav = () => (
+  <FortressTopanaHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Fortress Topana Info">
+    <FortressTopanaHorizontalStack.Screen
+      name="Overview"
+      component={FortressTopanaInfo}
+      options={{headerShown: false}}
+    />
+
+    <FortressTopanaHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryFortressTopana}
+    />
+
+    <FortressTopanaHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewFortressTopana}
+    />
+  </FortressTopanaHorizontalStack.Navigator>
+);
 
 export const FortressBottomNav = () => {
   const [isLogged, setLogged] = useState(false);
@@ -53,7 +82,7 @@ export const FortressBottomNav = () => {
       }}>
       <FortressBottomTabStack.Screen
         name="Fortress Topana Info"
-        component={FortressTopanaInfo}
+        component={FortressTopanaHorizontalNav}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
@@ -284,6 +313,7 @@ export const FortressTopanaInfo = () => {
       color={colors.PRIMARY_TEXT_COLOR}
       color2={'grey'}
       color3={'grey'}
+      navgateBack={'Explore Imotski'}
     />
   );
 };

@@ -16,6 +16,7 @@ export const RedLakeInfo = () => {
       color={colors.PRIMARY_TEXT_COLOR}
       color2={'grey'}
       color3={'grey'}
+      navigateBack={'Explore Imotski'}
     />
   );
 };

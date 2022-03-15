@@ -9,6 +9,7 @@ export const VosacBiokovoInfo = () => {
   return (
     <TemplateInfo
       image={require('../images/biokovoVosac.jpg')}
+      navigateBack={'Explore Biokovo'}
       city={'Biokovo'}
       sight={'Vosac'}
       title={'Vosac - History'}

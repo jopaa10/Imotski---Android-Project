@@ -1,17 +1,25 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   Image,
-  ScrollView,
   Dimensions,
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faAngleDoubleDown, faReply} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleDown,
+  faCloudSun,
+  faComment,
+  faHeart,
+  faReply,
+  faRoute,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 //useNav hookd
 import {useNavigation} from '@react-navigation/core';
@@ -31,9 +39,845 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {SkywalkBiokovoInfo} from '../skywalkBiokovoInfo';
 import {VosacBiokovoInfo} from '../vosacBiokovoInfo';
 import {StJureInfo} from '../svJureBiokovoInfo';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  CommentSkywalk,
+  CommentSkywalkNav,
+} from '../skywalkBiokovoInfo/commentSkywalk';
+import {RedLakeInfo} from '../redLakeInfo';
+import {BlueLakeInfo} from '../blueLakeInfo';
+import {SkywalkNavRoute} from '../skywalkBiokovoInfo/skywalkNav';
+import {WeatherSkywalk} from '../skywalkBiokovoInfo/weatherSkywalk';
+import {
+  CommentNavStJure,
+  StJureComment,
+} from '../svJureBiokovoInfo/commentStJure';
+import {WeatherStJure} from '../svJureBiokovoInfo/weatherStJure';
+import {StJureNavRoute} from '../svJureBiokovoInfo/stJurenav';
+import {CommentNavVosac} from '../vosacBiokovoInfo/commentVosac';
+import {WeatherVosac} from '../vosacBiokovoInfo/weatherVosac';
+import {VosacNavRoute} from '../vosacBiokovoInfo/vosacNav';
+import {GallerySkywalk} from '../skywalkBiokovoInfo/gallery';
+import {ReviewSkywalk} from '../skywalkBiokovoInfo/reviewSkywalk';
+import {GalleryVosac} from '../vosacBiokovoInfo/gallery';
+import {ReviewVosac} from '../vosacBiokovoInfo/reviewVosac';
+import {ReviewStJure} from '../svJureBiokovoInfo/reviewStJure';
+import {GalleryStJure} from '../svJureBiokovoInfo/gallery';
 
 //stack navigator
 const BiokovoStack = createStackNavigator();
+
+//bottom stack navigator
+const SkywalkBottomStack = createBottomTabNavigator();
+const VosacBottomStack = createBottomTabNavigator();
+const StJureBottomStack = createBottomTabNavigator();
+
+//skywalk horizontal stack nav
+const SkywalkHorizontalStack = createStackNavigator();
+
+//skywalk - details horizontal nav
+const SkywalkHorizontalNav = () => (
+  <SkywalkHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Skywalk Biokovo Info">
+    <SkywalkHorizontalStack.Screen
+      name="Overview"
+      component={SkywalkBiokovoInfo}
+      options={{headerShown: false}}
+    />
+
+    <SkywalkHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GallerySkywalk}
+    />
+
+    <SkywalkHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewSkywalk}
+    />
+  </SkywalkHorizontalStack.Navigator>
+);
+
+//vosac horizontal stack nav
+const VosacHorizontalStack = createStackNavigator();
+
+//vosac - details horizontal nav
+const VosacHorizontalNav = () => (
+  <VosacHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Vosac Biokovo Info">
+    <VosacHorizontalStack.Screen
+      name="Overview"
+      component={VosacBiokovoInfo}
+      options={{headerShown: false}}
+    />
+
+    <VosacHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryVosac}
+    />
+
+    <VosacHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewVosac}
+    />
+  </VosacHorizontalStack.Navigator>
+);
+
+//st jure horizontal stack nav
+const StJureHorizontalStack = createStackNavigator();
+
+//st jure - details horizontal nav
+const StJureHorizontalNav = () => (
+  <StJureHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="St Jure Biokovo Info">
+    <StJureHorizontalStack.Screen
+      name="Overview"
+      component={StJureInfo}
+      options={{headerShown: false}}
+    />
+
+    <StJureHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryStJure}
+    />
+
+    <StJureHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewStJure}
+    />
+  </StJureHorizontalStack.Navigator>
+);
+
+//skywalk biokovo - details
+const SkywalkBiokovoBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <SkywalkBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <SkywalkBottomStack.Screen
+        name="Skywalk Biokovo Info"
+        component={SkywalkHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <SkywalkBottomStack.Screen
+          name="Comment Section"
+          component={CommentSkywalkNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <SkywalkBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <SkywalkBottomStack.Screen
+        name="Weather"
+        component={WeatherSkywalk}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <SkywalkBottomStack.Screen
+          name="Navigation"
+          component={SkywalkNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <SkywalkBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </SkywalkBottomStack.Navigator>
+  );
+};
+
+//vosac biokovo - details
+const VosacBiokovoBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <VosacBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <VosacBottomStack.Screen
+        name="Vosac Biokovo Info"
+        component={VosacHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <VosacBottomStack.Screen
+          name="Comment Section"
+          component={CommentNavVosac}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <VosacBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <VosacBottomStack.Screen
+        name="Weather"
+        component={WeatherVosac}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <VosacBottomStack.Screen
+          name="Navigation"
+          component={VosacNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <VosacBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </VosacBottomStack.Navigator>
+  );
+};
+
+//st jure biokovo - details
+const StJureBiokovoBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <StJureBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <StJureBottomStack.Screen
+        name="St Jure Biokovo Info"
+        component={StJureHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <StJureBottomStack.Screen
+          name="Comment Section"
+          component={CommentNavStJure}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <StJureBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <StJureBottomStack.Screen
+        name="Weather"
+        component={WeatherStJure}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <StJureBottomStack.Screen
+          name="Navigation"
+          component={StJureNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <StJureBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </StJureBottomStack.Navigator>
+  );
+};
 
 //places which user can visited - Imotski screen
 export const BiokovoInfo = () => (
@@ -45,17 +889,17 @@ export const BiokovoInfo = () => (
     />
     <BiokovoStack.Screen
       name="Skywalk Biokovo Info"
-      component={SkywalkBiokovoInfo}
+      component={SkywalkBiokovoBottomNav}
       options={{headerShown: false}}
     />
     <BiokovoStack.Screen
       name="Vosac Biokovo Info"
-      component={VosacBiokovoInfo}
+      component={VosacBiokovoBottomNav}
       options={{headerShown: false}}
     />
     <BiokovoStack.Screen
       name="St Jure Biokovo Info"
-      component={StJureInfo}
+      component={StJureBiokovoBottomNav}
       options={{headerShown: false}}
     />
   </BiokovoStack.Navigator>
@@ -208,5 +1052,97 @@ const styles = StyleSheet.create({
     height: 12,
     backgroundColor: 'white',
     /* right: windowWidth * 0.05, */
+  },
+  tabContainer: {
+    position: 'absolute',
+    left: windowWidth * 0.25,
+    right: windowWidth * 0.25,
+    width: windowWidth * 0.5,
+    height: 45,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  tabIcon: {
+    color: '#A1A1A1',
+  },
+  tabIconFocused: {
+    color: '#1F83BB',
+  },
+  blueLakeTab: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.9,
+    height: 50,
+    position: 'absolute',
+    left: windowWidth * 0.05,
+    right: windowWidth * 0.05,
+    marginBottom: 20,
+    borderRadius: 20,
+  },
+  faHeartIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCommentIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCloudIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faRouteIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  alertModal: {
+    width: windowWidth,
+    height: windowHeight,
+  },
+  centeredView: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: windowWidth,
+    height: windowHeight,
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+  },
+  alertModalContainer: {
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.35,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  alertIcon: {
+    //flex: 1,
+    //justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    marginRight: windowWidth * 0.05,
+    marginTop: windowWidth * 0.02,
+  },
+  alertMessage: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: windowWidth * 0.05,
+  },
+  alertText: {
+    textAlign: 'center',
+    color: '#1F83BB',
+    fontSize: 13,
+    fontWeight: 'bold',
+    paddingTop: windowWidth * 0.03,
+  },
+  closeBtn: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.5,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 0.7,
+    marginBottom: windowWidth * 0.1,
+    justifyContent: 'center',
+    elevation: 10,
+    shadowColor: '#1F83BB',
+    bottom: windowWidth * 0.05,
+  },
+  closeBtnTxt: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

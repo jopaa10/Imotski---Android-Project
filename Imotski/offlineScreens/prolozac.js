@@ -8,10 +8,19 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faAngleDoubleDown, faReply} from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleDown,
+  faCloudSun,
+  faComment,
+  faHeart,
+  faReply,
+  faRoute,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 //useNav hookd
 import {useNavigation} from '@react-navigation/core';
@@ -32,9 +41,839 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DvaOkaInfo} from '../dvaOkaInfo';
 import {BadnjeviceInfo} from '../badnjeviceInfo';
 import {GreenCathedralInfo} from '../zelenaKatedralaInfo';
+import {GalleryGreenCathedral} from '../zelenaKatedralaInfo/gallery';
+import {ReviewGreenCathedral} from '../zelenaKatedralaInfo/reviewGreenCathedral';
+import {CommentGreenCathedralNav} from '../zelenaKatedralaInfo/commentGreenCathedral';
+import {RedLakeInfo} from '../redLakeInfo';
+import {WeatherGreenCathedral} from '../zelenaKatedralaInfo/weatherGreenCathedral';
+import {GreenCathedralNavRoute} from '../zelenaKatedralaInfo/greenCathedralNav';
+import {BlueLakeInfo} from '../blueLakeInfo';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {CommentDvaOkaNav} from '../dvaOkaInfo/commentDvaOka';
+import {WeatherDvaOka} from '../dvaOkaInfo/weatherDvaOka';
+import {DvaOkaNavRoute} from '../dvaOkaInfo/dvaOkaNav';
+import {ReviewDvaOka} from '../dvaOkaInfo/reviewDvaOka';
+import {GalleryDvaOka} from '../dvaOkaInfo/gallery';
+import {GalleryBadnjevice} from '../badnjeviceInfo/galleryBadnjevice';
+import {ReviewBadnjevice} from '../badnjeviceInfo/reviewBadnjevice';
+import {BadnjeviceNavRoute} from '../badnjeviceInfo/badnjeviceNav';
+import {CommentBadnjeviceNav} from '../badnjeviceInfo/commentBadnjevice';
+import {WeatherBadnjevice} from '../badnjeviceInfo/weatherBadnjevice';
 
 //stack navigator
 const ProlozacStack = createStackNavigator();
+
+//bottom stack navigator
+const GreenCathedralBottomStack = createBottomTabNavigator();
+const DvaOkaBottomStack = createBottomTabNavigator();
+const BadnjeviceBottomStack = createBottomTabNavigator();
+
+//skywalk horizontal stack nav
+const GreenCathedralHorizontalStack = createStackNavigator();
+
+//green cathedral - details horizontal nav
+const GreenCathedralHorizontalNav = () => (
+  <GreenCathedralHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Green Cathedral Info">
+    <GreenCathedralHorizontalStack.Screen
+      name="Overview"
+      component={GreenCathedralInfo}
+      options={{headerShown: false}}
+    />
+
+    <GreenCathedralHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryGreenCathedral}
+    />
+
+    <GreenCathedralHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewGreenCathedral}
+    />
+  </GreenCathedralHorizontalStack.Navigator>
+);
+
+//vosac horizontal stack nav
+const DvaOkaHorizontalStack = createStackNavigator();
+
+//dva oka - details horizontal nav
+const DvaOkaHorizontalNav = () => (
+  <DvaOkaHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Dva Oka Info">
+    <DvaOkaHorizontalStack.Screen
+      name="Overview"
+      component={DvaOkaInfo}
+      options={{headerShown: false}}
+    />
+
+    <DvaOkaHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryDvaOka}
+    />
+
+    <DvaOkaHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewDvaOka}
+    />
+  </DvaOkaHorizontalStack.Navigator>
+);
+
+//badnjevice horizontal stack nav
+const BadnjeviceHorizontalStack = createStackNavigator();
+
+//badnjevice prolozac - details horizontal nav
+const BadnjeviceHorizontalNav = () => (
+  <BadnjeviceHorizontalStack.Navigator
+    screenOptions={{unmountOnBlur: true}}
+    initialRouteName="Badnjevice Info">
+    <BadnjeviceHorizontalStack.Screen
+      name="Overview"
+      component={BadnjeviceInfo}
+      options={{headerShown: false}}
+    />
+
+    <BadnjeviceHorizontalStack.Screen
+      name="Gallery"
+      options={{headerShown: false}}
+      component={GalleryBadnjevice}
+    />
+
+    <BadnjeviceHorizontalStack.Screen
+      name="Review"
+      options={{headerShown: false}}
+      component={ReviewBadnjevice}
+    />
+  </BadnjeviceHorizontalStack.Navigator>
+);
+
+//green cathedral - details
+const GreenCathedralBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <GreenCathedralBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <GreenCathedralBottomStack.Screen
+        name="Green Cathedral Info"
+        component={GreenCathedralHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <GreenCathedralBottomStack.Screen
+          name="Comment Section"
+          component={CommentGreenCathedralNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <GreenCathedralBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <GreenCathedralBottomStack.Screen
+        name="Weather"
+        component={WeatherGreenCathedral}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <GreenCathedralBottomStack.Screen
+          name="Navigation"
+          component={GreenCathedralNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <GreenCathedralBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </GreenCathedralBottomStack.Navigator>
+  );
+};
+
+//dva oka prolozac - details
+const DvaOkaBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <DvaOkaBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <DvaOkaBottomStack.Screen
+        name="Dva Oka Info"
+        component={DvaOkaHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <DvaOkaBottomStack.Screen
+          name="Comment Section"
+          component={CommentDvaOkaNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <DvaOkaBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <DvaOkaBottomStack.Screen
+        name="Weather"
+        component={WeatherDvaOka}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <DvaOkaBottomStack.Screen
+          name="Navigation"
+          component={DvaOkaNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <DvaOkaBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </DvaOkaBottomStack.Navigator>
+  );
+};
+
+//badnjevice prolozac - details
+const BadnjeviceBottomNav = () => {
+  const [isLogged, setLogged] = useState(false);
+  const navigation = useNavigation();
+  const [alertModal, setAlertModal] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+
+  useEffect(async () => {
+    let token = await AsyncStorage.getItem('token');
+
+    if (token) {
+      setLogged(true);
+    } else {
+      setLogged(false);
+      token = null;
+    }
+    /* console.log(isLogged);
+    console.log(token); */
+  }, []);
+
+  return (
+    <BadnjeviceBottomStack.Navigator
+      tabBarOptions={{showLabel: false, style: styles.blueLakeTab}}>
+      <BadnjeviceBottomStack.Screen
+        name="Badnjevice Info"
+        component={BadnjeviceHorizontalNav}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faHeartIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged ? (
+        <BadnjeviceBottomStack.Screen
+          name="Comment Section"
+          component={CommentBadnjeviceNav}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              navigation.navigate('Comment Section');
+            },
+          })}
+        />
+      ) : (
+        <BadnjeviceBottomStack.Screen
+          name="Comment"
+          component={RedLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faComment}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faCommentIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={{
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('Sign up or login first!');
+            },
+          }}
+        />
+      )}
+
+      <BadnjeviceBottomStack.Screen
+        name="Weather"
+        component={WeatherBadnjevice}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faCloudSun}
+                color={focused ? '#8E8E8E' : 'white'}
+                size={30}
+                style={styles.faCloudIcon}
+              />
+            </View>
+          ),
+        }}
+      />
+      {isLogged === true ? (
+        <BadnjeviceBottomStack.Screen
+          name="Navigation"
+          component={BadnjeviceNavRoute}
+          options={{
+            unmountOnBlur: true,
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+              </View>
+            ),
+          }}
+        />
+      ) : (
+        <BadnjeviceBottomStack.Screen
+          name="Alert"
+          component={BlueLakeInfo}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <View>
+                <FontAwesomeIcon
+                  icon={faRoute}
+                  color={focused ? '#8E8E8E' : 'white'}
+                  size={30}
+                  style={styles.faRouteIcon}
+                />
+                <Modal
+                  statusBarTranslucent
+                  transparent={true}
+                  visible={alertModal}
+                  style={styles.alertModal}>
+                  <View style={styles.centeredView}>
+                    <View style={styles.alertModalContainer}>
+                      <>
+                        <TouchableOpacity
+                          style={styles.alertIcon}
+                          onPress={() => setAlertModal(false)}>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faTimesCircle}
+                              color={'black'}
+                              size={20}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                        <View style={styles.alertMessage}>
+                          <Text
+                            style={{
+                              color: '#1F83BB',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            You need to login/sign up first!
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => {
+                            navigation.navigate('Sign In');
+                            setAlertModal(false);
+                          }}>
+                          <Text style={styles.closeBtnTxt}>Go to login</Text>
+                        </TouchableOpacity>
+                      </>
+                    </View>
+                  </View>
+                </Modal>
+              </View>
+            ),
+          }}
+          listeners={() => ({
+            tabPress: event => {
+              event.preventDefault();
+              setAlertModal(true);
+              //alert('You must login first');
+            },
+          })}
+        />
+      )}
+    </BadnjeviceBottomStack.Navigator>
+  );
+};
 
 //places which user can visited - Imotski screen
 export const ProlozacInfo = () => (
@@ -46,17 +885,17 @@ export const ProlozacInfo = () => (
     />
     <ProlozacStack.Screen
       name="Green Cathedral Info"
-      component={GreenCathedralInfo}
+      component={GreenCathedralBottomNav}
       options={{headerShown: false}}
     />
     <ProlozacStack.Screen
       name="Dva oka Info"
-      component={DvaOkaInfo}
+      component={DvaOkaBottomNav}
       options={{headerShown: false}}
     />
     <ProlozacStack.Screen
       name="Badnjevice Canjon Info"
-      component={BadnjeviceInfo}
+      component={BadnjeviceBottomNav}
       options={{headerShown: false}}
     />
   </ProlozacStack.Navigator>
@@ -209,5 +1048,97 @@ const styles = StyleSheet.create({
     height: 12,
     backgroundColor: 'white',
     /* right: windowWidth * 0.05, */
+  },
+  tabContainer: {
+    position: 'absolute',
+    left: windowWidth * 0.25,
+    right: windowWidth * 0.25,
+    width: windowWidth * 0.5,
+    height: 45,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  tabIcon: {
+    color: '#A1A1A1',
+  },
+  tabIconFocused: {
+    color: '#1F83BB',
+  },
+  blueLakeTab: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.9,
+    height: 50,
+    position: 'absolute',
+    left: windowWidth * 0.05,
+    right: windowWidth * 0.05,
+    marginBottom: 20,
+    borderRadius: 20,
+  },
+  faHeartIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCommentIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faCloudIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  faRouteIcon: {
+    marginRight: windowWidth * 0.01,
+  },
+  alertModal: {
+    width: windowWidth,
+    height: windowHeight,
+  },
+  centeredView: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: windowWidth,
+    height: windowHeight,
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+  },
+  alertModalContainer: {
+    width: windowWidth * 0.7,
+    height: windowHeight * 0.35,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  alertIcon: {
+    //flex: 1,
+    //justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    marginRight: windowWidth * 0.05,
+    marginTop: windowWidth * 0.02,
+  },
+  alertMessage: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: windowWidth * 0.05,
+  },
+  alertText: {
+    textAlign: 'center',
+    color: '#1F83BB',
+    fontSize: 13,
+    fontWeight: 'bold',
+    paddingTop: windowWidth * 0.03,
+  },
+  closeBtn: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.5,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 0.7,
+    marginBottom: windowWidth * 0.1,
+    justifyContent: 'center',
+    elevation: 10,
+    shadowColor: '#1F83BB',
+    bottom: windowWidth * 0.05,
+  },
+  closeBtnTxt: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

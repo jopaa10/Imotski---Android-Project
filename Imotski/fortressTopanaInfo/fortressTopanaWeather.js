@@ -35,6 +35,7 @@ export const FortressTopanaWeather = () => {
       weatherLong={17.2139}
       txtColor={'#7d8572'}
       navigate={'Next Days Forecast'}
+      navigateBack={'Explore Imotski'}
     />
   );
 };
