@@ -22,6 +22,9 @@ import themeReducer from './reducers/themeReducer';
 import {darkTheme, lightTheme} from './DarkMode/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import SplashScreen from 'react-native-splash-screen';
+import {windowHeight, windowWidth} from './constants/global';
+
 const store = createStore(
   combineReducers({themeReducer}),
   applyMiddleware(thunk),
@@ -68,6 +71,21 @@ const AppWrapper = () => {
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  /*  if (state) {
+    return (
+      <View style={{width: windowWidth, height: windowHeight, flex: 1}}>
+        <Image
+          source={require('../Imotski/images/exploreEmothaLogo.png')}
+          style={{width: windowWidth, height: windowHeight}}
+        />
+      </View>
+    );
+  } */
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   return (
     <>
