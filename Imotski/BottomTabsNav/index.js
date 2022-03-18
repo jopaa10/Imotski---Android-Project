@@ -68,7 +68,6 @@ import {useNavigation} from '@react-navigation/core';
 import {ReviewScreen} from '../reviewScreen';
 import {NearbyPlacesNavigator} from '../Explore Imotski/nearbyPlaces';
 import MarkedPlaces from '../placesDetailsMapForAllUsers';
-import {blueLakeTopTabsNav} from '../infoTemplate';
 
 //activities screen
 import {KayakBottomNav} from '../ActivitiesScreens/kayak';

@@ -74,6 +74,7 @@ const Activities = () => {
         {activitiesData.map((item, index) => {
           return (
             <TouchableNativeFeedback
+              key={(index += 1)}
               background={TouchableNativeFeedback.Ripple('#00000040', false)}
               useForeground={true}
               onPress={() => navigation.navigate(item.navigation)}>
@@ -104,11 +105,12 @@ const Activities = () => {
           justifyContent: 'space-between',
           marginHorizontal: 5,
         }}>
-        {activitiesData2.map((item, index) => {
+        {activitiesData2.map((item, index = 4) => {
           return (
             <TouchableNativeFeedback
               background={TouchableNativeFeedback.Ripple('#00000040', false)}
               useForeground={true}
+              key={index}
               onPress={() => navigation.navigate(item.navigation)}>
               <View
                 key={index}

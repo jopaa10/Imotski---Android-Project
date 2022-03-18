@@ -8,10 +8,10 @@
 
 import React, {createContext, useState, useEffect, useReducer} from 'react';
 
-import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+import {ActivityIndicator, View, Modal, StyleSheet, Text} from 'react-native';
 
 import styled, {ThemeProvider} from 'styled-components';
-import BottomTabsNav from './BottomTabsNav';
 import {AppDrawerScreen} from './exploreImotskiTemplate';
 import {initialState, reducer} from './reducers/userReducer';
 
@@ -23,6 +23,7 @@ import {darkTheme, lightTheme} from './DarkMode/Theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SplashScreen from 'react-native-splash-screen';
+import LottieView from 'lottie-react-native';
 import {windowHeight, windowWidth} from './constants/global';
 
 const store = createStore(
@@ -35,12 +36,15 @@ export const UserContext = createContext();
 const AppWrapper = () => {
   const theme = useSelector(state => state.themeReducer.theme);
   const [themeMode, setThemeMode] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   //console.log(theme.mode);
 
   useEffect(async () => {
     const themeMode = await AsyncStorage.getItem('theme');
     setThemeMode(themeMode);
+    setIsLoading(false);
+    SplashScreen.hide();
   }, []);
 
   setInterval(async () => {
@@ -48,11 +52,36 @@ const AppWrapper = () => {
     setThemeMode(themeMode);
   }, 1000);
 
-  //console.log(themeTempl);
+  if (isLoading) {
+    return (
+      <View style={styles.centeredView}>
+        <Modal visible={isLoading} transparent={true} statusBarTranslucent>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              {/* <ActivityIndicator size={'large'} color={'#1F83BB'} />
+              <Text
+                style={{
+                  color: 'black',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                Loading...
+              </Text> */}
+              <LottieView
+                source={require('./assets/97313-processing.json')}
+                autoPlay
+                style={{height: windowHeight * 0.1}}
+              />
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  }
 
   return (
     <>
-      {themeMode === 'light' ? (
+      {themeMode === 'light' && isLoading === false ? (
         <ThemeProvider theme={lightTheme}>
           <NavigationContainer theme={lightTheme}>
             <AppDrawerScreen />
@@ -72,21 +101,6 @@ const AppWrapper = () => {
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  /*  if (state) {
-    return (
-      <View style={{width: windowWidth, height: windowHeight, flex: 1}}>
-        <Image
-          source={require('../Imotski/images/exploreEmothaLogo.png')}
-          style={{width: windowWidth, height: windowHeight}}
-        />
-      </View>
-    );
-  } */
-
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
   return (
     <>
       <Provider store={store}>
@@ -97,5 +111,24 @@ const App = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    //marginTop: 22,
+    //backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  modalView: {
+    marginBottom: windowWidth * 0.1,
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.15,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    paddingTop: windowHeight * 0.05,
+    alignItems: 'center',
+  },
+});
 
 export default App;
