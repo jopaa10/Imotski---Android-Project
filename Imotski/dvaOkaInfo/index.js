@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const DvaOkaInfo = () => {
+const DvaOkaInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/dvaOkaH.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Prolozac'}
       sight={'Dva Oka'}
       title={'Dva Oka - History'}
@@ -20,3 +21,17 @@ export const DvaOkaInfo = () => {
     />
   );
 };
+
+DvaOkaInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default DvaOkaInfo;

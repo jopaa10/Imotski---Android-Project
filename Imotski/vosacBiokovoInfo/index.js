@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const VosacBiokovoInfo = () => {
+const VosacBiokovoInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/biokovoVosac.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       navigateBack={'Explore Biokovo'}
       city={'Biokovo'}
       sight={'Vosac'}
@@ -20,3 +21,16 @@ export const VosacBiokovoInfo = () => {
     />
   );
 };
+VosacBiokovoInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default VosacBiokovoInfo;

@@ -23,8 +23,10 @@ import {useNavigation} from '@react-navigation/core';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
+import {SharedElement} from 'react-navigation-shared-element';
+import {windowHeight} from '../constants/global';
 
-export const ActivitiesInfoTemplate = props => {
+const ActivitiesInfoTemplate = props => {
   const navigation = useNavigation();
 
   const DATA = [
@@ -53,7 +55,13 @@ export const ActivitiesInfoTemplate = props => {
           style={{backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR}}>
           <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
           <View>
-            <Image style={styles.image} source={props.image} />
+            <SharedElement id={props.id}>
+              <Image
+                style={styles.image}
+                source={props.image}
+                resizeMode="cover"
+              />
+            </SharedElement>
             <Pressable
               style={styles.arrowLeftIcon}
               onPress={() => navigation.navigate('Explore Imotski')}>
@@ -109,6 +117,20 @@ export const ActivitiesInfoTemplate = props => {
   );
 };
 
+/* ActivitiesInfoTemplate.sharedElements = route => {
+  //const {item} = route.params;
+  console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'fade-in',
+      resize: 'clip',
+    },
+  ];
+}; */
+
+export default ActivitiesInfoTemplate;
+
 const styles = StyleSheet.create({
   topTabsNav: {
     position: 'absolute',
@@ -156,7 +178,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: windowWidth,
-    height: 340,
+    height: windowHeight * 0.5,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
   txtCity: {
     position: 'absolute',

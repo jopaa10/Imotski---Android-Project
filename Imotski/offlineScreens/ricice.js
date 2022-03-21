@@ -37,19 +37,19 @@ import {SwiperTemplate} from '../swiperTemplate';
 import {createStackNavigator} from '@react-navigation/stack';
 
 //stack navigator
-const RiciceStack = createStackNavigator();
+const RiciceStack = createSharedElementStackNavigator();
 
 //bottom stack navigator
 const GreenLakeBottomStack = createBottomTabNavigator();
 const GalipovacBottomStack = createBottomTabNavigator();
 
 //stack screens
-import {GreenLakeInfo} from '../greenLakeInfo';
-import {GalipovacInfo} from '../galipovacInfo/index';
+import GreenLakeInfo from '../greenLakeInfo/index';
+import GalipovacInfo from '../galipovacInfo/index';
 import {CommentGreenLakeNav} from '../greenLakeInfo/commentGreenLake';
-import {RedLakeInfo} from '../redLakeInfo';
+import RedLakeInfo from '../redLakeInfo';
 import {WeatherGreenLake} from '../greenLakeInfo/weatherGreenLake';
-import {BlueLakeInfo} from '../blueLakeInfo';
+import BlueLakeInfo from '../blueLakeInfo';
 import {GreenLakeNavRoute} from '../greenLakeInfo/greenLakeNav';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {GalleryGreenLake} from '../greenLakeInfo/gallery';
@@ -62,9 +62,13 @@ import {GalleryGalipovac} from '../galipovacInfo/gallery';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NextDaysForecastGreenLake} from '../greenLakeInfo/nextDaysForecast';
 import {NextDaysForecastGalipovac} from '../galipovacInfo/nextDaysForecast';
+import {
+  createSharedElementStackNavigator,
+  SharedElement,
+} from 'react-navigation-shared-element';
 
 //green lake horizontal stack nav
-const GreenLakeHorizontalStack = createStackNavigator();
+const GreenLakeHorizontalStack = createSharedElementStackNavigator();
 
 //weather stack for Green Cathedral
 const WeatherStackGreenLake = createStackNavigator();
@@ -132,7 +136,7 @@ const GreenLakeHorizontalNav = () => (
 );
 
 //galipovac horizontal stack nav
-const GalipovacHorizontalStack = createStackNavigator();
+const GalipovacHorizontalStack = createSharedElementStackNavigator();
 
 //galipovac - details horizontal nav
 const GalipovacHorizontalNav = () => (
@@ -701,17 +705,34 @@ export const Ricice = () => {
         content={DATA.map((item, index, indexAnimated) => (
           <>
             <View key={index}>
-              <Image style={styles.image} source={item.image} />
+              <SharedElement id={`item.${item.key}.image`}>
+                <Image
+                  style={styles.image}
+                  source={item.image}
+                  resizeMode="cover"
+                />
+              </SharedElement>
               <View
                 style={{
                   width: windowWidth,
                 }}>
                 <Text style={styles.txt}>{item.name}</Text>
-                <Pressable
+                <TouchableOpacity
                   style={[styles.btn, {backgroundColor: item.bgColor}]}
-                  onPress={() => navigation.navigate(item.screen)}>
+                  onPress={() =>
+                    navigation.navigate(item.screen, {
+                      screen: item.screen,
+                      params: {
+                        screen: 'Overview',
+                        params: {
+                          image: item.image,
+                          id: `item.${item.key}.image`,
+                        },
+                      },
+                    })
+                  }>
                   <Text style={styles.txtBtn}>Explore</Text>
-                </Pressable>
+                </TouchableOpacity>
                 <Pressable
                   style={[
                     styles.btnCircle,

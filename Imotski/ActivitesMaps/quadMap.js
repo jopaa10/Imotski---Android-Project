@@ -425,9 +425,10 @@ export const QuadMap = () => {
           isVisible={modalIsOpen}
           onSwipeComplete={() => setModalIsOpen(false)}
           swipeDirection="down"
-          statusBarTranslucent
-          deviceHeight={windowHeight}
-          style={{margin: 0}}>
+          statusBarTranslucent={true}
+          coverScreen={false}
+          deviceHeight={'auto'}
+          style={{margin: 0, height: windowHeight}}>
           <View style={styles.centeredView}>
             <View
               style={[
@@ -646,7 +647,7 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginTop: 20,
+    //marginTop: 20,
   },
   modalView: {
     height: windowHeight * 0.65,

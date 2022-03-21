@@ -16,19 +16,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {useNavigation} from '@react-navigation/native';
 import {windowHeight, windowWidth} from '../constants/global';
-import {RedLakeInfo} from '../redLakeInfo';
+import RedLakeInfo from '../redLakeInfo';
 import {FortressTopanaRoute} from './fortressTopanaNav';
 import {FortressTopanaComment} from './fortressTopanaComment';
 import {FortressTopanaWeatherNav} from './fortressTopanaWeather';
 import {GalleryFortressTopana} from './galleryFortressTopana';
 import {ReviewFortressTopana} from './reviewFortressTopana';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
 //tab stack for bottom navigation
 const FortressBottomTabStack = createBottomTabNavigator();
 
 //skywalk horizontal stack nav
-const FortressTopanaHorizontalStack = createStackNavigator();
+const FortressTopanaHorizontalStack = createSharedElementStackNavigator();
 
 //skywalk - details horizontal nav
 const FortressTopanaHorizontalNav = () => (
@@ -300,12 +301,13 @@ export const FortressBottomNav = () => {
   );
 };
 
-export const FortressTopanaInfo = () => {
+const FortressTopanaInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/topanaFortressH.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Imotski'}
       sight={'Fortress Topana'}
       title={'Fortress Topana - History'}
@@ -313,9 +315,21 @@ export const FortressTopanaInfo = () => {
       color={colors.PRIMARY_TEXT_COLOR}
       color2={'grey'}
       color3={'grey'}
-      navgateBack={'Explore Imotski'}
+      navigateBack={'Explore Imotski'}
     />
   );
+};
+
+FortressTopanaInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
 };
 
 const styles = StyleSheet.create({
@@ -412,3 +426,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default FortressTopanaInfo;

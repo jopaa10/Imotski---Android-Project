@@ -36,13 +36,13 @@ import {SwiperTemplate} from '../swiperTemplate';
 import {createStackNavigator} from '@react-navigation/stack';
 
 //stack screens
-import {SkywalkBiokovoInfo} from '../skywalkBiokovoInfo';
-import {VosacBiokovoInfo} from '../vosacBiokovoInfo';
-import {StJureInfo} from '../svJureBiokovoInfo';
+import SkywalkBiokovoInfo from '../skywalkBiokovoInfo';
+import VosacBiokovoInfo from '../vosacBiokovoInfo';
+import StJureInfo from '../svJureBiokovoInfo';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CommentSkywalkNav} from '../skywalkBiokovoInfo/commentSkywalk';
-import {RedLakeInfo} from '../redLakeInfo';
-import {BlueLakeInfo} from '../blueLakeInfo';
+import RedLakeInfo from '../redLakeInfo';
+import BlueLakeInfo from '../blueLakeInfo';
 import {SkywalkNavRoute} from '../skywalkBiokovoInfo/skywalkNav';
 import {WeatherSkywalk} from '../skywalkBiokovoInfo/weatherSkywalk';
 
@@ -67,9 +67,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NextDaysForecastSkywalk} from '../skywalkBiokovoInfo/nextDaysForecast';
 import {NextDaysForecastVosac} from '../vosacBiokovoInfo/nextDaysForecast';
 import {NextDaysForecastStJure} from '../svJureBiokovoInfo/nextDaysForecast';
+import {
+  createSharedElementStackNavigator,
+  SharedElement,
+} from 'react-navigation-shared-element';
 
 //stack navigator
-const BiokovoStack = createStackNavigator();
+const BiokovoStack = createSharedElementStackNavigator();
 
 //bottom stack navigator
 const SkywalkBottomStack = createBottomTabNavigator();
@@ -137,7 +141,7 @@ export const FutureDayForecastStJure = () => (
 );
 
 //skywalk horizontal stack nav
-const SkywalkHorizontalStack = createStackNavigator();
+const SkywalkHorizontalStack = createSharedElementStackNavigator();
 
 //skywalk - details horizontal nav
 const SkywalkHorizontalNav = () => (
@@ -165,7 +169,7 @@ const SkywalkHorizontalNav = () => (
 );
 
 //vosac horizontal stack nav
-const VosacHorizontalStack = createStackNavigator();
+const VosacHorizontalStack = createSharedElementStackNavigator();
 
 //vosac - details horizontal nav
 const VosacHorizontalNav = () => (
@@ -193,7 +197,7 @@ const VosacHorizontalNav = () => (
 );
 
 //st jure horizontal stack nav
-const StJureHorizontalStack = createStackNavigator();
+const StJureHorizontalStack = createSharedElementStackNavigator();
 
 //st jure - details horizontal nav
 const StJureHorizontalNav = () => (
@@ -227,6 +231,8 @@ const SkywalkBiokovoBottomNav = () => {
   const [alertModal, setAlertModal] = useState(false);
   const [showMessage, setShowMessage] = useState(null);
 
+  //console.log(route.params.key);
+
   useEffect(async () => {
     let token = await AsyncStorage.getItem('token');
 
@@ -259,6 +265,7 @@ const SkywalkBiokovoBottomNav = () => {
           ),
         }}
       />
+
       {isLogged ? (
         <SkywalkBottomStack.Screen
           name="Comment Section"
@@ -1018,17 +1025,35 @@ export const Biokovo = () => {
         content={DATA.map((item, index, indexAnimated) => (
           <>
             <View key={index}>
-              <Image style={styles.image} source={item.image} />
+              <SharedElement id={`item.${item.key}.image`}>
+                <Image
+                  style={styles.image}
+                  source={item.image}
+                  resizeMode={'cover'}
+                />
+              </SharedElement>
               <View
                 style={{
                   width: windowWidth,
                 }}>
                 <Text style={styles.txt}>{item.name}</Text>
-                <Pressable
+                <TouchableOpacity
                   style={[styles.btn, {backgroundColor: item.bgColor}]}
-                  onPress={() => navigation.navigate(item.screen)}>
+                  onPress={() => {
+                    navigation.navigate(item.screen, {
+                      screen: item.screen,
+                      params: {
+                        screen: 'Overview',
+                        params: {
+                          image: item.image,
+                          id: `item.${item.key}.image`,
+                        },
+                      },
+                    });
+                  }}>
                   <Text style={styles.txtBtn}>Explore</Text>
-                </Pressable>
+                </TouchableOpacity>
+
                 <Pressable
                   style={[
                     styles.btnCircle,

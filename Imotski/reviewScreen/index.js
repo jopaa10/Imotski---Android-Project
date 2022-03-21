@@ -64,7 +64,11 @@ export const ReviewScreen = ({placeCategory, city, sight, image, navigate}) => {
         review={
           <>
             {reviewData.length < 1 ? (
-              <View style={styles.reviewContainer}>
+              <View
+                style={[
+                  styles.reviewContainer,
+                  {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+                ]}>
                 <View style={styles.reviewImageContainer}>
                   <Image
                     style={styles.reviewImage}
@@ -98,7 +102,12 @@ export const ReviewScreen = ({placeCategory, city, sight, image, navigate}) => {
             ) : (
               reviewData.map(item => {
                 return (
-                  <View key={item._id} style={styles.reviewContainer}>
+                  <View
+                    key={item._id}
+                    style={[
+                      styles.reviewContainer,
+                      {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+                    ]}>
                     <View style={styles.reviewImageContainer}>
                       <Image
                         style={styles.reviewImage}
@@ -166,8 +175,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     borderBottomColor: 'rgba(0,0,0,0.2)',
     borderBottomWidth: 1,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    //borderBottomLeftRadius: 20,
+    //borderBottomRightRadius: 20,
+    backgroundColor: 'white',
   },
   reviewImageContainer: {
     width: windowWidth * 0.15,

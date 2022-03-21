@@ -24,14 +24,18 @@ import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 //event screens
-import {ImotskaSila} from '../eventScreens/imotskaSila';
-import {CvitRazgovora} from '../eventScreens/cvitRazgovora';
-import {MagicTimeVinyl} from '../eventScreens/magicTimeVinyl';
-import {ImotaBikeAndWine} from '../eventScreens/imotaBikeWine';
-import {GlumciUZagvozdu} from '../eventScreens/glumciUZagvozdu';
-import {ZabarskaVecer} from '../eventScreens/zabarskaVecer';
+import ImotskaSila from '../eventScreens/imotskaSila';
+import CvitRazgovora from '../eventScreens/cvitRazgovora';
+import MagicTimeVinyl from '../eventScreens/magicTimeVinyl';
+import ImotaBikeAndWine from '../eventScreens/imotaBikeWine';
+import GlumciUZagvozdu from '../eventScreens/glumciUZagvozdu';
+import ZabarskaVecer from '../eventScreens/zabarskaVecer';
+import {
+  createSharedElementStackNavigator,
+  SharedElement,
+} from 'react-navigation-shared-element';
 
-const EventStack = createStackNavigator();
+const EventStack = createSharedElementStackNavigator();
 
 export const EventNavigation = () => {
   return (
@@ -80,36 +84,42 @@ export const EntertainmentScreen = props => {
 
   const DATA = [
     {
+      key: 1,
       title: 'Imotska sila',
       image: require('../images/imotskaSila.jpg'),
       city: 'City Imotski',
       navigation: 'Imotska Sila',
     },
     {
+      key: 2,
       title: 'Cvit razgovora',
       image: require('../images/cvitRazgovora.jpg'),
       city: 'City Imotski',
       navigation: 'Cvit Razgovora',
     },
     {
+      key: 3,
       title: 'Magic Time Vinyl Festival',
       image: require('../images/magicVinylFestival.jpg'),
       city: 'Perinuša',
       navigation: 'Magic Time Vinly Festival',
     },
     {
+      key: 4,
       title: 'Glumci u Zagvozdu',
       image: require('../images/glumciUZagvozdu.jpg'),
       city: 'Zagvozd',
       navigation: 'Glumci U Zagvozdu',
     },
     {
+      key: 5,
       title: 'Imota Bike & wine',
       image: require('../images/imotaBikeAndWine.jpeg'),
       city: 'Imotski region',
       navigation: 'Imota Bike And Wine',
     },
     {
+      key: 6,
       title: 'Žabarska Večer',
       image: require('../images/zabarskaVecerImotski.jpg'),
       city: 'Zmijavci',
@@ -158,29 +168,40 @@ export const EntertainmentScreen = props => {
         {DATA.map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => navigation.navigate(item.navigation)}>
-            <View style={styles.listContainer}>
-              <View style={styles.containerEvent}>
-                <Image style={styles.image} source={item.image} />
+            onPress={() =>
+              navigation.navigate(item.navigation, {
+                image: item.image,
+                id: `item.${item.key}.image`,
+              })
+            }>
+            <SharedElement id={`item.${item.key}.image`}>
+              <View style={styles.listContainer}>
+                <View style={styles.containerEvent}>
+                  <Image
+                    style={styles.image}
+                    source={item.image}
+                    resizeMode="cover"
+                  />
 
-                <View style={styles.cityContainer}>
-                  <Text style={styles.cityTitle}>{item.title}</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginLeft: windowWidth * 0.05,
-                      marginBottom: windowWidth * 0.01,
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faMapMarkerAlt}
-                      style={styles.iconLocation}
-                      size={16}
-                    />
-                    <Text style={styles.cityDestination}>{item.city}</Text>
+                  <View style={styles.cityContainer}>
+                    <Text style={styles.cityTitle}>{item.title}</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginLeft: windowWidth * 0.05,
+                        marginBottom: windowWidth * 0.01,
+                      }}>
+                      <FontAwesomeIcon
+                        icon={faMapMarkerAlt}
+                        style={styles.iconLocation}
+                        size={16}
+                      />
+                      <Text style={styles.cityDestination}>{item.city}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
+            </SharedElement>
           </TouchableOpacity>
         ))}
       </ScrollView>

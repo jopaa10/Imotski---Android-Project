@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const GreenLakeInfo = () => {
+const GreenLakeInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/greenLake.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       navigateBack={'Explore Ricice'}
       city={'Ricice'}
       sight={'Green Lake'}
@@ -20,3 +21,17 @@ export const GreenLakeInfo = () => {
     />
   );
 };
+
+GreenLakeInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default GreenLakeInfo;

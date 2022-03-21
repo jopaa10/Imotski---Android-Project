@@ -62,7 +62,11 @@ const Next48Hours = ({
   return (
     <>
       <ThemeProvider>
-        <View style={styles.container}>
+        <View
+          style={[
+            styles.container,
+            {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+          ]}>
           {weatherDataArray.map((item, index) => (
             <>
               <View key={index} style={styles.viewWeatherInfo}>
@@ -116,6 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     bottom: windowWidth * 0.3,
     alignContent: 'center',
+    backgroundColor: 'white',
   },
   containerWeatherByHour: {
     flexDirection: 'row',

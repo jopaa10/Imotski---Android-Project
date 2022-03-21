@@ -35,22 +35,18 @@ import {AppDrawerScreen} from '../Explore Imotski/index';
 import {windowWidth, windowHeight} from '../constants/global';
 
 //Main page: Explore Imotski & region
-import ExploreImotski from '../Explore Imotski/index';
 import {Imotski} from '../offlineScreens/imotski';
 import {BiokovoInfo} from '../offlineScreens/biokovo';
 import {ProlozacInfo} from '../offlineScreens/prolozac';
 import {RiciceInfo} from '../offlineScreens/ricice';
 
 //blue lake info in Imotski screen
-import {BlueLakeInfo} from '../blueLakeInfo';
+import BlueLakeInfo from '../blueLakeInfo';
 import {Gallery} from '../blueLakeInfo/gallery';
-import {BlueLakeWeather, Weather} from '../blueLakeInfo/weather';
-
-//next 7 days forecast
-import {NextDaysForecast} from '../blueLakeInfo/nextdaysforecast';
+import {BlueLakeWeather} from '../blueLakeInfo/weather';
 
 //red lake info in Imotski screen
-import {RedLakeInfo} from '../redLakeInfo/index';
+import RedLakeInfo from '../redLakeInfo/index';
 
 //first page for user signIn or signUp
 import {SignInNav} from '../userPage';
@@ -60,7 +56,6 @@ import {ProfilePageNav} from '../profilePage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //navigation page for getting directions
-import {RouteMap} from '../routeMap';
 import {CommentNavBlueLake} from '../commentBox/blueLakeComment';
 
 //navigation
@@ -79,25 +74,27 @@ import {SwimmingBottomNav} from '../ActivitiesScreens/swimming';
 
 //red lake
 import {GalleryRedLake} from '../redLakeInfo/galleryRedLake';
-import {ReviewScreenRedLake} from '../reviewScreenRedLake';
 import {WeatherRedLake} from '../redLakeInfo/weatherRedLake';
 import {NextDaysForecastRedLake} from '../redLakeInfo/nextdaysforecastRedLake';
 import {CommentNavRedLake} from '../commentBox/redLakeComment';
 import {BlueLakeNavRoute} from '../routeMap/blueLakenav';
 import {RedLakeNavRoute} from '../routeMap/redLakeNav';
 import {NextDaysForecastBlueLake} from '../blueLakeInfo/nextDaysForecastBlueLake';
-import {FortressBottomNav, FortressTopanaInfo} from '../fortressTopanaInfo';
+import {FortressBottomNav} from '../fortressTopanaInfo';
+import {ReviewBlueLake} from '../blueLakeInfo/reviewBlueLake';
+import {ReviewRedLake} from '../redLakeInfo/reviewRedLake';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
 const Stack = createStackNavigator();
 
 //blue lake
-const ImotskiStack = createStackNavigator();
-const BlueLakeHorNav = createStackNavigator();
+const ImotskiStack = createSharedElementStackNavigator();
+const BlueLakeHorNav = createSharedElementStackNavigator();
 const BlueLakeInfoBottomNav = createBottomTabNavigator();
 
 //red lake
 const RedLakeInfoBottomNav = createBottomTabNavigator();
-const RedLakeHorNav = createStackNavigator();
+const RedLakeHorNav = createSharedElementStackNavigator();
 
 //weather stack for Blue lake
 const WeatherStack = createStackNavigator();
@@ -139,7 +136,7 @@ const BlueLakeHorizontalNav = () => (
     <BlueLakeHorNav.Screen
       name="Review"
       options={{headerShown: false}}
-      component={ReviewScreen}
+      component={ReviewBlueLake}
     />
   </BlueLakeHorNav.Navigator>
 );
@@ -422,7 +419,7 @@ const RedLakeHorizontalNav = () => (
     <RedLakeHorNav.Screen
       name="Review"
       options={{headerShown: false}}
-      component={ReviewScreenRedLake}
+      component={ReviewRedLake}
     />
   </RedLakeHorNav.Navigator>
 );
@@ -703,18 +700,18 @@ const Tab = createBottomTabNavigator();
 
 //bottom navigation on first screen Explore Imotski and region
 const BottomTabs = () => {
-  const [isLogged, setIsLogged] = useState(null);
+  const [isLogged, setIsLogged] = useState(false);
 
-  useEffect(async () => {
-    const token = await AsyncStorage.getItem('token');
+  useEffect(() => {
+    const token = AsyncStorage.getItem('token');
 
     if (token) {
       setIsLogged(true);
-    } else if (token == null) {
-      setIsLogged(false);
     }
 
-    console.log(token);
+    if (token == null) {
+      setIsLogged(false);
+    }
   }, []);
 
   console.log(isLogged);
@@ -789,7 +786,7 @@ const BottomTabs = () => {
           ),
         }}
       />
-      {isLogged === false ? (
+      {isLogged === false || isLogged === null ? (
         <Tab.Screen
           name="Sign In"
           component={SignInNav}

@@ -2,12 +2,13 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 //template
-import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
+import ActivitiesInfoTemplate from '../ActivitiesInfoTemplate';
 
-export const ImotaBikeAndWine = () => {
+const ImotaBikeAndWine = ({route}) => {
   return (
     <ActivitiesInfoTemplate
-      image={require('../images/imotaBikeAndWine.jpeg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Imotski'}
       sight={'Imotski and region'}
       title={'Imota Bike And Wine'}
@@ -15,3 +16,17 @@ export const ImotaBikeAndWine = () => {
     />
   );
 };
+
+ImotaBikeAndWine.sharedElements = route => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'fade',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default ImotaBikeAndWine;

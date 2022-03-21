@@ -37,6 +37,7 @@ import Swiper from 'react-native-swiper';
 //animatable
 import * as Animatable from 'react-native-animatable';
 import {SwiperTemplate} from '../swiperTemplate';
+import {SharedElement} from 'react-navigation-shared-element';
 
 export const Imotski = () => {
   const navigation = useNavigation();
@@ -78,54 +79,71 @@ export const Imotski = () => {
   return (
     <>
       <SwiperTemplate
-        content={DATA.map((item, index, indexAnimated) => (
-          <>
-            <View key={index}>
-              <Image style={styles.image} source={item.image} />
-              <View
-                style={{
-                  width: windowWidth,
-                }}>
-                <Text style={styles.txt}>{item.name}</Text>
-                <Pressable
-                  style={[styles.btn, {backgroundColor: item.bgColor}]}
-                  onPress={() => navigation.navigate(item.screen)}>
-                  <Text style={styles.txtBtn}>Explore</Text>
-                </Pressable>
-                <Pressable
-                  style={[
-                    styles.btnCircle,
-                    {backgroundColor: item.fontAwBgColor},
-                  ]}
-                  onPress={() => navigation.goBack()}>
-                  <FontAwesomeIcon
-                    icon={faReply}
-                    style={[styles.btnCircleIcon, {color: item.fontAwColor}]}
-                    size={30}
-                  />
-                </Pressable>
+        content={DATA.map((item, index, indexAnimated = 4) => {
+          return (
+            <>
+              <View key={index}>
+                <SharedElement id={`item.${item.key}.image`}>
+                  <Image style={styles.image} source={item.image} />
+                </SharedElement>
+                <View
+                  style={{
+                    width: windowWidth,
+                  }}>
+                  <Text style={styles.txt}>{item.name}</Text>
+                  <TouchableOpacity
+                    style={[styles.btn, {backgroundColor: item.bgColor}]}
+                    onPress={() =>
+                      navigation.navigate(item.screen, {
+                        screen: item.screen,
+                        params: {
+                          screen: 'Overview',
+                          params: {
+                            image: item.image,
+                            id: `item.${item.key}.image`,
+                          },
+                        },
+                      })
+                    }>
+                    <Text style={styles.txtBtn}>Explore</Text>
+                  </TouchableOpacity>
+                  <Pressable
+                    style={[
+                      styles.btnCircle,
+                      {backgroundColor: item.fontAwBgColor},
+                    ]}
+                    onPress={() => navigation.goBack()}>
+                    <FontAwesomeIcon
+                      icon={faReply}
+                      style={[styles.btnCircleIcon, {color: item.fontAwColor}]}
+                      size={30}
+                    />
+                  </Pressable>
+                </View>
               </View>
-            </View>
-            <Animatable.View
-              key={indexAnimated}
-              animation={'bounce'}
-              easing={'ease-out'}
-              iterationCount={3}
-              onAnimationEnd={() => setDisplayAnimation('none')}
-              style={{
-                bottom: windowHeight * 0.4,
-                alignItems: 'center',
-                display: item.display,
-              }}>
-              <FontAwesomeIcon
-                icon={faAngleDoubleDown}
-                color={'white'}
-                size={40}
-              />
-              <Text style={{color: 'white'}}>Swipe down for more</Text>
-            </Animatable.View>
-          </>
-        ))}
+              <Animatable.View
+                key={indexAnimated}
+                animation={'bounce'}
+                easing={'ease-out'}
+                iterationCount={'infinite'}
+                onAnimationEnd={() => {
+                  setDisplayAnimation('none');
+                }}
+                style={{
+                  bottom: windowHeight * 0.4,
+                  alignItems: 'center',
+                  display: item.display,
+                }}>
+                <FontAwesomeIcon
+                  icon={faAngleDoubleDown}
+                  color={'white'}
+                  size={40}
+                />
+                <Text style={{color: 'white'}}>Swipe down for more</Text>
+              </Animatable.View>
+            </>
+          );
+        })}
       />
     </>
   );

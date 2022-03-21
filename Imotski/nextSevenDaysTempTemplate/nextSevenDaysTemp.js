@@ -1,6 +1,6 @@
 import {faCloud, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -24,6 +24,9 @@ import {ThemeProvider, useNavigation} from '@react-navigation/native';
 //redux
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
+import Animated from 'react-native-reanimated';
+
+import * as Animatable from 'react-native-animatable';
 
 export const NextSevenDaysForecastTemplate = ({
   placeTempLat,
@@ -110,7 +113,13 @@ export const NextSevenDaysForecastTemplate = ({
             onPress={() => navigation.goBack()}>
             <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
           </TouchableOpacity>
-          <Text style={styles.titleNextDaysForecast}>Next 7 days forecast</Text>
+          <Animatable.Text
+            animation={'fadeInUp'}
+            delay={500 + 90}
+            duration={500}
+            style={styles.titleNextDaysForecast}>
+            Next 7 days forecast
+          </Animatable.Text>
         </View>
         <Svg
           style={styles.waves}
@@ -133,7 +142,11 @@ export const NextSevenDaysForecastTemplate = ({
             />
           </G>
         </Svg>
-        <View style={styles.nextSevenDaysForecast}>
+        <View
+          animation={'fadeInRight'}
+          easing="ease-in"
+          duration={500}
+          style={styles.nextSevenDaysForecast}>
           <NextDaysTemplateItem weatherData={dailyData} />
         </View>
       </ScrollView>

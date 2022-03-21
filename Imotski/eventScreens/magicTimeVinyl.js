@@ -2,12 +2,13 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 //template
-import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
+import ActivitiesInfoTemplate from '../ActivitiesInfoTemplate';
 
-export const MagicTimeVinyl = () => {
+const MagicTimeVinyl = ({route}) => {
   return (
     <ActivitiesInfoTemplate
-      image={require('../images/magicVinylFestival.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Imotski'}
       sight={'Perinuša'}
       title={'Magic Time Vinyl Festival'}
@@ -15,3 +16,17 @@ export const MagicTimeVinyl = () => {
     />
   );
 };
+
+MagicTimeVinyl.sharedElements = route => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'fade',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default MagicTimeVinyl;

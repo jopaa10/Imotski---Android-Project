@@ -38,18 +38,18 @@ import {SwiperTemplate} from '../swiperTemplate';
 import {createStackNavigator} from '@react-navigation/stack';
 
 //stack screens
-import {DvaOkaInfo} from '../dvaOkaInfo';
-import {BadnjeviceInfo} from '../badnjeviceInfo';
+import DvaOkaInfo from '../dvaOkaInfo';
+import BadnjeviceInfo from '../badnjeviceInfo';
 
 //green cathedral screens
-import {GreenCathedralInfo} from '../zelenaKatedralaInfo';
+import GreenCathedralInfo from '../zelenaKatedralaInfo';
 import {GalleryGreenCathedral} from '../zelenaKatedralaInfo/gallery';
 import {ReviewGreenCathedral} from '../zelenaKatedralaInfo/reviewGreenCathedral';
 import {CommentGreenCathedralNav} from '../zelenaKatedralaInfo/commentGreenCathedral';
-import {RedLakeInfo} from '../redLakeInfo';
+import RedLakeInfo from '../redLakeInfo';
 import {WeatherGreenCathedral} from '../zelenaKatedralaInfo/weatherGreenCathedral';
 import {GreenCathedralNavRoute} from '../zelenaKatedralaInfo/greenCathedralNav';
-import {BlueLakeInfo} from '../blueLakeInfo';
+import BlueLakeInfo from '../blueLakeInfo';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 //dva oka screens
@@ -71,9 +71,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NextDaysForecastGreenCathedral} from '../zelenaKatedralaInfo/nextDaysForecast';
 import {NextDaysForecastDvaOka} from '../dvaOkaInfo/nextDaysForecast';
 import {NextDaysForecastBadnjevice} from '../badnjeviceInfo/nextDaysForecast';
+import {
+  createSharedElementStackNavigator,
+  SharedElement,
+} from 'react-navigation-shared-element';
 
 //stack navigator
-const ProlozacStack = createStackNavigator();
+const ProlozacStack = createSharedElementStackNavigator();
 
 //bottom stack navigator
 const GreenCathedralBottomStack = createBottomTabNavigator();
@@ -141,7 +145,7 @@ export const FutureDayForecastBadnjevice = () => (
 );
 
 //skywalk horizontal stack nav
-const GreenCathedralHorizontalStack = createStackNavigator();
+const GreenCathedralHorizontalStack = createSharedElementStackNavigator();
 
 //green cathedral - details horizontal nav
 const GreenCathedralHorizontalNav = () => (
@@ -169,7 +173,7 @@ const GreenCathedralHorizontalNav = () => (
 );
 
 //vosac horizontal stack nav
-const DvaOkaHorizontalStack = createStackNavigator();
+const DvaOkaHorizontalStack = createSharedElementStackNavigator();
 
 //dva oka - details horizontal nav
 const DvaOkaHorizontalNav = () => (
@@ -197,7 +201,7 @@ const DvaOkaHorizontalNav = () => (
 );
 
 //badnjevice horizontal stack nav
-const BadnjeviceHorizontalStack = createStackNavigator();
+const BadnjeviceHorizontalStack = createSharedElementStackNavigator();
 
 //badnjevice prolozac - details horizontal nav
 const BadnjeviceHorizontalNav = () => (
@@ -970,12 +974,12 @@ export const ProlozacInfo = () => (
       options={{headerShown: false}}
     />
     <ProlozacStack.Screen
-      name="Dva oka Info"
+      name="Dva Oka Info"
       component={DvaOkaBottomNav}
       options={{headerShown: false}}
     />
     <ProlozacStack.Screen
-      name="Badnjevice Canjon Info"
+      name="Badnjevice Info"
       component={BadnjeviceBottomNav}
       options={{headerShown: false}}
     />
@@ -1001,7 +1005,7 @@ export const Prolozac = () => {
       key: 2,
       name: 'Dva Oka',
       image: require('../images/dvaOkaH.jpg'),
-      screen: 'Dva oka Info',
+      screen: 'Dva Oka Info',
       bgColor: '#866926',
       fontAwColor: 'white',
       fontAwBgColor: '#866926',
@@ -1011,7 +1015,7 @@ export const Prolozac = () => {
       key: 3,
       name: 'Badnjevice Kanjon',
       image: require('../images/badnjevice.jpg'),
-      screen: 'Badnjevice Canjon Info',
+      screen: 'Badnjevice Info',
       bgColor: '#adbab3',
       fontAwBgColor: '#adbab3',
       fontAwColor: 'white',
@@ -1025,17 +1029,30 @@ export const Prolozac = () => {
         content={DATA.map((item, index, indexAnimated) => (
           <>
             <View key={index}>
-              <Image style={styles.image} source={item.image} />
+              <SharedElement id={`item.${item.key}.image`}>
+                <Image style={styles.image} source={item.image} />
+              </SharedElement>
               <View
                 style={{
                   width: windowWidth,
                 }}>
                 <Text style={styles.txt}>{item.name}</Text>
-                <Pressable
+                <TouchableOpacity
                   style={[styles.btn, {backgroundColor: item.bgColor}]}
-                  onPress={() => navigation.navigate(item.screen)}>
+                  onPress={() =>
+                    navigation.navigate(item.screen, {
+                      screen: item.screen,
+                      params: {
+                        screen: 'Overview',
+                        params: {
+                          image: item.image,
+                          id: `item.${item.key}.image`,
+                        },
+                      },
+                    })
+                  }>
                   <Text style={styles.txtBtn}>Explore</Text>
-                </Pressable>
+                </TouchableOpacity>
                 <Pressable
                   style={[
                     styles.btnCircle,

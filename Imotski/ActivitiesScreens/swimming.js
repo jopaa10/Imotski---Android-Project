@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
 //template
-import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
+import ActivitiesInfoTemplate from '../ActivitiesInfoTemplate';
 
 //bottom nav
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';

@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const GalipovacInfo = () => {
+const GalipovacInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/galipovacView.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Dolica Draga'}
       sight={'Galipovac'}
       title={'Galipovac - History'}
@@ -20,3 +21,17 @@ export const GalipovacInfo = () => {
     />
   );
 };
+
+GalipovacInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default GalipovacInfo;

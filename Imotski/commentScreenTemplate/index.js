@@ -14,17 +14,7 @@ import {
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faArrowLeft,
-  faCheckCircle,
-  faCircle,
-  faCircleNotch,
-  faCross,
-  faExclamationCircle,
-  faExclamationTriangle,
-  faSpinner,
-  faTimesCircle,
-} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
 //Dimensions
 const windowWidth = Dimensions.get('window').width;
@@ -36,9 +26,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 //bottom sheet modal
 import {useNavigation} from '@react-navigation/core';
 
-//waves
-import Waves from '../wavesTemplate';
-import {ScrollView} from 'react-native-gesture-handler';
+import LottieView from 'lottie-react-native';
 
 //async storage to get token
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -66,9 +54,12 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
   const navigation = useNavigation();
   const [alertModal, setAlertModal] = useState(false);
   const [showMessage, setShowMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitComment = async () => {
     //navigation.navigate('Blue Lake Info');
+    setIsLoading(true);
     await fetch('http://192.168.1.2:5000/createcomment', {
       method: 'POST',
       headers: {
@@ -85,6 +76,8 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
         console.log(data);
         if (data.error) {
           //alert('There was an error posting the review. Please try again!');
+          setIsLoading(false);
+          setIsError(true);
           setAlertModal(true);
           setShowMessage(false);
         } else {
@@ -92,6 +85,8 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
           setInput('');
           setAlertModal(true);
           setShowMessage(true);
+          setIsError(false);
+          setIsLoading(false);
         }
       })
       .catch(error => {
@@ -192,6 +187,7 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
           <Modal
             transparent={true}
             visible={alertModal}
+            statusBarTranslucent
             style={styles.alertModal}>
             <View style={styles.centeredView}>
               <View
@@ -202,10 +198,16 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
                 {showMessage ? (
                   <>
                     <View style={styles.alertIcon}>
-                      <FontAwesomeIcon
+                      {/* <FontAwesomeIcon
                         icon={faCheckCircle}
                         color={'green'}
                         size={40}
+                      /> */}
+                      <LottieView
+                        source={require('../assets/5449-success-tick.json')}
+                        autoPlay
+                        loop
+                        style={{height: windowHeight * 0.08}}
                       />
                     </View>
                     <View style={styles.alertMessage}>
@@ -233,40 +235,66 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
                   </>
                 ) : (
                   <>
-                    <View style={styles.alertIcon}>
-                      <FontAwesomeIcon
+                    {isError && (
+                      <>
+                        <View style={styles.alertIcon}>
+                          {/* <FontAwesomeIcon
                         icon={faTimesCircle}
                         color={'red'}
                         size={40}
-                      />
-                    </View>
-                    <View
-                      style={[
-                        styles.alertMessage,
-                        {backgroundColor: colors.MODAL_BACKGROUND_COLOR},
-                      ]}>
-                      <Text
-                        style={{
-                          color: 'red',
-                          fontSize: 25,
-                          fontWeight: 'bold',
-                        }}>
-                        {' '}
-                        Oh no!{' '}
-                      </Text>
-                      <Text style={styles.alertText}>
-                        {' '}
-                        There was error while posting a review. Please try
-                        again!{' '}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      style={styles.closeBtn}
-                      onPress={() => setAlertModal(false)}>
-                      <Text style={styles.closeBtnTxt}>Try again</Text>
-                    </TouchableOpacity>
+                      /> */}
+                          <LottieView
+                            source={require('../assets/97562-error.json')}
+                            autoPlay
+                            loop
+                            style={{height: windowHeight * 0.08}}
+                          />
+                        </View>
+                        <View
+                          style={[
+                            styles.alertMessage,
+                            {backgroundColor: colors.MODAL_BACKGROUND_COLOR},
+                          ]}>
+                          <Text
+                            style={{
+                              color: 'red',
+                              fontSize: 25,
+                              fontWeight: 'bold',
+                            }}>
+                            {' '}
+                            Oh no!{' '}
+                          </Text>
+                          <Text style={styles.alertText}>
+                            {' '}
+                            There was error while posting a review. Please try
+                            again!{' '}
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.closeBtn}
+                          onPress={() => setAlertModal(false)}>
+                          <Text style={styles.closeBtnTxt}>Try again</Text>
+                        </TouchableOpacity>
+                      </>
+                    )}
                   </>
                 )}
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            visible={isLoading}
+            deviceHeight={'auto'}
+            transparent={true}
+            style={{height: windowHeight}}
+            statusBarTranslucent={true}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <LottieView
+                  source={require('../assets/98267-bicycle.json')}
+                  autoPlay
+                  style={{height: windowHeight * 0.2}}
+                />
               </View>
             </View>
           </Modal>
@@ -341,6 +369,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  modalView: {
+    //margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 35,
+    paddingTop: 0,
+    alignItems: 'center',
+  },
   alertModalContainer: {
     width: windowWidth * 0.7,
     height: windowHeight * 0.35,
@@ -349,7 +385,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   alertIcon: {
-    flex: 0.5,
+    flex: 0.7,
     justifyContent: 'flex-start',
     bottom: windowWidth * 0.05,
   },

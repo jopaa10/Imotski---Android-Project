@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   Modal,
+  TouchableOpacity,
 } from 'react-native';
 
 //navigation
@@ -58,7 +59,7 @@ export const ProfilePageNav = () => {
   return (
     <ProfileStackNav.Navigator>
       <ProfileStackNav.Screen
-        name="User"
+        name="Profile Page"
         component={SignInNav}
         options={{headerShown: false}}
       />
@@ -191,6 +192,8 @@ export const ProfilePage = () => {
 
     dispatch({type: 'USER', payload: token});
     navigation.navigate('Sign In');
+
+    console.log(token);
   };
 
   const submitPlace = inputText => {
@@ -346,9 +349,9 @@ export const ProfilePage = () => {
               backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
               alignItems: 'center',
             }}>
-            <Pressable style={styles.btnLogout} onPress={handleLogOut}>
+            <TouchableOpacity style={styles.btnLogout} onPress={handleLogOut}>
               <Text style={styles.textBtnLogout}>LOGOUT</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </ScrollView>
 

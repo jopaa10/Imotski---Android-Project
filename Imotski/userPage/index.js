@@ -29,7 +29,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const signInStack = createStackNavigator();
 
 export const SignInNav = () => {
-  const [isLogged, setIsLogged] = useState(null);
+  const [isLogged, setIsLogged] = useState(false);
 
   const detectLogin = () => {
     const token = AsyncStorage.getItem('token');

@@ -1,11 +1,14 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
+import ActivitiesInfoTemplate from '../ActivitiesInfoTemplate';
 
-export const CvitRazgovora = () => {
+const CvitRazgovora = ({route}) => {
+  //console.log(route.params.id);
+
   return (
     <ActivitiesInfoTemplate
-      image={require('../images/cvitRazgovora.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Imotski'}
       sight={'City Imotski'}
       title={'Cvit Razgovora'}
@@ -17,3 +20,17 @@ export const CvitRazgovora = () => {
     />
   );
 };
+
+CvitRazgovora.sharedElements = route => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'fade',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default CvitRazgovora;

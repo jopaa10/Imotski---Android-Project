@@ -32,6 +32,17 @@ router.post('/signup', (req, res) => {
     return res.status(422).json({error: 'Please input all the fields'});
   }
 
+  /* if (
+    name === null ||
+    surname === null ||
+    email === null ||
+    password === null ||
+    daysOfStaying === null ||
+    placeOfResidence === null
+  ) {
+    return res.status(422).json({error: 'Please input all the fields'});
+  } */
+
   User.findOne({email: email})
     .then(savedUser => {
       if (savedUser) {
@@ -70,8 +81,12 @@ router.post('/signup', (req, res) => {
 router.post('/signin', (req, res) => {
   const {email, password} = req.body;
 
-  if (!email || !password) {
-    res.status(422).json({error: 'Please input all the fields'});
+  if (!email || !password || email === '' || password === '') {
+    return res.status(422).json({error: 'Please input all the fields'});
+  }
+
+  if (email === null && password === null) {
+    return res.status(422).json({error: 'Please input all the fields'});
   }
 
   User.findOne({email}).then(savedUser => {

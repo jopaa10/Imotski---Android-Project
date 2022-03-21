@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const StJureInfo = () => {
+const StJureInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/biokovoSvJure.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       navigateBack={'Explore Biokovo'}
       city={'Biokovo'}
       sight={'St Jure'}
@@ -20,3 +21,17 @@ export const StJureInfo = () => {
     />
   );
 };
+
+StJureInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default StJureInfo;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View, Modal} from 'react-native';
 
 //blue lake template
 import {TemplateInfo} from '../infoTemplate';
@@ -10,6 +10,8 @@ import moment from 'moment-timezone';
 import {ScrollView} from 'react-native-gesture-handler';
 import FutureWeather from '../blueLakeInfo/futureWeather';
 import Next48Hours from './next48hours';
+//import Modal from 'react-native-modal';
+import LottieView from 'lottie-react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -33,6 +35,8 @@ export const WeatherTemplate = ({
 
   const [data, setData] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   //weatherIcons.map(item => console.log(item.icon));
 
   useEffect(() => {
@@ -47,21 +51,25 @@ export const WeatherTemplate = ({
       .then(data => {
         //console.log(moment(data.hourly[26].dt * 1000).format('HH:mm'));
 
-        console.log(data.weather);
+        //console.log(data);
 
-        //hourly data
-        setData(data.hourly);
+        if (data) {
+          //hourly data
+          setData(data.hourly);
 
-        setweatherData({
-          uvIndex: data.current.uvi,
-          humidity: data.current.humidity,
-          sunset: moment
-            .tz(data.current.sunset * 1000, data.timezone)
-            .format('HH:mm'),
-          sunrise: moment
-            .tz(data.current.sunrise * 1000, data.timezone)
-            .format('HH:mm'),
-        });
+          setweatherData({
+            uvIndex: data.current.uvi,
+            humidity: data.current.humidity,
+            sunset: moment
+              .tz(data.current.sunset * 1000, data.timezone)
+              .format('HH:mm'),
+            sunrise: moment
+              .tz(data.current.sunrise * 1000, data.timezone)
+              .format('HH:mm'),
+          });
+
+          setIsLoading(false);
+        }
       });
   };
 
@@ -90,6 +98,24 @@ export const WeatherTemplate = ({
         color2={'grey'}
         color3={'grey'}
       />
+      <Modal
+        visible={isLoading}
+        deviceHeight={'auto'}
+        transparent={true}
+        style={{height: windowHeight}}
+        statusBarTranslucent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modal}>
+              <LottieView
+                source={require('../assets/98267-bicycle.json')}
+                autoPlay
+                style={{height: windowHeight * 0.2}}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
@@ -100,5 +126,28 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.26,
     bottom: windowWidth * 0.25,
     paddingTop: windowWidth * 0.08,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //marginTop: 22,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    margin: 0,
+  },
+  modalView: {
+    //margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 35,
+    paddingTop: 0,
+    alignItems: 'center',
+  },
+  modal: {
+    //backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    //borderStyle: 'solid',
+    width: windowWidth * 0.45,
+    height: windowHeight * 0.2,
+    alignItems: 'center',
   },
 });

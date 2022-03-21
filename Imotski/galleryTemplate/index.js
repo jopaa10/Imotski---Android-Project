@@ -13,6 +13,7 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
+import {useTheme} from 'styled-components';
 
 //dimensions
 const windowWidth = Dimensions.get('window').width;
@@ -98,9 +99,15 @@ const GalleryTemplate = props => {
     //setModalImage({image: ''});
   };
 
+  const {colors} = useTheme();
+
   return (
     <>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+        ]}>
         {images.map((item, index) => (
           <Pressable
             key={index}
@@ -165,11 +172,12 @@ const styles = StyleSheet.create({
   container: {
     flexWrap: 'wrap',
     height: 'auto',
-    width: windowWidth * 0.9,
+    width: windowWidth,
     //flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     bottom: windowWidth * 0.2,
+    backgroundColor: 'white',
   },
 
   centeredView: {

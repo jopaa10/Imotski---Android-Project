@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const GreenCathedralInfo = () => {
+const GreenCathedralInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/zelenaKatedrala.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Prolozac'}
       sight={'Green Cathedral'}
       title={'Green Cathedral - History'}
@@ -20,3 +21,17 @@ export const GreenCathedralInfo = () => {
     />
   );
 };
+
+GreenCathedralInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default GreenCathedralInfo;

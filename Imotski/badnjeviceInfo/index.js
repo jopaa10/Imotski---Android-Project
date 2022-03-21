@@ -3,12 +3,13 @@ import {useTheme} from 'styled-components';
 //template
 import {TemplateInfo} from '../infoTemplate';
 
-export const BadnjeviceInfo = () => {
+const BadnjeviceInfo = ({route}) => {
   const {colors} = useTheme();
 
   return (
     <TemplateInfo
-      image={require('../images/badnjevice.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Prolozac'}
       sight={'Badnjevice Canjon'}
       title={'Badnjevice Canjon - History'}
@@ -20,3 +21,17 @@ export const BadnjeviceInfo = () => {
     />
   );
 };
+
+BadnjeviceInfo.sharedElements = ({route}) => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default BadnjeviceInfo;

@@ -2,12 +2,13 @@ import React from 'react';
 import {View, Text} from 'react-native';
 
 //template
-import {ActivitiesInfoTemplate} from '../ActivitiesInfoTemplate';
+import ActivitiesInfoTemplate from '../ActivitiesInfoTemplate';
 
-export const ZabarskaVecer = () => {
+const ZabarskaVecer = ({route}) => {
   return (
     <ActivitiesInfoTemplate
-      image={require('../images/zabarskaVecerImotski.jpg')}
+      image={route.params.image}
+      id={route.params.id}
       city={'Imotski'}
       sight={'Zmijavci'}
       title={'Žabarska Večer'}
@@ -15,3 +16,17 @@ export const ZabarskaVecer = () => {
     />
   );
 };
+
+ZabarskaVecer.sharedElements = route => {
+  //const {item} = route.params;
+  //console.log(route.params.id);
+  return [
+    {
+      id: route.params.id,
+      animation: 'move',
+      resize: 'clip',
+    },
+  ];
+};
+
+export default ZabarskaVecer;
