@@ -13,8 +13,12 @@ import Next48Hours from './next48hours';
 //import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
 
+//dimension
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+//weather api
+import {WEATHER_API} from '@env';
 
 export const WeatherTemplate = ({
   city,
@@ -45,7 +49,7 @@ export const WeatherTemplate = ({
 
   const getWeather = () => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${weatherLat}&lon=${weatherLong}&units=metric&appid=e903bab07386bca9e1753e78018f8091`,
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${weatherLat}&lon=${weatherLong}&units=metric&appid=${WEATHER_API}`,
     )
       .then(res => res.json())
       .then(data => {
