@@ -39,7 +39,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme} from 'styled-components';
 
-Geocoder.init('AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo');
+import {GOOGLE_KEY} from '@env';
+
+Geocoder.init(GOOGLE_KEY);
 
 const MarkedPlaces = () => {
   const [coordsData, setCoordData] = useState();
@@ -237,7 +239,7 @@ const MarkedPlaces = () => {
 
     if (event.nativeEvent.placeId != undefined) {
       fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${event.nativeEvent.placeId}&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
+        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${event.nativeEvent.placeId}&key=${GOOGLE_KEY}`,
       )
         .then(res => res.json())
         .then(data => {
@@ -408,6 +410,10 @@ const MarkedPlaces = () => {
               style={{
                 height: 'auto',
                 marginTop: 5,
+                /* borderColor: 'green',
+                borderWidth: 2, */
+                marginHorizontal: windowWidth * 0.04,
+                marginBottom: windowWidth * 0.1,
               }}>
               <TouchableOpacity>
                 <View style={styles.btnCloseModal}>
@@ -422,31 +428,51 @@ const MarkedPlaces = () => {
               </TouchableOpacity>
 
               <View style={styles.placeNameContainer}>
-                <View style={{flexDirection: 'row', paddingTop: 10}}>
-                  <FontAwesomeIcon
-                    icon={faMapMarkerAlt}
-                    size={20}
-                    style={{marginTop: 5}}
-                    color="red"
-                  />
-                  <Text
-                    style={[
-                      styles.placeName,
-                      {color: colors.PRIMARY_TEXT_COLOR},
-                    ]}>
-                    {placeDetails.name}
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingTop: 10,
+                    height: 'auto',
+                    /* borderColor: 'red',
+                    borderWidth: 1, */
+                  }}>
+                  <View
+                    style={{
+                      width: windowWidth * 0.65,
+                      flexDirection: 'row',
+                      paddingTop: 10,
+                      height: 'auto',
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faMapMarkerAlt}
+                      size={20}
+                      style={{marginTop: 5}}
+                      color="red"
+                    />
+                    <Text
+                      style={[
+                        styles.placeName,
+                        {color: colors.PRIMARY_TEXT_COLOR},
+                      ]}>
+                      {placeDetails.name}
+                    </Text>
+                  </View>
                   <TouchableOpacity onPress={handleLocationPermission}>
                     <View style={styles.directionsStyle}>
-                      <FontAwesomeIcon
-                        icon={faDirections}
-                        size={25}
-                        style={{marginTop: 5}}
-                        color={colors.DIRECTION_ICON_COLOR}
-                      />
-                      <Text style={{color: colors.PRIMARY_TEXT_COLOR}}>
-                        Directions
-                      </Text>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faDirections}
+                          size={25}
+                          style={{marginTop: 5}}
+                          color={colors.DIRECTION_ICON_COLOR}
+                        />
+                        <Text style={{color: colors.PRIMARY_TEXT_COLOR}}>
+                          Directions
+                        </Text>
+                      </View>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -525,7 +551,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   modalView: {
-    height: windowHeight * 0.65,
+    height: 'auto',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -540,12 +566,16 @@ const styles = StyleSheet.create({
   },
   placeNameContainer: {
     paddingHorizontal: 20,
+    width: 'auto',
+    //flex: 1,
+    //justifyContent: 'space-between',
+    height: 'auto',
   },
   placeName: {
     paddingLeft: 5,
     fontSize: 20,
     fontWeight: 'bold',
-    width: windowWidth * 0.65,
+    //width: windowWidth * 0.5,
   },
   placeDetailsContainer: {
     paddingHorizontal: 20,
@@ -572,8 +602,11 @@ const styles = StyleSheet.create({
   },
   directionsStyle: {
     flexDirection: 'column',
-    marginRight: windowWidth * 0.4,
-    alignItems: 'center',
+    //marginRight: windowWidth * 0.4,
+    alignItems: 'flex-end',
+    width: windowWidth * 0.2,
+    /* borderColor: 'red',
+    borderWidth: 1, */
   },
 });
 

@@ -15,7 +15,7 @@ export const NextDaysForecastTopana = () => {
       <NextSevenDaysForecastTemplate
         placeTempLat={'43.4498'}
         placeTempLong={'17.2139'}
-        bgColor={colors.PRIMARY_BACKGROUND_COLOR}
+        bgColor={colors.TOPANA_BACKGROUND_COLOR}
       />
     </ThemeProvider>
   );

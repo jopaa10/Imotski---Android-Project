@@ -48,11 +48,16 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerActions, ThemeProvider} from '@react-navigation/native';
 import {useTheme} from 'styled-components';
 
+import * as Animatable from 'react-native-animatable';
+
 export const AppDrawerScreen = () => {
+  const {colors} = useTheme();
   return (
     <AppDrawer.Navigator
       drawerStyle={{
         width: windowWidth * 0.7,
+        height: 'auto',
+        backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
       }}
       drawerContent={props => <DrawerContent {...props} />}>
       <AppDrawer.Screen name="Imotski" component={BottomTabsNav} />
@@ -129,34 +134,48 @@ export const TemplateExploreImotski = props => {
                   </>
                 </View>
               </View>
-              <Svg
-                width={windowWidth}
-                height="130"
-                viewBox={`10 5 ${windowWidth} 130`}
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <Path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M415 53.1351L397.5 67.8949C380 82.6546 345 112.174 310 123.982C275 135.79 240 129.886 205 109.222C170 88.5585 135 53.1351 100 44.2793C65 35.4234 30 53.1351 12.5 61.991L-5.00001 70.8468L-5.00001 -4.43602e-06L12.5 -4.43602e-06C30 -4.43602e-06 65 -4.43602e-06 100 -4.43602e-06C135 -4.43602e-06 170 -4.43602e-06 205 -4.43602e-06C240 -4.43602e-06 275 -4.43602e-06 310 -4.43602e-06C345 -4.43602e-06 380 -4.43602e-06 397.5 -4.43602e-06H415L415 53.1351Z"
-                  fill={colors.PRIMARY_BACKGROUND_COLOR}
-                />
-                <View
-                  style={[
-                    styles.containerDiscover,
-                    {borderColor: colors.PRIMARY_BACKGROUND_COLOR},
-                  ]}>
-                  <FontAwesomeIcon
-                    icon={faSearchLocation}
-                    size={25}
-                    style={{
-                      marginLeft: 5,
-                    }}
-                    color={'white'}
+              <View
+                style={{
+                  width: windowWidth,
+                  aspectRatio: 375 / 116,
+                  height: 'auto',
+                }}>
+                <Svg
+                  style={{
+                    bottom: windowHeight * 0.015,
+                  }}
+                  width={'100%'}
+                  height={'100%'}
+                  viewBox={`0 0 375 116`}
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <Path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M375 47.4129L359.375 60.5831C343.75 73.7534 312.5 100.094 281.25 110.63C250 121.166 218.75 115.898 187.5 97.4598C156.25 79.0215 125 47.4129 93.75 39.5107C62.5 31.6086 31.25 47.4129 15.625 55.315L9.03976e-06 63.2172L9.03976e-06 1.45076e-06L15.625 1.45076e-06C31.25 1.45076e-06 62.5 1.45076e-06 93.75 1.45076e-06C125 1.45076e-06 156.25 1.45076e-06 187.5 1.45076e-06C218.75 1.45076e-06 250 1.45076e-06 281.25 1.45076e-06C312.5 1.45076e-06 343.75 1.45076e-06 359.375 1.45076e-06L375 1.45076e-06L375 47.4129Z"
+                    fill={colors.PRIMARY_BACKGROUND_COLOR}
                   />
-                  <Text style={styles.txtDiscover}> Imotski & region </Text>
-                </View>
-              </Svg>
+
+                  <Animatable.View
+                    duration={500}
+                    delay={600}
+                    animation="bounceIn"
+                    style={[
+                      styles.containerDiscover,
+                      {borderColor: colors.PRIMARY_BACKGROUND_COLOR},
+                    ]}>
+                    <FontAwesomeIcon
+                      icon={faSearchLocation}
+                      size={25}
+                      style={{
+                        marginLeft: 5,
+                      }}
+                      color={'white'}
+                    />
+                    <Text style={styles.txtDiscover}> Imotski & region </Text>
+                  </Animatable.View>
+                </Svg>
+              </View>
               <NearbyPlaces />
             </View>
             <View style={styles.listContainer}>
@@ -199,27 +218,25 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     //marginTop: 20,
-    bottom: windowWidth * 0.22,
+    bottom: windowWidth * 0.25,
     /* borderColor: 'black',
     borderWidth: 1, */
   },
   txtActivities: {
     color: '#1F83BB',
     fontWeight: 'bold',
-    marginHorizontal: 20,
+    marginHorizontal: windowWidth * 0.05,
+    height: 'auto',
+    width: windowWidth * 0.4,
     fontSize: 17,
+    /*  borderColor: 'red',
+    borderWidth: 2, */
   },
   txtDiscover: {
     color: 'white',
     fontWeight: 'bold',
     marginRight: 15,
     fontSize: 20,
-  },
-  txtPlaces: {
-    color: '#1F83BB',
-    marginHorizontal: 20,
-    fontSize: 16,
-    //paddingTop: windowWidth * 0.05,
   },
   avatar: {
     width: 40,

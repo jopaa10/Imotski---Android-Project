@@ -28,7 +28,7 @@ export const CommentBadnjeviceNav = () => {
       <commentStack.Screen
         name="Comment Section"
         options={{headerShown: false}}
-        component={GreenCathedralComment}
+        component={BadnjeviceComment}
       />
     </commentStack.Navigator>
   );
@@ -43,7 +43,7 @@ export const BadnjeviceComment = () => {
       <ThemeProvider theme={theme}>
         <CommentTemplate
           waveColor={colors.SECUNDARY_BACKGROUND_COLOR}
-          bgCommColor={colors.PRIMARY_BACKGROUND_COLOR}
+          bgCommColor={colors.BADNJEVICE_BACKGROUND_COLOR}
           name={'badnjevice'}
           category={'badnjevice'}
         />

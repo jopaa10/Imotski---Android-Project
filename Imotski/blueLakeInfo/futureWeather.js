@@ -14,7 +14,9 @@ const FutureWeather = ({weatherData}) => {
       {weatherData && weatherData.length > 0 ? (
         weatherData.map(
           (weatherData, idx) =>
-            idx !== 0 && <FutureWeatherItem key={idx} data={weatherData} />,
+            idx !== 0 && (
+              <FutureWeatherItem key={idx} index={idx} data={weatherData} />
+            ),
         )
       ) : (
         <View />
@@ -26,31 +28,35 @@ const FutureWeather = ({weatherData}) => {
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const FutureWeatherItem = ({data}) => {
+import * as Animatable from 'react-native-animatable';
+
+const FutureWeatherItem = ({data, index}) => {
   const theme = useSelector(state => state.themeReducer.theme);
   const {colors} = useTheme();
 
   return (
-    <ThemeProvider>
-      <View style={styles.viewWeatherTemp}>
-        <Text style={[styles.hour, {color: colors.PRIMARY_TEXT_COLOR}]}>
-          {moment(data.dt * 1000).format('HH:mm')}
-        </Text>
+    <Animatable.View
+      duration={600}
+      delay={600 + index * 100}
+      animation="fadeInRight"
+      style={styles.viewWeatherTemp}>
+      <Text style={[styles.hour, {color: colors.PRIMARY_TEXT_COLOR}]}>
+        {moment(data.dt * 1000).format('HH:mm')}
+      </Text>
 
-        <Image
-          source={{
-            uri:
-              'http://openweathermap.org/img/wn/' +
-              data.weather[0].icon +
-              '@2x.png',
-          }}
-          style={styles.imageIcons}
-        />
-        <Text style={[styles.temp, {color: colors.PRIMARY_TEXT_COLOR}]}>
-          {data.temp + '°C'}
-        </Text>
-      </View>
-    </ThemeProvider>
+      <Image
+        source={{
+          uri:
+            'http://openweathermap.org/img/wn/' +
+            data.weather[0].icon +
+            '@2x.png',
+        }}
+        style={styles.imageIcons}
+      />
+      <Text style={[styles.temp, {color: colors.PRIMARY_TEXT_COLOR}]}>
+        {data.temp + '°C'}
+      </Text>
+    </Animatable.View>
   );
 };
 
@@ -73,13 +79,16 @@ const styles = StyleSheet.create({
     bottom: windowWidth * 0.2,
   },
   viewWeatherTemp: {
-    width: 50,
-    height: 200,
+    width: windowWidth * 0.25,
+    height: 'auto',
     alignItems: 'center',
-    marginHorizontal: 15,
+    paddingVertical: windowWidth * 0.05,
+    //marginHorizontal: 10,
+    /* borderWidth: 1,
+    borderColor: 'red', */
   },
   hour: {
-    marginTop: 20,
+    marginTop: windowHeight * 0.05,
     fontSize: 15,
     bottom: windowWidth * 0.06,
   },

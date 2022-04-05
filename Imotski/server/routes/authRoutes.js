@@ -233,6 +233,14 @@ router.put('/updatepic', requireLogin, (req, res) => {
   );
 });
 
+/* router.get('/daysofstaying', requireLogin, (req, res) => {
+  User.findById(req.user)
+    .then(userData => res.json({userData}))
+    .catch(error => {
+      console.log(error);
+    });
+}); */
+
 router.post('/createcomment', requireLogin, (req, res) => {
   const {body, catg} = req.body;
   if (!body) {

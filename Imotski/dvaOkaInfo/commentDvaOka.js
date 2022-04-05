@@ -43,7 +43,7 @@ export const DvaOkaComment = () => {
       <ThemeProvider theme={theme}>
         <CommentTemplate
           waveColor={colors.SECUNDARY_BACKGROUND_COLOR}
-          bgCommColor={colors.PRIMARY_BACKGROUND_COLOR}
+          bgCommColor={colors.DVA_OKA_BACKGROUND_COLOR}
           name={'Dva Oka'}
           category={'dva oka'}
         />

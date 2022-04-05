@@ -291,22 +291,6 @@ export const RouteMap = ({destinationCoordLat, destinationCoordLong}) => {
 
   console.log(route);
 
-  /*   useEffect(() => {
-    fetchRoute();
-  }, [currentCoord]);
-
-  const fetchRoute = async () => {
-    const reqOptions = {
-      waypoints: [{coordinates: currentCoord}, {coordinates: destinationPoint}],
-      profile: 'driving-traffic',
-      geometries: 'geojson',
-    };
-
-    const res = await directionsClient.getDirections(reqOptions).send();
-    const newRoute = makeLineString(res.body.routes[0].geometry.coordinates);
-    setRoute(newRoute);
-  }; */
-
   return (
     <View style={styles.container}>
       {location && (

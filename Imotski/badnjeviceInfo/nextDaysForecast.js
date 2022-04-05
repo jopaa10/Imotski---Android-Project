@@ -13,7 +13,7 @@ export const NextDaysForecastBadnjevice = () => {
       <NextSevenDaysForecastTemplate
         placeTempLat={'43.4828'}
         placeTempLong={'17.1547'}
-        bgColor={colors.TEMPLATE_BACKGROUND_COLOR}
+        bgColor={colors.BADNJEVICE_BACKGROUND_COLOR}
       />
     </ThemeProvider>
   );

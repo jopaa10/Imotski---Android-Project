@@ -9,8 +9,9 @@ import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
 
 import * as Animatable from 'react-native-animatable';
+import {windowWidth} from '../constants/global';
 
-const DURATION = 500;
+const DURATION = 300;
 
 const NextDaysTemplateItem = ({weatherData}) => {
   return (
@@ -40,7 +41,7 @@ const NextDaysTemplate = ({data, index}) => {
       <View style={styles.weekView}>
         <Animatable.View
           animation={'fadeInUp'}
-          delay={DURATION + index * 100}
+          delay={DURATION + index * 50}
           style={styles.textView}>
           <Text style={[styles.textDay, {color: colors.PRIMARY_TEXT_COLOR}]}>
             {moment(data.dt * 1000).format('dddd')}
@@ -48,7 +49,7 @@ const NextDaysTemplate = ({data, index}) => {
         </Animatable.View>
         <Animatable.View
           animation={'fadeInUp'}
-          delay={DURATION + index * 100}
+          delay={DURATION + index * 50}
           style={styles.textView}>
           <Text style={[styles.textTemp, {color: colors.PRIMARY_TEXT_COLOR}]}>
             {data.temp.day}
@@ -57,7 +58,7 @@ const NextDaysTemplate = ({data, index}) => {
         </Animatable.View>
         <Animatable.View
           animation={'fadeInUp'}
-          delay={DURATION + index * 100}
+          delay={DURATION + index * 50}
           style={styles.textView}>
           <Image
             style={styles.weekIcon}
@@ -79,7 +80,8 @@ const styles = StyleSheet.create({
   weekView: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
+    marginBottom: windowWidth * 0.01,
   },
   textView: {
     flex: 1,
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   weekIcon: {
-    textAlignVertical: 'center',
+    //textAlignVertical: 'center',
     width: 50,
     height: 50,
   },

@@ -13,7 +13,7 @@ export const NextDaysForecastGreenCathedral = () => {
       <NextSevenDaysForecastTemplate
         placeTempLat={'43.4539'}
         placeTempLong={'17.1743'}
-        bgColor={colors.TEMPLATE_BACKGROUND_COLOR}
+        bgColor={colors.GREEN_CATHEDRAL_BACKGROUND_COLOR}
       />
     </ThemeProvider>
   );

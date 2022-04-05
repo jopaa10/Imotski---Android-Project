@@ -21,8 +21,6 @@ import Geolocation from 'react-native-geolocation-service';
 //route directions
 import MapViewDirections from 'react-native-maps-directions';
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo';
-
 //modal
 import Modal from 'react-native-modal';
 import {windowHeight, windowWidth} from '../constants/global';
@@ -43,6 +41,9 @@ import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//google key
+import {GOOGLE_KEY} from '@env';
 
 export const QuadMap = () => {
   const [quadFirstPoint] = useState({
@@ -364,7 +365,7 @@ export const QuadMap = () => {
               <MapViewDirections
                 origin={location}
                 destination={destinationPoint}
-                apikey={GOOGLE_MAPS_APIKEY}
+                apikey={GOOGLE_KEY}
                 strokeWidth={3}
                 strokeColor="red"
                 mode="DRIVING"
@@ -425,40 +426,57 @@ export const QuadMap = () => {
           isVisible={modalIsOpen}
           onSwipeComplete={() => setModalIsOpen(false)}
           swipeDirection="down"
-          statusBarTranslucent={true}
-          coverScreen={false}
-          deviceHeight={'auto'}
-          style={{margin: 0, height: windowHeight}}>
+          statusBarTranslucent
+          deviceHeight={windowHeight}
+          style={{margin: 0}}>
           <View style={styles.centeredView}>
+            <View
+              style={{
+                top: windowWidth * 0.1,
+                alignItems: 'center',
+                zIndex: 1,
+                height: 'auto',
+              }}>
+              <Image
+                source={require('../images/quadBikeIcon.png')}
+                style={styles.imageModal}
+              />
+            </View>
             <View
               style={[
                 styles.modalView,
-                {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+                {
+                  backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+                },
               ]}>
-              <TouchableOpacity
-                style={styles.btnClose}
-                onPress={() => setModalIsOpen(false)}>
-                <View>
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    size={20}
-                    color={colors.FONTAWESOME_ICON_COLOR}
-                  />
-                </View>
-              </TouchableOpacity>
-
-              <View style={{bottom: windowWidth * 0.3, alignItems: 'center'}}>
-                <Image
-                  source={require('../images/quadBikeIcon.png')}
-                  style={styles.imageModal}
-                />
-              </View>
-
               <View
                 style={{
                   height: 'auto',
-                  marginTop: 5,
-                  bottom: windowWidth * 0.4,
+                  width: 'auto',
+                  marginTop: windowWidth * 0.12,
+                }}>
+                <TouchableOpacity
+                  style={styles.btnClose}
+                  onPress={() => setModalIsOpen(false)}>
+                  <View
+                    style={{
+                      height: 'auto',
+                      width: 'auto',
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      size={20}
+                      color={colors.FONTAWESOME_ICON_COLOR}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  height: 'auto',
+                  //marginTop: 5,
+                  //bottom: windowWidth * 0.4,
+                  paddingBottom: windowHeight * 0.05,
                 }}>
                 <TouchableOpacity>
                   <View style={styles.btnCloseModal}>
@@ -650,18 +668,20 @@ const styles = StyleSheet.create({
     //marginTop: 20,
   },
   modalView: {
-    height: windowHeight * 0.65,
+    height: 'auto',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    shadowColor: '#000',
+    /* borderColor: 'green',
+    borderWidth: 2, */
+    /* shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 5, */
   },
   imageModal: {
     width: windowWidth * 0.5,
@@ -674,14 +694,14 @@ const styles = StyleSheet.create({
   },
   btnCloseModal: {
     //position: 'absolute',
-    top: windowHeight * 0.02,
+    //top: windowHeight * 0.02,
     //left: windowWidth * 0.78,
     //zIndex: 999,
     alignItems: 'center',
   },
   btnClose: {
-    position: 'absolute',
-    top: windowHeight * 0.02,
+    //position: 'absolute',
+    //top: windowHeight * 0.02,
     right: windowWidth * 0.1,
     //zIndex: 999,
     alignItems: 'flex-end',

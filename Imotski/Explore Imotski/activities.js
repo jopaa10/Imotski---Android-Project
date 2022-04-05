@@ -14,6 +14,8 @@ import {
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+import * as Animatable from 'react-native-animatable';
+
 const Activities = () => {
   const navigation = useNavigation();
 
@@ -70,6 +72,7 @@ const Activities = () => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
+          marginHorizontal: 5,
         }}>
         {activitiesData.map((item, index) => {
           return (
@@ -78,12 +81,15 @@ const Activities = () => {
               background={TouchableNativeFeedback.Ripple('#00000040', false)}
               useForeground={true}
               onPress={() => navigation.navigate(item.navigation)}>
-              <View
+              <Animatable.View
+                duration={700}
+                delay={400 + index * 100}
+                animation="bounceIn"
                 key={index}
                 style={{
                   width: windowWidth * 0.3,
                   flexDirection: 'column',
-                  marginHorizontal: 5,
+                  alignItems: 'center',
                 }}>
                 <View
                   style={[
@@ -93,7 +99,7 @@ const Activities = () => {
                   <Image source={item.img} style={styles.icons} />
                 </View>
                 <Text style={styles.txtExploreActions}>{item.txt}</Text>
-              </View>
+              </Animatable.View>
             </TouchableNativeFeedback>
           );
         })}
@@ -112,11 +118,15 @@ const Activities = () => {
               useForeground={true}
               key={index}
               onPress={() => navigation.navigate(item.navigation)}>
-              <View
+              <Animatable.View
+                duration={500}
+                delay={500 + index * 100}
+                animation="bounceIn"
                 key={index}
                 style={{
                   width: windowWidth * 0.3,
                   flexDirection: 'column',
+                  alignItems: 'center',
                 }}>
                 <View
                   style={[
@@ -127,56 +137,11 @@ const Activities = () => {
                 </View>
 
                 <Text style={styles.txtExploreActions}>{item.txt}</Text>
-              </View>
+              </Animatable.View>
             </TouchableNativeFeedback>
           );
         })}
       </View>
-      {/* <View>
-        <View style={styles.containerIcons}>
-          <Image
-            source={require('../images/kayakIcon.jpg')}
-            style={styles.icons}
-          />
-        </View>
-        <Text style={styles.txtExploreActions}>Kayaking</Text>
-      </View>
-      <View>
-        <View style={[styles.containerIcons, {backgroundColor: '#EBFDE1'}]}>
-          <Image
-            source={require('../images/bikeIcon.jpg')}
-            style={styles.icons}
-          />
-        </View>
-        <Text style={styles.txtExploreActions}>Bike</Text>
-      </View>
-      <View>
-        <View style={[styles.containerIcons, {backgroundColor: '#FFF1F1'}]}>
-          <Image
-            source={require('../images/walkIcon.png')}
-            style={styles.icons}
-          />
-        </View>
-        <Text style={styles.txtExploreActions}>Walking</Text>
-      </View>
-      <View>
-        <View style={[styles.containerIcons, {backgroundColor: '#FFFDED'}]}>
-          <Image
-            source={require('../images/quadIcon.jpg')}
-            style={styles.icons}
-          />
-        </View>
-        <Text style={styles.txtExploreActions}>Quad</Text>
-      </View>
-      <View>
-        <View style={[styles.containerIcons, {backgroundColor: '#F1FFFF'}]}>
-          <Image
-            source={require('../images/swimIcon.png')}
-            style={styles.icons}
-          />
-        </View>
-        <Text style={styles.txtExploreActions}>Swimming</Text>
-      </View> */}
     </ScrollView>
   );
 };

@@ -8,8 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
-  ActivityIndicator,
-  ProgressBarAndroidComponent,
 } from 'react-native';
 
 //fontawesome
@@ -108,45 +106,61 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
         <View
           style={{
             backgroundColor: bgCommColor,
-            paddingTop: windowHeight * 0.05,
+            //paddingTop: windowHeight * 0.05,
             height: windowHeight * 0.3,
           }}>
-          {/* <Waves
-            display={'none'}
-            color={diffColorForPlace}
-            color2={diffColorForPlace2}
-          /> */}
-          <Text style={styles.txtSignUp}>
-            {' '}
-            {`Write Your review ${'\n'} for ${name}`}
-          </Text>
+          {/*  <View style={{marginTop: windowWidth * 0.1}}>
+            <TouchableOpacity
+              style={styles.arrowLeftIcon}
+              onPress={() => navigation.goBack()}>
+              <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+            </TouchableOpacity>
+          </View> */}
+          <View
+            style={{
+              height: 'auto',
+              width: windowWidth * 0.6,
+              marginVertical: windowWidth * 0.1,
+            }}>
+            <TouchableOpacity
+              style={styles.arrowLeftIcon}
+              onPress={() => navigation.goBack()}>
+              <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
+            </TouchableOpacity>
+            <Text style={styles.txtSignUp}>
+              {`Write Your review for ${name}`}
+            </Text>
+          </View>
         </View>
-        <Svg
-          style={styles.waves}
-          width={windowWidth}
-          height={windowHeight * 0.2}
-          viewBox={`0 0 ${windowWidth} ${windowHeight * 0.2}`}
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <G filter="url(#filter0_i_718_2)">
-            <Path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-              fill={waveColor}
-            />
-            <Path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-            />
-          </G>
-        </Svg>
-        <Pressable
-          style={styles.arrowLeftIcon}
-          onPress={() => navigation.goBack()}>
-          <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-        </Pressable>
+        <View
+          style={{
+            width: windowWidth,
+            aspectRatio: 375 / 180,
+            height: 'auto',
+            backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+          }}>
+          <Svg
+            style={styles.waves}
+            width={'100%'}
+            height={'100%'}
+            viewBox={`0 0 375 180`}
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <G filter="url(#filter0_i_718_2)">
+              <Path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                fill={waveColor}
+              />
+              <Path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+              />
+            </G>
+          </Svg>
+        </View>
 
         <View
           style={{
@@ -293,7 +307,7 @@ export const CommentTemplate = ({waveColor, category, bgCommColor, name}) => {
                 <LottieView
                   source={require('../assets/98267-bicycle.json')}
                   autoPlay
-                  style={{height: windowHeight * 0.2}}
+                  style={{height: windowHeight * 0.15}}
                 />
               </View>
             </View>
@@ -318,8 +332,10 @@ const styles = StyleSheet.create({
     //width: windowWidth,
     //flex: 1,
     alignItems: 'center',
-    //justifyContent: 'flex-start',
-    height: windowHeight,
+    //justifyContent: 'center',
+    height: 'auto',
+    /* borderColor: 'red',
+    borderWidth: 1, */
   },
   reviewContainer: {
     alignItems: 'center',
@@ -328,7 +344,7 @@ const styles = StyleSheet.create({
     //bottom: windowWidth * 0.3,
   },
   waves: {
-    bottom: windowHeight * 0.18,
+    bottom: windowHeight * 0.2,
   },
   reviewTitle: {
     color: 'white',
@@ -339,9 +355,11 @@ const styles = StyleSheet.create({
     marginTop: windowWidth * 0.055,
   },
   arrowLeftIcon: {
-    position: 'absolute',
-    marginTop: windowWidth * 0.13,
+    //position: 'absolute',
+    marginTop: windowWidth * 0.04,
     marginHorizontal: windowWidth * 0.05,
+    height: 'auto',
+    width: 'auto',
   },
   btnLogout: {
     borderColor: '#A8A8A8',
@@ -373,7 +391,7 @@ const styles = StyleSheet.create({
     //margin: 20,
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 35,
+    padding: 30,
     paddingTop: 0,
     alignItems: 'center',
   },
@@ -420,7 +438,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-    paddingLeft: 20,
-    top: windowHeight * 0.08,
+    //marginLeft: windowWidth * 0.05,
+    //top: windowHeight * 0.08,
+    width: 'auto',
+    height: 'auto',
+    //textAlign: 'justify',
+    paddingTop: windowWidth * 0.02,
+    padding: windowWidth * 0.05,
+    /* borderColor: 'red',
+    borderWidth: 1, */
   },
 });

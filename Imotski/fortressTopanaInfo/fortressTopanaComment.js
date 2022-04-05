@@ -36,7 +36,7 @@ export const FortressTopanaComment = () => {
       <ThemeProvider theme={theme}>
         <CommentTemplate
           waveColor={colors.SECUNDARY_BACKGROUND_COLOR}
-          bgCommColor={colors.PRIMARY_BACKGROUND_COLOR}
+          bgCommColor={colors.TOPANA_BACKGROUND_COLOR}
           name={'Fortress Topana'}
           category={'fortress topana'}
         />

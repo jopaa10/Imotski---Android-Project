@@ -43,7 +43,7 @@ export const StJureComment = () => {
       <ThemeProvider theme={theme}>
         <CommentTemplate
           waveColor={colors.SECUNDARY_BACKGROUND_COLOR}
-          bgCommColor={colors.PRIMARY_BACKGROUND_COLOR}
+          bgCommColor={colors.SV_JURE_BACKGROUND_COLOR}
           name={'St Jure'}
           category={'st jure'}
         />

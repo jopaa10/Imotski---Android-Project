@@ -23,6 +23,8 @@ const windowHeight = Dimensions.get('window').height;
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
 
+import * as Animatable from 'react-native-animatable';
+
 const Next48Hours = ({
   weatherData,
   navigate,
@@ -65,32 +67,46 @@ const Next48Hours = ({
         <View
           style={[
             styles.container,
-            {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+            /* {
+              backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+            }, */
           ]}>
           {weatherDataArray.map((item, index) => (
             <>
-              <View key={index} style={styles.viewWeatherInfo}>
-                <FontAwesomeIcon
-                  key={index}
-                  icon={item.icon}
-                  size={40}
-                  color={colors.FONTAWESOME_ICON_COLOR}
-                />
-                <Text
-                  style={[
-                    styles.textWeatherInfo,
-                    {color: colors.PRIMARY_TEXT_COLOR},
-                  ]}>
-                  {item.text}
-                </Text>
-                <Text
-                  style={[
-                    styles.weatherInfo,
-                    {color: colors.PRIMARY_TEXT_COLOR},
-                  ]}>
-                  {item.weatherD}
-                </Text>
-              </View>
+              <Animatable.View
+                duration={600}
+                delay={700 + index * 100}
+                animation="bounceIn"
+                key={index}
+                style={styles.viewWeatherInfo}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    height: windowHeight * 0.1,
+                    width: windowWidth * 0.3,
+                  }}>
+                  <FontAwesomeIcon
+                    key={index}
+                    icon={item.icon}
+                    size={40}
+                    color={colors.FONTAWESOME_ICON_COLOR}
+                  />
+                  <Text
+                    style={[
+                      styles.textWeatherInfo,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    {item.text}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.weatherInfo,
+                      {color: colors.PRIMARY_TEXT_COLOR},
+                    ]}>
+                    {item.weatherD}
+                  </Text>
+                </View>
+              </Animatable.View>
             </>
           ))}
         </View>
@@ -113,52 +129,75 @@ export default Next48Hours;
 
 const styles = StyleSheet.create({
   container: {
-    width: windowWidth,
-    height: 'auto',
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.25,
     flex: 1,
     flexWrap: 'wrap',
     flexDirection: 'row',
-    bottom: windowWidth * 0.3,
-    alignContent: 'center',
-    backgroundColor: 'white',
+    //bottom: windowWidth * 0.05,
+    //backgroundColor: 'white',
+    justifyContent: 'space-evenly',
+    /*  borderWidth: 2,
+    borderColor: 'red', */
   },
   containerWeatherByHour: {
     flexDirection: 'row',
-    width: windowWidth,
+    width: windowWidth * 0.9,
     height: 'auto',
-    bottom: windowWidth * 0.3,
-    marginLeft: windowWidth * 0.1,
+    //bottom: windowWidth * 0.4,
+    marginHorizontal: windowWidth * 0.1,
+    paddingVertical: windowWidth * 0.05,
+    //marginBottom: windowWidth * 0.1,
+    justifyContent: 'space-around',
+    /* borderWidth: 2,
+    borderColor: 'red', */
   },
   viewWeatherInfo: {
-    width: windowWidth * 0.45,
-    right: windowWidth * 0.05,
+    //flex: 1,
+    flexDirection: 'column',
+    width: windowWidth * 0.35,
+    //right: windowWidth * 0.05,
+    //marginRight: 20,
     alignItems: 'center',
+    /* borderWidth: 2,
+    borderColor: 'red', */
+    paddingTop: windowWidth * 0.02,
+    height: windowHeight * 0.15,
   },
   textWeatherInfo: {
-    bottom: windowWidth * 0.1,
-    left: windowWidth * 0.15,
+    //bottom: windowWidth * 0.1,
+    marginLeft: windowWidth * 0.01,
     fontSize: 12,
     textAlign: 'center',
     color: 'black',
+    /* borderColor: 'purple',
+    borderWidth: 2, */
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.2,
   },
   weatherInfo: {
     fontSize: 16,
     fontWeight: 'bold',
-    left: windowWidth * 0.15,
-    bottom: windowWidth * 0.1,
+    right: windowWidth * 0.2,
+    marginTop: windowWidth * 0.05,
+    /* borderColor: 'purple',
+    borderWidth: 2, */
+    width: windowWidth * 0.2,
+    textAlign: 'center',
   },
   todayW: {
     fontSize: 15,
     fontWeight: 'bold',
-    marginRight: 20,
-    top: windowWidth * 0.05,
+    //marginRight: 20,
+    //bottom: windowWidth * 0.03,
   },
   followingDaysW: {
     fontSize: 15,
     color: '#1F83BB',
     fontWeight: 'bold',
     marginLeft: windowWidth * 0.3,
-    paddingTop: windowWidth * 0.05,
+    //paddingTop: windowWidth * 0.05,
+    //bottom: windowWidth * 0.03,
   },
   hourWeatherView: {
     width: windowWidth,

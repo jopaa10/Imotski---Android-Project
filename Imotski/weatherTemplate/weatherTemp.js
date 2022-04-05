@@ -79,8 +79,8 @@ export const WeatherTemplate = ({
         image={image}
         city={city}
         sight={sight}
-        navigateBack={navigateBack}
-        weather={
+        title={'Weather info'}
+        details={
           <>
             <Next48Hours
               navigate={navigate}
@@ -89,9 +89,30 @@ export const WeatherTemplate = ({
               txtColor={txtColor}
               weatherData={weatherData}
             />
+
             <ScrollView horizontal={true} style={styles.hourWeatherView}>
               <FutureWeather weatherData={data} />
             </ScrollView>
+          </>
+        }
+        navigateBack={navigateBack}
+        weather={
+          <>
+            {/* <View
+              style={{
+                bottom: windowWidth * 0.3,
+              }}>
+              <Next48Hours
+                navigate={navigate}
+                today={'Next 48 hours'}
+                followingDays={'Next 7 days >'}
+                txtColor={txtColor}
+                weatherData={weatherData}
+              />
+            </View> */}
+            {/*  <ScrollView horizontal={true} style={styles.hourWeatherView}>
+              <FutureWeather weatherData={data} />
+            </ScrollView> */}
           </>
         }
         color={'grey'}
@@ -106,13 +127,11 @@ export const WeatherTemplate = ({
         statusBarTranslucent={true}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View style={styles.modal}>
-              <LottieView
-                source={require('../assets/98267-bicycle.json')}
-                autoPlay
-                style={{height: windowHeight * 0.2}}
-              />
-            </View>
+            <LottieView
+              source={require('../assets/98267-bicycle.json')}
+              autoPlay
+              style={{height: windowHeight * 0.15}}
+            />
           </View>
         </View>
       </Modal>
@@ -123,9 +142,12 @@ export const WeatherTemplate = ({
 const styles = StyleSheet.create({
   hourWeatherView: {
     width: windowWidth,
-    height: windowHeight * 0.26,
-    bottom: windowWidth * 0.25,
-    paddingTop: windowWidth * 0.08,
+    height: 'auto',
+    //bottom: windowWidth * 0.2,
+    paddingVertical: windowWidth * 0.05,
+    //paddingTop: windowWidth * 0.08,
+    /* borderColor: 'red',
+    borderWidth: 1, */
   },
   centeredView: {
     flex: 1,
@@ -139,7 +161,7 @@ const styles = StyleSheet.create({
     //margin: 20,
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 35,
+    padding: 30,
     paddingTop: 0,
     alignItems: 'center',
   },

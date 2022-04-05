@@ -20,9 +20,6 @@ const windowHeight = Dimensions.get('window').height;
 //swiper
 import Swiper from 'react-native-swiper';
 
-//google api
-const GOOGLE_MAPS_APIKEY = 'AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo';
-
 //route directions
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -32,6 +29,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme} from 'styled-components';
+
+//google key
+import {GOOGLE_KEY} from '@env';
 
 export const WalkingMap = () => {
   const viewRef = useRef(null);
@@ -468,7 +468,7 @@ export const WalkingMap = () => {
                 <MapViewDirections
                   origin={item.startPoint}
                   destination={item.finishPoint}
-                  apikey={GOOGLE_MAPS_APIKEY}
+                  apikey={GOOGLE_KEY}
                   strokeWidth={3}
                   strokeColor="red"
                   waypoints={item.waypoints}
@@ -579,7 +579,34 @@ export const WalkingMap = () => {
                 style={{
                   alignItems: 'center',
                   zIndex: 999,
+                  height: 'auto',
+                  /* borderColor: 'red',
+                  borderWidth: 1,
+                  backgroundColor: 'green', */
+                  justifyContent: 'center',
+                  zIndex: 1,
                 }}>
+                <View
+                  style={{
+                    zIndex: 1,
+                    alignItems: 'center',
+                    width: windowWidth,
+                    height: 'auto',
+                    /* borderColor: 'red',
+                    borderWidth: 1, */
+                    top: windowWidth * 0.08,
+                  }}>
+                  <Text style={styles.routeTitle}>{title}</Text>
+                  <View style={styles.btnClose}>
+                    <TouchableOpacity onPress={() => setModal(false)}>
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        color={'rgba(255, 255, 255, 1)'}
+                        size={22}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
                 <View style={styles.bikeDetailsContainer}>
                   <Text style={[styles.bikeRouteTitle, {color: 'white'}]}>
                     Distance
@@ -605,31 +632,27 @@ export const WalkingMap = () => {
                   </Text>
                 </View>
                 <Image source={image} style={styles.imageModal} />
-                <Text style={styles.routeTitle}>{title}</Text>
 
-                <Image
+                {/* <Image
                   source={require('../images/hillsIcon.jpg')}
                   style={styles.iconModal}
-                />
-                <TouchableOpacity
-                  style={styles.btnClose}
-                  onPress={() => setModal(false)}>
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    color={'rgba(255, 255, 255, 0.8)'}
-                    size={22}
-                  />
-                </TouchableOpacity>
+                /> */}
               </View>
-
-              {/* <ScrollView>
-                <Text style={styles.routeTextDetails}>{description}</Text>
-              </ScrollView> */}
             </View>
 
-            <View style={styles.textModalContainer}>
+            <View
+              style={[
+                styles.textModalContainer,
+                {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+              ]}>
               <ScrollView style={{flex: 1, marginTop: 0, margin: 10}}>
-                <Text style={styles.routeTextDetails}>{description}</Text>
+                <Text
+                  style={[
+                    styles.routeTextDetails,
+                    {color: colors.FONTAWESOME_ICON_COLOR},
+                  ]}>
+                  {description}
+                </Text>
               </ScrollView>
             </View>
           </View>
@@ -661,7 +684,7 @@ const styles = StyleSheet.create({
   bikeRouteDetails: {
     backgroundColor: 'white',
     width: windowWidth * 0.9,
-    height: windowHeight * 0.12,
+    height: 'auto',
     marginHorizontal: windowWidth * 0.05,
     marginBottom: windowWidth * 0.2,
     flexDirection: 'column',
@@ -670,6 +693,9 @@ const styles = StyleSheet.create({
   },
   bikeRouteDetailsColumn: {
     flexDirection: 'row',
+    marginBottom: 10,
+    /*  borderColor: 'red',
+    borderWidth: 1, */
   },
   bikeSingleDetail: {
     flex: 1,
@@ -701,54 +727,66 @@ const styles = StyleSheet.create({
     //backgroundColor: 'white',
     width: windowWidth * 0.9,
     marginBottom: windowWidth * 0.15,
-    bottom: windowWidth * 0.1,
+    //bottom: windowWidth * 0.1,
   },
   imageModal: {
     width: windowWidth * 0.85,
     height: windowHeight * 0.4,
     borderRadius: 10,
-    bottom: windowWidth * 0.27,
+    //bottom: windowWidth * 0.27,
   },
   routeTextDetails: {
     paddingHorizontal: 20,
     paddingTop: windowWidth * 0.15,
     fontSize: 15,
     textAlign: 'justify',
+    color: 'black',
   },
   btnClose: {
-    position: 'absolute',
-    top: windowWidth * 0.2,
-    left: windowWidth * 0.78,
+    right: windowWidth * 0.1,
+    //marginRight: windowWidth * 0.05,
+    height: 'auto',
+    width: 'auto',
+    alignSelf: 'flex-end',
   },
   textModalContainer: {
     backgroundColor: 'white',
     height: windowHeight * 0.5,
-    bottom: windowWidth * 0.36,
+    bottom: windowWidth * 0.1,
     borderRadius: 10,
+
     //alignSelf: 'center',
   },
   routeTitle: {
     position: 'absolute',
-    top: windowWidth * 0.25,
+    zIndex: 1,
+    //top: windowWidth * 0.08,
     fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
+    width: windowWidth * 0.5,
   },
   bikeDetailsContainer: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     width: windowWidth * 0.7,
-    top: windowWidth * 0.45,
-    height: windowHeight * 0.18,
+    bottom: windowWidth * 0.12,
+    height: windowHeight * 0.15,
+    position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderRadius: 10,
     zIndex: 999,
+    //paddingTop: 10,
+
+    /* borderColor: 'red',
+    borderWidth: 1, */
   },
   bikeSingleDetailsContainer: {
     width: windowWidth * 0.7,
-    top: windowWidth * 0.25,
-    //height: windowHeight * 0.18,
+    bottom: windowWidth * 0.2,
+    position: 'absolute',
+    height: 'auto',
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderRadius: 10,
@@ -758,7 +796,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     position: 'absolute',
-    top: windowWidth * 0.82,
+    top: windowWidth * 0.5,
     left: windowWidth * 0.65,
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 30,

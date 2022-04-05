@@ -1208,13 +1208,13 @@ const styles = StyleSheet.create({
     //justifyContent: 'flex-end',
     alignSelf: 'flex-end',
     marginRight: windowWidth * 0.05,
-    marginTop: windowWidth * 0.02,
+    marginTop: windowWidth * 0.03,
   },
   alertMessage: {
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: windowWidth * 0.05,
+    bottom: windowWidth * 0.025,
   },
   alertText: {
     textAlign: 'center',
@@ -1233,7 +1233,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 10,
     shadowColor: '#1F83BB',
-    bottom: windowWidth * 0.05,
+    bottom: windowWidth * 0.025,
   },
   closeBtnTxt: {
     color: 'white',

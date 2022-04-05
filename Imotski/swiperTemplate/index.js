@@ -41,12 +41,6 @@ export const SwiperTemplate = ({content}) => {
   const navigation = useNavigation();
   const [displayAnimation, setDisplayAnimation] = useState('flex');
 
-  //measure where is second view
-  const [measureView, setMeasure] = useState({
-    width: null,
-    height: null,
-  });
-
   return (
     <>
       <View style={{flex: 1, flexDirection: 'column'}}>

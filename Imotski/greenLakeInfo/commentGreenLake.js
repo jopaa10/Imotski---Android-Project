@@ -43,7 +43,7 @@ export const GreenLakeComment = () => {
       <ThemeProvider theme={theme}>
         <CommentTemplate
           waveColor={colors.SECUNDARY_BACKGROUND_COLOR}
-          bgCommColor={colors.PRIMARY_BACKGROUND_COLOR}
+          bgCommColor={colors.GREEN_LAKE_BACKGROUND_COLOR}
           name={'Green Lake'}
           category={'green lake'}
         />

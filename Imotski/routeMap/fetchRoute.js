@@ -1,9 +1,12 @@
 import polyline from '@mapbox/polyline';
 
+//google key
+import {GOOGLE_KEY} from '@env';
+
 export const FetchRoute = async (originPlaceId, destinationPlaceId) => {
   try {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
+      `https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=${GOOGLE_KEY}`,
     );
 
     //https://maps.googleapis.com/maps/api/directions/json?origin=${originPlaceId}&destination=${destinationPlaceId}&key=AIzaSyBJ5sO1HRmzbvinCvs7h-4w1tpAQFzR2ls

@@ -23,7 +23,7 @@ ZabarskaVecer.sharedElements = route => {
   return [
     {
       id: route.params.id,
-      animation: 'move',
+      animation: 'fade',
       resize: 'clip',
     },
   ];

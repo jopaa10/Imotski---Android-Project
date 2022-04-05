@@ -34,6 +34,7 @@ import {
   createSharedElementStackNavigator,
   SharedElement,
 } from 'react-navigation-shared-element';
+import {useTheme} from 'styled-components';
 
 const EventStack = createSharedElementStackNavigator();
 
@@ -82,6 +83,8 @@ export const EventNavigation = () => {
 export const EntertainmentScreen = props => {
   const navigation = useNavigation();
 
+  const {colors} = useTheme();
+
   const DATA = [
     {
       key: 1,
@@ -129,8 +132,16 @@ export const EntertainmentScreen = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{height: windowHeight}}>
-        <View style={{height: windowHeight * 0.27, backgroundColor: '#BB22AC'}}>
+      <ScrollView
+        style={{
+          height: windowHeight,
+          backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+        }}>
+        <View
+          style={{
+            height: windowHeight * 0.3,
+            backgroundColor: colors.EVENT_BACKGROUND_COLOR,
+          }}>
           <TouchableOpacity
             style={styles.arrowLeftIcon}
             onPress={() => navigation.goBack()}>
@@ -142,27 +153,34 @@ export const EntertainmentScreen = props => {
             />
           </TouchableOpacity>
           <Text style={styles.txtSignIn}> Summer Events</Text>
-          <Svg
-            style={styles.waves}
-            width="375"
-            height={windowHeight * 0.17}
-            viewBox={`0 0 375 ${windowHeight * 0.17}`}
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <G filter="url(#filter0_i_718_2)">
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-                fill="white"
-              />
-              <Path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
-              />
-            </G>
-          </Svg>
+          <View
+            style={{
+              width: windowWidth,
+              aspectRatio: 375 / 216,
+              height: 'auto',
+            }}>
+            <Svg
+              style={styles.waves}
+              width={'100%'}
+              height={'100%'}
+              viewBox={`0 0 375 216`}
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <G filter="url(#filter0_i_718_2)">
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M-120 216L-94.375 184.436C-68.75 152.871 -17.5 89.7421 33.75 79.2206C85 68.6991 122.074 105.524 173.324 89.7421C224.574 73.9599 290 5.57019 341.25 0.309446C392.5 -4.9513 443.75 58.1776 469.375 89.7421L495 121.307V216H469.375C443.75 216 392.5 216 341.25 216C290 216 238.75 216 187.5 216C136.25 216 85 216 33.75 216C-17.5 216 -68.75 216 -94.375 216H-120Z"
+                  fill={colors.SECUNDARY_BACKGROUND_COLOR}
+                />
+                <Path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M-138 216L-112.375 184.436C-86.75 152.871 -35.5 89.7421 15.75 79.2206C67 68.6991 104.074 105.524 155.324 89.7421C206.574 73.9599 272 5.57019 323.25 0.309446C374.5 -4.9513 425.75 58.1776 451.375 89.7421L477 121.307V216H451.375C425.75 216 374.5 216 323.25 216C272 216 220.75 216 169.5 216C118.25 216 67 216 15.75 216C-35.5 216 -86.75 216 -112.375 216H-138Z"
+                />
+              </G>
+            </Svg>
+          </View>
         </View>
 
         {DATA.map((item, index) => (
@@ -228,6 +246,9 @@ const styles = StyleSheet.create({
     //bottom: windowWidth * 0.22,
     /* borderColor: 'black',
     borderWidth: 1, */
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
   },
   containerDiscover: {
     marginVertical: windowWidth * 0.05,
@@ -319,6 +340,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     paddingLeft: windowWidth * 0.05,
-    paddingTop: 5,
+    top: windowHeight * 0.02,
   },
 });

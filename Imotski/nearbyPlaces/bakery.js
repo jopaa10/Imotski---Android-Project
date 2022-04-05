@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Platform, Image} from 'react-native';
+import {View, Text, Platform, Modal, StyleSheet} from 'react-native';
 
 //location
 import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
@@ -13,10 +13,18 @@ import Activities from '../Explore Imotski/activities';
 //images
 import NearbyPlacesByImages from './nearbyPlacesByImages';
 
+import LottieView from 'lottie-react-native';
+import {windowHeight, windowWidth} from '../constants/global';
+
+//google key
+import {GOOGLE_KEY} from '@env';
+
 export const Bakeries = () => {
   const [location, setLocation] = useState(null);
   const [currentCoord, setCurrentCoord] = useState([]);
   const [nearbyCoffeesPhotos, setNearbyCoffeesPhotos] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLocationPermission = async () => {
     let permissionCheck = '';
@@ -64,12 +72,16 @@ export const Bakeries = () => {
   }, []);
 
   const handleCoffeeSearch = () => {
+    setIsLoading(true);
     fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?&keyword=pekara&location=${currentCoord.lat},${currentCoord.lng}&radius=10000&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo`,
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?&keyword=pekara&location=${currentCoord.lat},${currentCoord.lng}&radius=10000&key=${GOOGLE_KEY}`,
     )
       .then(res => res.json())
       .then(data => {
-        setNearbyCoffeesPhotos(data.results);
+        if (data.results != null) {
+          setIsLoading(false);
+          setNearbyCoffeesPhotos(data.results);
+        }
       });
   };
 
@@ -94,6 +106,41 @@ export const Bakeries = () => {
         }
         activity={<Activities />}
       />
+      <Modal
+        visible={isLoading}
+        deviceHeight={'auto'}
+        transparent={true}
+        style={{height: windowHeight}}
+        statusBarTranslucent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <LottieView
+              source={require('../assets/98267-bicycle.json')}
+              autoPlay
+              style={{height: windowHeight * 0.15}}
+            />
+          </View>
+        </View>
+      </Modal>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: windowWidth,
+    height: windowHeight,
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center',
+  },
+  modalView: {
+    //margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 30,
+    paddingTop: 0,
+    alignItems: 'center',
+  },
+});

@@ -16,7 +16,9 @@ const ImotskaSila = ({route}) => {
       sight={'City Imotski'}
       color={'black'}
       title={'Imotska Sila'}
-      details={`The traditional summer cultural event that begins every year on July 4 on the birthday of the great Imotski poet Tin Ujevic. The organizer is the Imotski Public Open University.`}
+      details={`The traditional summer cultural event that begins every year on July 4 on the birthday of the great Imotski poet Tin Ujevic. The organizer is the Imotski Public Open University.
+      cultural event that begins every year on July 4 on the birthday of the great Imotski poet Tin Ujevic. The organizer is the Imotski Public Open University.
+      cultural event that begins every year on July 4 on the birthday of the great Imotski poet Tin Ujevic. The organizer is the Imotski Public Open University.`}
     />
   );
 };
@@ -27,7 +29,7 @@ ImotskaSila.sharedElements = route => {
   return [
     {
       id: route.params.id,
-      animation: 'move',
+      animation: 'fade',
       resize: 'clip',
     },
   ];

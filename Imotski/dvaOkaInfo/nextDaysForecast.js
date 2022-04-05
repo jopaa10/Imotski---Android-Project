@@ -13,7 +13,7 @@ export const NextDaysForecastDvaOka = () => {
       <NextSevenDaysForecastTemplate
         placeTempLat={'43.4564873'}
         placeTempLong={'17.1749875'}
-        bgColor={colors.TEMPLATE_BACKGROUND_COLOR}
+        bgColor={colors.DVA_OKA_BACKGROUND_COLOR}
       />
     </ThemeProvider>
   );

@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Modal,
   Pressable,
+  StatusBar,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +20,11 @@ import Waves from '../wavesTemplate';
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faArrowLeft, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faTimes,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 //dimensions
 import {windowHeight, windowWidth} from '../constants/global';
@@ -73,7 +78,7 @@ export const SignIn = props => {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    fetch('http://192.168.1.2:5000/signin', {
+    fetch('http://localhost:5000/signin', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -206,48 +211,57 @@ export const SignIn = props => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <SafeAreaView
+        <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+        <Animated.ScrollView
           style={[
             styles.container,
-            {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
-          ]}>
-          <Animated.ScrollView
-            style={{height: windowHeight}}
-            scrollEventThrottle={16}
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: offset}}}],
-              {useNativeDriver: true},
-            )}>
-            {/* <Waves navigate={'User'} /> */}
+            {
+              backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+            },
+          ]}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {y: offset}}}],
+            {useNativeDriver: true},
+          )}>
+          {/* <Waves navigate={'User'} /> */}
+
+          <View
+            style={{
+              height: windowHeight * 0.28,
+              backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+            }}>
+            <TouchableOpacity
+              style={styles.arrowLeftIcon}
+              onPress={() => navigation.goBack()}>
+              <FontAwesomeIcon
+                color="white"
+                icon={faArrowLeft}
+                size={20}
+                style={{display: props.display}}
+              />
+            </TouchableOpacity>
+            <Animatable.Text
+              animation={'fadeInLeft'}
+              delay={497}
+              style={styles.txtSignIn}>
+              {' '}
+              Sign In
+            </Animatable.Text>
+          </View>
+          <Animated.View style={styles.wavesView(offset)}>
             <View
               style={{
-                height: windowHeight * 0.28,
-                backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+                width: windowWidth,
+                aspectRatio: 375 / 216,
+                height: 'auto',
+                backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
               }}>
-              <TouchableOpacity
-                style={styles.arrowLeftIcon}
-                onPress={() => navigation.goBack()}>
-                <FontAwesomeIcon
-                  color="white"
-                  icon={faArrowLeft}
-                  size={20}
-                  style={{display: props.display}}
-                />
-              </TouchableOpacity>
-              <Animatable.Text
-                animation={'fadeInLeft'}
-                delay={497}
-                style={styles.txtSignIn}>
-                {' '}
-                Sign In
-              </Animatable.Text>
-            </View>
-            <Animated.View style={styles.wavesView(offset)}>
               <Svg
                 style={styles.waves}
-                width={windowWidth}
-                height={windowHeight * 0.23}
-                viewBox={`0 0 ${windowWidth} ${windowHeight * 0.23}`}
+                width={'100%'}
+                height={'100%'}
+                viewBox={`0 0 375 216`}
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <G filter="url(#filter0_i_718_2)">
@@ -264,18 +278,24 @@ export const SignIn = props => {
                   />
                 </G>
               </Svg>
-            </Animated.View>
-            <View
-              style={{
-                bottom: windowWidth * 0.4,
-              }}>
-              <Animatable.Text
-                animation={'fadeInRight'}
-                delay={498}
-                style={styles.txtGoogleLogin}>
-                Login via Google
-              </Animatable.Text>
             </View>
+          </Animated.View>
+
+          <View
+            style={{
+              bottom: windowHeight * 0.25,
+              flexDirection: 'column',
+              width: windowWidth,
+              flex: 1,
+              backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+              alignItems: 'center',
+            }}>
+            <Animatable.Text
+              animation={'fadeInRight'}
+              delay={498}
+              style={styles.txtGoogleLogin}>
+              Login via Google
+            </Animatable.Text>
 
             <Animatable.View
               animation={'fadeInRight'}
@@ -296,132 +316,172 @@ export const SignIn = props => {
                 onPress={signIn}
               />
             </Animatable.View>
-            <Divider style={{bottom: windowWidth * 0.3}} />
-            <View style={styles.signInScreen}>
+          </View>
+          <Divider style={{bottom: windowHeight * 0.15}} />
+
+          <View
+            style={[
+              styles.signInScreen,
+              {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+            ]}>
+            <View
+              style={{
+                bottom: windowWidth * 0.05,
+              }}>
               <View
                 style={{
-                  bottom: windowWidth * 0.05,
+                  bottom: windowWidth * 0.08,
                 }}>
-                <View
-                  style={{
-                    bottom: windowWidth * 0.05,
-                  }}>
-                  <Animatable.Text
-                    animation={'fadeInLeft'}
-                    delay={499}
-                    style={styles.txtWelcome}>
-                    Welcome back
-                  </Animatable.Text>
-                </View>
-                <View
-                  style={{
-                    bottom: windowWidth * 0.1,
-                  }}>
-                  <Animatable.Text
-                    animation={'fadeInRight'}
-                    delay={500}
-                    style={styles.placeholderEmail}>
-                    Email
-                  </Animatable.Text>
-                  <Animatable.View
-                    animation={'fadeInRight'}
-                    delay={500}
-                    style={styles.viewEmailPass}>
-                    <TextInput
-                      style={styles.inputEmailPass}
-                      keyboardType="email-address"
-                      value={email}
-                      onChangeText={text => setEmail(text)}
-                    />
-                  </Animatable.View>
-                  <Animatable.Text
-                    animation={'fadeInLeft'}
-                    delay={501}
-                    style={styles.placeholderPassword}>
-                    Password
-                  </Animatable.Text>
-                  <Animatable.View
-                    animation={'fadeInLeft'}
-                    delay={501}
-                    style={styles.viewEmailPass}>
-                    <TextInput
-                      style={styles.inputEmailPass}
-                      secureTextEntry={true}
-                      value={password}
-                      onChangeText={text => setPassword(text)}
-                    />
-                  </Animatable.View>
-
-                  <Animatable.View
-                    animation={'fadeInRight'}
-                    delay={502}
-                    style={styles.proceed}>
-                    <TouchableOpacity onPress={handleSubmit}>
-                      <Text style={styles.proceedButton}>Proceed</Text>
-                    </TouchableOpacity>
-                  </Animatable.View>
-                </View>
-                <Animatable.View
+                <Animatable.Text
                   animation={'fadeInLeft'}
-                  delay={503}
-                  style={{
-                    marginTop: windowWidth * 0.03,
-                  }}>
-                  <Text style={styles.txtNewMember}>New member?</Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Sign Up')}>
-                    <Text style={styles.txtSignUp}>Sign Up</Text>
+                  delay={499}
+                  style={styles.txtWelcome}>
+                  Welcome back
+                </Animatable.Text>
+              </View>
+              <View
+                style={{
+                  bottom: windowWidth * 0.1,
+                }}>
+                <View style={styles.viewField}>
+                  <View
+                    style={{
+                      //flex: 1,
+                      flexDirection: 'row',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Animatable.View animation={'fadeInRight'} delay={500}>
+                      <Text
+                        animation={'fadeInRight'}
+                        delay={500}
+                        style={styles.placeholderEmail}>
+                        Email
+                      </Text>
+                      <TextInput
+                        style={[
+                          styles.inputEmailPass,
+                          {
+                            width: windowWidth * 0.7,
+                            marginTop: 0,
+                            //marginRight: windowWidth * 0.05,
+                            //borderColor: borderErrorColor,
+                            zIndex: -1,
+                          },
+                        ]}
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                      />
+                    </Animatable.View>
+                  </View>
+                </View>
+
+                <View style={styles.viewField}>
+                  <View
+                    style={{
+                      //flex: 1,
+                      flexDirection: 'row',
+                      alignContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Animatable.View animation={'fadeInLeft'} delay={501}>
+                      <Text
+                        animation={'fadeInLeft'}
+                        delay={501}
+                        style={styles.placeholderEmail}>
+                        Password
+                      </Text>
+                      <TextInput
+                        style={[
+                          styles.inputEmailPass,
+                          {
+                            width: windowWidth * 0.7,
+                            marginTop: 0,
+                            //marginRight: windowWidth * 0.05,
+                            //borderColor: borderErrorColor,
+                            zIndex: -1,
+                          },
+                        ]}
+                        secureTextEntry={true}
+                        value={password}
+                        onChangeText={text => setPassword(text)}
+                      />
+                    </Animatable.View>
+                  </View>
+                </View>
+
+                <Animatable.View
+                  animation={'fadeInRight'}
+                  delay={502}
+                  style={styles.proceed}>
+                  <TouchableOpacity onPress={handleSubmit}>
+                    <Text style={styles.proceedButton}>Proceed</Text>
                   </TouchableOpacity>
                 </Animatable.View>
               </View>
+              <Animatable.View
+                animation={'fadeInLeft'}
+                delay={503}
+                style={{
+                  marginTop: windowWidth * 0.03,
+                }}>
+                <Text style={styles.txtNewMember}>New member?</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Sign Up')}>
+                  <Text style={styles.txtSignUp}>Sign Up</Text>
+                </TouchableOpacity>
+              </Animatable.View>
             </View>
-
-            <Modal
-              visible={isLoading}
-              deviceHeight={'auto'}
-              transparent={true}
-              style={{height: windowHeight}}
-              statusBarTranslucent={true}>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <View style={styles.modal}>
-                    <LottieView
-                      source={require('../assets/98267-bicycle.json')}
-                      autoPlay
-                      style={{height: windowHeight * 0.2}}
-                    />
-                  </View>
-                </View>
-              </View>
-            </Modal>
-          </Animated.ScrollView>
+          </View>
           <Modal
-            visible={error}
-            style={{height: windowHeight}}
+            visible={isLoading}
+            deviceHeight={'auto'}
             transparent={true}
-            onRequestClose={() => setError(false)}
+            style={{height: windowHeight}}
             statusBarTranslucent={true}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <TouchableOpacity
-                  style={styles.btnClose}
-                  onPress={() => setError(false)}>
-                  <FontAwesomeIcon
-                    icon={faTimes}
-                    color={'rgba(0,0,0,0.8)'}
-                    size={20}
-                  />
-                </TouchableOpacity>
                 <LottieView
-                  source={require('../assets/14651-error-animation.json')}
+                  source={require('../assets/98267-bicycle.json')}
                   autoPlay
-                  style={{height: windowHeight * 0.18}}
+                  style={{height: windowHeight * 0.15}}
                 />
-                <Text style={{color: 'black'}}>{errorName}</Text>
               </View>
             </View>
           </Modal>
-        </SafeAreaView>
+        </Animated.ScrollView>
+        <Modal
+          statusBarTranslucent
+          transparent={true}
+          visible={error}
+          style={styles.alertModal}>
+          <View style={styles.centeredView}>
+            <View style={styles.alertModalContainer}>
+              <>
+                <TouchableOpacity
+                  style={styles.alertIcon}
+                  onPress={() => setError(false)}>
+                  <View>
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      color={'black'}
+                      size={20}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.alertMessage}>
+                  <LottieView
+                    source={require('../assets/14651-error-animation.json')}
+                    autoPlay
+                    style={{height: windowHeight * 0.15}}
+                  />
+                  <Text style={styles.alertText}>{errorName}</Text>
+                </View>
+              </>
+            </View>
+          </View>
+        </Modal>
       </ThemeProvider>
     </>
   );
@@ -429,16 +489,17 @@ export const SignIn = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: 'white',
-    height: windowHeight * 0.58,
+    height: 'auto',
   },
   signInScreen: {
-    height: windowHeight * 0.64,
-    flex: 1,
-    justifyContent: 'flex-start',
+    height: 'auto',
+    //flex: 1,
+    //justifyContent: 'flex-start',
     paddingTop: windowWidth * 0.05,
-    bottom: windowHeight * 0.12,
+    bottom: windowHeight * 0.1,
+    backgroundColor: 'white',
     /* borderColor: 'black',
     borderWidth: 1, */
     //paddingBottom: windowHeight * 0.2,
@@ -480,22 +541,22 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: windowWidth * 0.1,
     fontWeight: 'bold',
-    shadowColor: 'black',
+    /* shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 15,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.5, */
     elevation: 5,
     paddingLeft: windowWidth * 0.05,
-    paddingVertical: 1,
+    /* paddingVertical: 1, */
   },
   placeholderEmail: {
-    textAlignVertical: 'top',
+    top: '25%',
+    zIndex: 10,
     fontSize: 10,
-    paddingLeft: windowWidth * 0.2,
-    top: windowWidth * 0.15,
-    elevation: 10,
+    elevation: 5,
+    marginLeft: windowWidth * 0.05,
     color: '#A8A8A8',
   },
   placeholderPassword: {
@@ -530,20 +591,22 @@ const styles = StyleSheet.create({
   googleLoginView: {
     //marginRight: 30,
     alignItems: 'center',
-    bottom: windowWidth * 0.38,
+    top: windowWidth * 0.01,
+    //marginHorizontal: windowWidth * 0.05,
   },
   txtGoogleLogin: {
     color: '#A8A8A8',
-    fontSize: 14,
+    fontSize: 15,
     paddingLeft: 30,
-    //marginTop: windowWidth * 0.1,
+    marginBottom: windowWidth * 0.05,
+    alignItems: 'flex-start',
+    width: windowWidth,
   },
   googleLogo: {
     marginVertical: windowWidth * 0.02,
   },
   wavesView: offset => ({
     width: '100%',
-    //bottom: windowHeight * 0.2,
     top: offset,
     transform: [
       {
@@ -552,7 +615,7 @@ const styles = StyleSheet.create({
           outputRange: [
             -HEADER_HEIGHT / 2,
             0,
-            -HEADER_HEIGHT * 0.5,
+            -HEADER_HEIGHT * 0.85,
             HEADER_HEIGHT * 0.3,
           ],
         }),
@@ -566,11 +629,13 @@ const styles = StyleSheet.create({
     ],
   }),
   waves: {
-    bottom: windowHeight * 0.18,
-    height: windowHeight * 0.24,
+    bottom: windowHeight * 0.185,
+
+    //height: 'auto',
+    //width: windowWidth,
   },
   arrowLeftIcon: {
-    marginTop: windowWidth * 0.1,
+    marginTop: windowWidth * 0.12,
     marginHorizontal: windowWidth * 0.05,
   },
   centeredView: {
@@ -585,7 +650,7 @@ const styles = StyleSheet.create({
     //margin: 20,
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 35,
+    padding: 30,
     paddingTop: 0,
     alignItems: 'center',
   },
@@ -600,7 +665,64 @@ const styles = StyleSheet.create({
   btnClose: {
     position: 'absolute',
     top: windowWidth * 0.025,
-    left: windowWidth * 0.52,
+    left: windowWidth * 0.5,
     height: 20,
+  },
+  alertModalContainer: {
+    width: windowWidth * 0.6,
+    height: windowHeight * 0.3,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  alertIcon: {
+    //flex: 1,
+    //justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    marginRight: windowWidth * 0.05,
+    marginTop: windowWidth * 0.05,
+  },
+  alertMessage: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: windowWidth * 0.1,
+  },
+  alertText: {
+    textAlign: 'center',
+    color: 'red',
+    fontSize: 13,
+    fontWeight: 'bold',
+    paddingTop: windowWidth * 0.03,
+  },
+  closeBtn: {
+    backgroundColor: '#1F83BB',
+    width: windowWidth * 0.5,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 0.7,
+    marginBottom: windowWidth * 0.1,
+    justifyContent: 'center',
+    elevation: 10,
+    shadowColor: '#1F83BB',
+    bottom: windowWidth * 0.025,
+  },
+  closeBtnTxt: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  viewField: {
+    //flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginHorizontal: windowWidth * 0.05,
+    width: windowWidth * 0.9,
+    alignContent: 'center',
+    //alignItems: 'center',
+    marginTop: windowWidth * 0.1,
+    /* borderColor: 'red',
+    borderWidth: 2, */
+    alignItems: 'center',
   },
 });

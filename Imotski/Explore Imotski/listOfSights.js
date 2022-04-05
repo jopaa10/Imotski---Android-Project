@@ -18,8 +18,10 @@ import {faMapMarkerAlt, faHeart} from '@fortawesome/free-solid-svg-icons';
 //navigation hook
 import {useNavigation} from '@react-navigation/native';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+//dimensions
+import {windowWidth, windowHeight} from '../constants/global';
+
+import * as Animatable from 'react-native-animatable';
 
 const ListOfSights = () => {
   const navigation = useNavigation();
@@ -30,7 +32,11 @@ const ListOfSights = () => {
           background={TouchableNativeFeedback.Ripple('#00000040', false)}
           useForeground={true}
           onPress={() => navigation.navigate('Imotski')}>
-          <View style={styles.container}>
+          <Animatable.View
+            duration={600}
+            delay={400}
+            animation="fadeInRight"
+            style={styles.container}>
             <Image
               style={styles.image}
               source={require('../images/blueLakeH.jpg')}
@@ -44,11 +50,15 @@ const ListOfSights = () => {
               />
               <Text style={[styles.cityTitle, {marginLeft: 0}]}>Imotski</Text>
             </View>
-          </View>
+          </Animatable.View>
         </TouchableNativeFeedback>
 
         <TouchableOpacity onPress={() => navigation.navigate('Biokovo')}>
-          <View style={styles.container}>
+          <Animatable.View
+            duration={700}
+            delay={500}
+            animation="fadeInRight"
+            style={styles.container}>
             <Image
               style={styles.image}
               source={require('../images/biokovo.jpg')}
@@ -62,11 +72,15 @@ const ListOfSights = () => {
               />
               <Text style={[styles.cityTitle, {marginLeft: 0}]}>Biokovo</Text>
             </View>
-          </View>
+          </Animatable.View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Prolozac')}>
-          <View style={styles.container}>
+          <Animatable.View
+            duration={800}
+            delay={600}
+            animation="fadeInRight"
+            style={styles.container}>
             <Image
               style={styles.image}
               source={require('../images/dvaOkaH.jpg')}
@@ -80,11 +94,15 @@ const ListOfSights = () => {
               />
               <Text style={[styles.cityTitle, {marginLeft: 5}]}>Prolozac</Text>
             </View>
-          </View>
+          </Animatable.View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Ricice')}>
-          <View style={styles.container}>
+          <Animatable.View
+            duration={900}
+            delay={700}
+            animation="fadeInRight"
+            style={styles.container}>
             <Image
               style={styles.image}
               source={require('../images/greenLakeH.jpg')}
@@ -97,7 +115,7 @@ const ListOfSights = () => {
               />
               <Text style={[styles.cityTitle, {marginRight: 12}]}>Ricice</Text>
             </View>
-          </View>
+          </Animatable.View>
         </TouchableOpacity>
       </ScrollView>
     </>
@@ -110,13 +128,14 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.5,
     //marginTop: StatusBar.currentHeight || 0,
     marginTop: windowWidth * 0.01,
-    height: 250,
+    height: 'auto',
+    aspectRatio: 750 / 900,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     flexDirection: 'row',
-    marginHorizontal: 20,
+    marginHorizontal: windowWidth * 0.05,
     marginBottom: 30,
     shadowColor: '#000',
     //overflow: 'hidden',
@@ -126,22 +145,26 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 'auto',
+    height: '100%',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
   },
   cityContainer: {
+    flex: 1,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    top: 200,
+    bottom: windowHeight * 0.03,
     left: 20,
     width: 85,
-    height: 26,
+    height: 'auto',
+    padding: 5,
     borderRadius: 20,
     backgroundColor: 'rgba(12, 12, 12, 0.85)',
+    /*  borderColor: 'purple',
+    borderWidth: 2, */
   },
   cityTitle: {
     width: 70,

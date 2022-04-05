@@ -27,7 +27,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-const GOOGLE_MAPS_APIKEY = 'AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo';
+//google key
+import {GOOGLE_KEY} from '@env';
 
 //fetch route
 import {FetchRoute} from '../routeMap/fetchRoute';
@@ -391,7 +392,7 @@ export const KayakMap = () => {
               <MapViewDirections
                 origin={startPoint}
                 destination={finishPoint}
-                apikey={GOOGLE_MAPS_APIKEY}
+                apikey={GOOGLE_KEY}
                 strokeWidth={3}
                 strokeColor="blue"
                 waypoints={waypoints}
@@ -415,7 +416,7 @@ export const KayakMap = () => {
               <MapViewDirections
                 origin={location}
                 destination={destinationPoint}
-                apikey={GOOGLE_MAPS_APIKEY}
+                apikey={GOOGLE_KEY}
                 strokeWidth={3}
                 strokeColor="red"
                 mode="DRIVING"
@@ -467,7 +468,7 @@ export const KayakMap = () => {
               <MapViewDirections
                 origin={startPoint}
                 destination={finishPoint}
-                apikey={GOOGLE_MAPS_APIKEY}
+                apikey={GOOGLE_KEY}
                 strokeWidth={3}
                 strokeColor="blue"
                 waypoints={waypoints}
@@ -506,8 +507,10 @@ export const KayakMap = () => {
                 ]}>
                 <View
                   style={{
-                    height: 'auto',
                     marginTop: 5,
+                    height: 'auto',
+                    marginHorizontal: windowWidth * 0.04,
+                    marginBottom: windowWidth * 0.1,
                   }}>
                   <TouchableOpacity>
                     <View style={styles.btnCloseModal}>
@@ -522,11 +525,22 @@ export const KayakMap = () => {
                   </TouchableOpacity>
 
                   <View style={styles.placeNameContainer}>
-                    <View style={{flexDirection: 'row', paddingTop: 10}}>
-                      <View style={styles.placeNameContainer}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingTop: 10,
+                        height: 'auto',
+                      }}>
+                      <View
+                        style={{
+                          width: windowWidth * 0.65,
+                          flexDirection: 'row',
+                          paddingTop: 10,
+                          height: 'auto',
+                        }}>
                         <Text
                           style={[
-                            styles.startDestinationPoint,
+                            styles.placeName,
                             {
                               paddingTop: 10,
                               paddingLeft: 5,
@@ -538,106 +552,123 @@ export const KayakMap = () => {
                           Kayak Tour on river Vrljika
                         </Text>
                       </View>
+
                       <TouchableOpacity onPress={getUserCurrentCoordinates}>
                         <View style={styles.directionsStyle}>
-                          <FontAwesomeIcon
-                            icon={faDirections}
-                            size={25}
-                            style={{marginTop: 5}}
-                            color={colors.DIRECTION_ICON_COLOR}
-                          />
-                          <Text style={{color: colors.PRIMARY_TEXT_COLOR}}>
-                            Directions
-                          </Text>
+                          <View
+                            style={{
+                              alignItems: 'center',
+                            }}>
+                            <FontAwesomeIcon
+                              icon={faDirections}
+                              size={25}
+                              style={{marginTop: 5}}
+                              color={colors.DIRECTION_ICON_COLOR}
+                            />
+                            <Text
+                              style={{
+                                color: colors.PRIMARY_TEXT_COLOR,
+                              }}>
+                              Directions
+                            </Text>
+                          </View>
                         </View>
                       </TouchableOpacity>
                     </View>
                   </View>
 
-                  <View style={styles.startDestinationPointContainer}>
-                    <View style={{flexDirection: 'row', paddingTop: 15}}>
-                      <Image
-                        source={require('../images/kayakColorIcon.png')}
-                        style={styles.kayakIconStart}
-                      />
-                      <Text
-                        style={[
-                          styles.startDestinationPoint,
-                          {
-                            paddingTop: 5,
-                            paddingLeft: 5,
-                            color: colors.PRIMARY_TEXT_COLOR,
-                          },
-                        ]}>
-                        Izvor rijeke Vrljike
-                      </Text>
+                  <View
+                    style={{
+                      height: 'auto',
+                      //marginBottom: windowHeight * 0.25,
+                      /* borderColor: 'red',
+                      borderWidth: 1, */
+                    }}>
+                    <View style={styles.startDestinationPointContainer}>
+                      <View style={{flexDirection: 'row', paddingTop: 15}}>
+                        <Image
+                          source={require('../images/kayakColorIcon.png')}
+                          style={styles.kayakIconStart}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {
+                              paddingTop: 5,
+                              paddingLeft: 5,
+                              color: colors.PRIMARY_TEXT_COLOR,
+                            },
+                          ]}>
+                          Izvor rijeke Vrljike
+                        </Text>
+                      </View>
                     </View>
-                  </View>
 
-                  <View style={styles.startDestinationPointContainer}>
-                    <View style={{flexDirection: 'row', paddingTop: 10}}>
-                      <FontAwesomeIcon
-                        icon={faFlagCheckered}
-                        size={20}
-                        color={colors.FONTAWESOME_ICON_COLOR}
-                      />
-                      <Text
-                        style={[
-                          styles.startDestinationPoint,
-                          {color: colors.PRIMARY_TEXT_COLOR},
-                        ]}>
-                        Đogića Most - Zmijavci
-                      </Text>
+                    <View style={styles.startDestinationPointContainer}>
+                      <View style={{flexDirection: 'row', paddingTop: 10}}>
+                        <FontAwesomeIcon
+                          icon={faFlagCheckered}
+                          size={20}
+                          color={colors.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: colors.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          Đogića Most - Zmijavci
+                        </Text>
+                      </View>
                     </View>
-                  </View>
 
-                  <View style={styles.startDestinationPointContainer}>
-                    <View style={{flexDirection: 'row', paddingTop: 10}}>
-                      <FontAwesomeIcon
-                        icon={faClock}
-                        size={20}
-                        color={colors.FONTAWESOME_ICON_COLOR}
-                      />
-                      <Text
-                        style={[
-                          styles.startDestinationPoint,
-                          {color: colors.PRIMARY_TEXT_COLOR},
-                        ]}>
-                        {routeDuration} min
-                      </Text>
+                    <View style={styles.startDestinationPointContainer}>
+                      <View style={{flexDirection: 'row', paddingTop: 10}}>
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          size={20}
+                          color={colors.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: colors.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          {routeDuration} min
+                        </Text>
+                      </View>
+                      <View style={{flexDirection: 'row', paddingTop: 10}}>
+                        <FontAwesomeIcon
+                          icon={faRoute}
+                          size={20}
+                          color={colors.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: colors.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          {routeDistance} km
+                        </Text>
+                      </View>
                     </View>
-                    <View style={{flexDirection: 'row', paddingTop: 10}}>
-                      <FontAwesomeIcon
-                        icon={faRoute}
-                        size={20}
-                        color={colors.FONTAWESOME_ICON_COLOR}
-                      />
-                      <Text
-                        style={[
-                          styles.startDestinationPoint,
-                          {color: colors.PRIMARY_TEXT_COLOR},
-                        ]}>
-                        {routeDistance} km
-                      </Text>
-                    </View>
-                  </View>
 
-                  <View style={styles.infoContainer}>
-                    <View style={{flexDirection: 'row', paddingTop: 10}}>
-                      <FontAwesomeIcon
-                        icon={faInfoCircle}
-                        size={20}
-                        color={colors.FONTAWESOME_ICON_COLOR}
-                      />
-                      <Text
-                        style={[
-                          styles.startDestinationPoint,
-                          {color: colors.PRIMARY_TEXT_COLOR},
-                        ]}>
-                        The directions do not follow the river, they are similar
-                        so you can get an idea of where the route is going
-                        approximately
-                      </Text>
+                    <View style={styles.infoContainer}>
+                      <View style={{flexDirection: 'row', paddingTop: 10}}>
+                        <FontAwesomeIcon
+                          icon={faInfoCircle}
+                          size={20}
+                          color={colors.FONTAWESOME_ICON_COLOR}
+                        />
+                        <Text
+                          style={[
+                            styles.startDestinationPoint,
+                            {color: colors.PRIMARY_TEXT_COLOR},
+                          ]}>
+                          The directions do not follow the river, they are
+                          similar so you can get an idea of where the route is
+                          going approximately
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -680,7 +711,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   modalView: {
-    height: windowHeight * 0.5,
+    height: 'auto',
     backgroundColor: 'white',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -695,6 +726,7 @@ const styles = StyleSheet.create({
   },
   startDestinationPointContainer: {
     paddingHorizontal: 20,
+    marginBottom: windowHeight * 0.02,
   },
   btnCloseModal: {
     marginBottom: 10,
@@ -705,6 +737,7 @@ const styles = StyleSheet.create({
     //paddingTop: windowHeight * 0.05,
     width: windowWidth * 0.8,
     marginLeft: 20,
+    height: 'auto',
   },
 
   startDestinationPoint: {
@@ -714,27 +747,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  directionsStyle: {
+  /*  directionsStyle: {
     flexDirection: 'column',
     marginRight: windowWidth * 0.4,
-    alignItems: 'center',
-  },
+    alignItems: 'flex-end',
+  }, */
   kayakIconStart: {
     height: 25,
     width: 25,
   },
   placeNameContainer: {
     paddingHorizontal: 20,
+    width: 'auto',
+    height: 'auto',
   },
   placeName: {
     paddingLeft: 5,
     fontSize: 20,
     fontWeight: 'bold',
-    width: windowWidth * 0.65,
+    //width: windowWidth * 0.65,
   },
   directionsStyle: {
     flexDirection: 'column',
-    marginRight: windowWidth * 0.4,
-    alignItems: 'center',
+    //marginRight: windowWidth * 0.4,
+    alignItems: 'flex-end',
+    width: windowWidth * 0.2,
   },
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useTheme} from 'styled-components';
-import {ActivitiesInfoTemplate} from '../../ActivitiesInfoTemplate';
+import ActivitiesInfoTemplate from '../../ActivitiesInfoTemplate';
 import GalleryTemplate from '../../galleryTemplate';
 
 export const KayakGallery = () => {

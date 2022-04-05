@@ -2,11 +2,11 @@ import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
 import React from 'react';
 
 //dimension
-import {windowWidth} from '../constants/global';
+import {windowHeight, windowWidth} from '../constants/global';
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
+import {faMapMarkerAlt, faStar} from '@fortawesome/free-solid-svg-icons';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -21,6 +21,9 @@ import {Restaurants} from './restaurants';
 import {Bakeries} from './bakery';
 import {ShoppingMall} from './shoppingMall';
 import {Winearies} from './winearies';
+
+//google key
+import {GOOGLE_KEY} from '@env';
 
 const placesStackNav = createStackNavigator();
 
@@ -123,13 +126,15 @@ const NearbyPlacesByImages = ({imageData, userCurrentCoord}) => {
 
 const NearbyPlacesByImagesItem = ({data, currentCoord}) => {
   const navigation = useNavigation();
-  console.log(currentCoord);
+  //console.log(currentCoord);
+  console.log(data.rating);
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('Details', {
           lat: data.geometry.location.lat,
           lng: data.geometry.location.lng,
+          rating: data.rating,
           userCoord: currentCoord,
         })
       }>
@@ -140,9 +145,29 @@ const NearbyPlacesByImagesItem = ({data, currentCoord}) => {
             uri:
               'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' +
               data.photos[0].photo_reference +
-              '&sensor=false&key=AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo',
+              `&sensor=false&key=${GOOGLE_KEY}`,
           }}
         />
+        <View
+          style={{
+            //zIndex: 1,
+            flexDirection: 'row',
+            height: 'auto',
+            /* borderColor: 'red',
+            borderWidth: 1, */
+            width: 'auto',
+            position: 'absolute',
+            right: windowHeight * 0.02,
+            top: windowHeight * 0.01,
+            backgroundColor: 'rgba(12, 12, 12, 0.8)',
+            borderRadius: 10,
+            padding: 5,
+          }}>
+          <FontAwesomeIcon icon={faStar} color={'yellow'} />
+          <Text style={{color: 'white', marginLeft: windowWidth * 0.01}}>
+            {data.rating}
+          </Text>
+        </View>
         <View style={styles.cityContainer}>
           <FontAwesomeIcon
             icon={faMapMarkerAlt}
@@ -164,7 +189,8 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.5,
     //marginTop: StatusBar.currentHeight || 0,
     marginTop: windowWidth * 0.01,
-    height: 250,
+    height: 'auto',
+    aspectRatio: 750 / 900,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomLeftRadius: 10,
@@ -187,20 +213,22 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   cityContainer: {
+    flex: 1,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    top: 200,
+    bottom: windowHeight * 0.03,
     left: 20,
     width: windowWidth * 0.35,
-    height: 30,
+    height: 'auto',
+    padding: 5,
     borderRadius: 20,
     backgroundColor: 'rgba(12, 12, 12, 0.85)',
   },
   cityTitle: {
     width: 70,
     height: 'auto',
-    marginLeft: 5,
+    //marginLeft: 5,
     color: 'white',
     fontSize: 12,
     textAlign: 'center',

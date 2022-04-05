@@ -13,7 +13,7 @@ export const NextDaysForecastGalipovac = () => {
       <NextSevenDaysForecastTemplate
         placeTempLat={'43.4696587'}
         placeTempLong={'17.1196697'}
-        bgColor={colors.TEMPLATE_BACKGROUND_COLOR}
+        bgColor={colors.GALIPOVAC_BACKGROUND_COLOR}
       />
     </ThemeProvider>
   );

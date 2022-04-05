@@ -19,6 +19,7 @@
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize"
+        android:screenOrientation="portrait"
         android:exported='true'>
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,7 @@
       </activity>
       <meta-data
      android:name="com.google.android.geo.API_KEY"
-     android:value="AIzaSyBWeAUtDlbMRmnqsLSvQVbO7BsQzxGQDpo" />
+     android:value="@string/GOOGLE_KEY" />
      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 </manifest>

@@ -41,6 +41,8 @@ export const SignInNav = () => {
     }
   };
 
+  console.log(isLogged);
+
   useEffect(() => {
     detectLogin();
   }, []);

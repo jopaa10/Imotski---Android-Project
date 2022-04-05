@@ -72,8 +72,8 @@ export const NearbyPlacesNavigator = () => (
 export const NearbyPlaces = () => {
   const navigation = useNavigation();
   const {state, dispatch} = useContext(UserContext);
-  const [colorChangeRestaurant, setColorChangeRestaurant] = useState('white');
-  const [colorChangeWineanry, setColorChangeWineary] = useState('white');
+  /* const [colorChangeRestaurant, setColorChangeRestaurant] = useState('white');
+  const [colorChangeWineanry, setColorChangeWineary] = useState('white'); */
 
   /*  const changeColor = event => {
     const scrollPosition = event.nativeEvent.contentOffset.x;
@@ -135,13 +135,14 @@ export const NearbyPlaces = () => {
 
 const styles = StyleSheet.create({
   horizontalView: {
-    bottom: windowWidth * 0.35,
+    bottom: windowWidth * 0.33,
   },
   txtPlaces: {
     color: '#fff',
-    marginHorizontal: 18,
+    marginHorizontal: windowWidth * 0.05,
     fontSize: 16,
-    //paddingTop: windowWidth * 0.08,
+    /*  borderColor: 'red',
+    borderWidth: 1, */
   },
   containerNearbyPlaces: {
     flexDirection: 'row',

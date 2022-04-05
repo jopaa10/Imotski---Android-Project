@@ -7,7 +7,7 @@ import ActivitiesInfoTemplate from '../ActivitiesInfoTemplate';
 //bottom nav
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {windowWidth} from '../constants/global';
-import {RedLakeInfo} from '../redLakeInfo';
+import RedLakeInfo from '../redLakeInfo';
 
 //tab for bottom tab navigation
 const SwimmingBottomTab = createBottomTabNavigator();

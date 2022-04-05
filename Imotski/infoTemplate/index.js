@@ -18,9 +18,7 @@ import {faArrowLeft, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 const HEADER_HEIGHT = windowHeight * 0.5;
 
 import Animated from 'react-native-reanimated';
-
-//Dimensions
-const windowWidth = Dimensions.get('window').width;
+import * as Animatable from 'react-native-animatable';
 
 //navigation
 import {useNavigation} from '@react-navigation/core';
@@ -30,7 +28,7 @@ import {useSelector} from 'react-redux';
 import {ThemeProvider} from '@react-navigation/native';
 import {useTheme} from 'styled-components';
 
-import {windowHeight} from '../constants/global';
+import {windowHeight, windowWidth} from '../constants/global';
 import {SharedElement} from 'react-navigation-shared-element';
 
 export const TemplateInfo = props => {
@@ -93,11 +91,11 @@ export const TemplateInfo = props => {
                   resizeMode={'cover'}
                 />
 
-                <Pressable
+                <TouchableOpacity
                   style={styles.arrowLeftIcon}
                   onPress={() => navigation.navigate(props.navigateBack)}>
                   <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-                </Pressable>
+                </TouchableOpacity>
                 <Text style={styles.txtCity}>{props.city}</Text>
                 <Text style={styles.txtBlueLake}>
                   <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} />{' '}
@@ -108,7 +106,9 @@ export const TemplateInfo = props => {
             <View
               style={[
                 styles.container,
-                {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
+                {
+                  backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+                },
               ]}>
               <View style={styles.horizontalTabs}>
                 {DATA.map((item, index) => (
@@ -118,7 +118,10 @@ export const TemplateInfo = props => {
                     onPress={() => {
                       navigation.navigate(item.navigate);
                     }}>
-                    <Text
+                    <Animatable.Text
+                      animation="bounceIn"
+                      duration={600}
+                      delay={600 + index * 100}
                       style={[
                         styles.horizotalTab,
                         {
@@ -126,19 +129,37 @@ export const TemplateInfo = props => {
                         },
                       ]}>
                       {item.title}
-                    </Text>
+                    </Animatable.Text>
                   </TouchableOpacity>
                 ))}
               </View>
-              <Text
+              <Animatable.Text
+                delay={600}
+                animation="slideInUp"
                 style={[styles.txtTitle, {color: colors.PRIMARY_TEXT_COLOR}]}>
-                {' '}
                 {props.title}
-              </Text>
-              <Text
-                style={[styles.txtInfoBL, {color: colors.PRIMARY_TEXT_COLOR}]}>
-                {props.details}
-              </Text>
+              </Animatable.Text>
+              <View
+                style={{
+                  width: windowWidth * 0.9,
+                  /* borderColor: 'purple',
+                  borderWidth: 2, */
+                  marginHorizontal: windowWidth * 0.05,
+                  height: 'auto',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+                }}>
+                <Animatable.Text
+                  delay={700}
+                  animation="slideInUp"
+                  style={[
+                    styles.txtInfoBL,
+                    {color: colors.PRIMARY_TEXT_COLOR},
+                  ]}>
+                  {props.details}
+                </Animatable.Text>
+              </View>
             </View>
             <View
               style={{
@@ -153,7 +174,14 @@ export const TemplateInfo = props => {
               }}>
               {props.gallery}
             </View>
-            <View style={{height: 'auto'}}>{props.weather}</View>
+            <View
+              style={{
+                height: 'auto',
+                /* borderColor: 'red',
+                borderWidth: 1, */
+              }}>
+              {props.weather}
+            </View>
             {props.review}
           </Animated.ScrollView>
         </ThemeProvider>
@@ -163,46 +191,45 @@ export const TemplateInfo = props => {
 };
 
 const styles = StyleSheet.create({
-  topTabsNav: {
-    position: 'absolute',
-    width: windowWidth,
-    top: windowWidth * 0.85,
-    height: 50,
-    borderRadius: 10,
-    color: '#ffffff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    elevation: 0,
-  },
-
   container: {
     flex: 1,
     backgroundColor: 'white',
-    bottom: windowWidth * 0.1,
+    //bottom: windowWidth * 0.1,
     width: windowWidth,
     height: 'auto',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    justifyContent: 'center',
+    alignContent: 'center',
+    /* borderColor: 'red',
+    borderWidth: 1, */
   },
   horizontalTabs: {
     flexDirection: 'row',
     marginHorizontal: 20,
     justifyContent: 'space-around',
-    marginTop: 15,
+    marginVertical: windowWidth * 0.01,
+    paddingTop: windowHeight * 0.01,
+    /* borderColor: 'red',
+    borderWidth: 1, */
+    height: windowHeight * 0.1,
   },
   txtTitle: {
     fontSize: 22,
-    marginTop: 20,
+    //marginTop: 20,
     marginHorizontal: 20,
+    bottom: windowWidth * 0.05,
   },
   txtInfoBL: {
     color: 'black',
     flex: 1,
     textAlign: 'justify',
-    marginTop: 10,
+    //marginTop: 10,
     fontSize: 15,
-    marginHorizontal: 20,
-    marginVertical: 20,
+    //marginHorizontal: 20,
+    //marginVertical: 20,
+    marginBottom: windowHeight * 0.1,
+    //bottom: windowWidth * 0.05,
   },
   image: offset => ({
     width: '100%',
@@ -230,24 +257,25 @@ const styles = StyleSheet.create({
   }),
   txtCity: {
     position: 'absolute',
-    bottom: windowWidth * 0.25,
+    bottom: windowWidth * 0.18,
     marginLeft: windowWidth * 0.08,
     color: 'white',
     fontSize: 25,
   },
   txtBlueLake: {
     position: 'absolute',
-    bottom: windowWidth * 0.18,
+    bottom: windowWidth * 0.1,
     marginLeft: windowWidth * 0.06,
     color: 'white',
     fontSize: 15,
   },
   arrowLeftIcon: {
     position: 'absolute',
-    marginTop: windowWidth * 0.1,
+    marginTop: windowWidth * 0.12,
     marginHorizontal: 20,
   },
   horizotalTab: {
     fontSize: 15,
+    marginBottom: windowHeight * 0.03,
   },
 });

@@ -13,7 +13,7 @@ export const NextDaysForecastStJure = () => {
       <NextSevenDaysForecastTemplate
         placeTempLat={'43.3423'}
         placeTempLong={'17.0539'}
-        bgColor={colors.PRIMARY_BACKGROUND_COLOR}
+        bgColor={colors.SV_JURE_BACKGROUND_COLOR}
       />
     </ThemeProvider>
   );

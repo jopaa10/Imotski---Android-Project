@@ -15,16 +15,13 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons';
 
-//Dimensions
-const windowWidth = Dimensions.get('window').width;
-
 //navigation
 import {useNavigation} from '@react-navigation/core';
 import {ThemeProvider} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {useTheme} from 'styled-components';
 import {SharedElement} from 'react-navigation-shared-element';
-import {windowHeight} from '../constants/global';
+import {windowHeight, windowWidth} from '../constants/global';
 
 const ActivitiesInfoTemplate = props => {
   const navigation = useNavigation();
@@ -52,7 +49,11 @@ const ActivitiesInfoTemplate = props => {
     <>
       <ThemeProvider theme={theme}>
         <ScrollView
-          style={{backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR}}>
+          style={[
+            {
+              backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
+            },
+          ]}>
           <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
           <View>
             <SharedElement id={props.id}>
@@ -73,7 +74,6 @@ const ActivitiesInfoTemplate = props => {
               {props.sight}
             </Text>
           </View>
-
           <View
             style={[
               styles.container,
@@ -91,7 +91,6 @@ const ActivitiesInfoTemplate = props => {
               ))}
             </View>
             <Text style={[styles.txtTitle, {color: colors.PRIMARY_TEXT_COLOR}]}>
-              {' '}
               {props.title}
             </Text>
             <View
@@ -117,41 +116,17 @@ const ActivitiesInfoTemplate = props => {
   );
 };
 
-/* ActivitiesInfoTemplate.sharedElements = route => {
-  //const {item} = route.params;
-  console.log(route.params.id);
-  return [
-    {
-      id: route.params.id,
-      animation: 'fade-in',
-      resize: 'clip',
-    },
-  ];
-}; */
-
 export default ActivitiesInfoTemplate;
 
 const styles = StyleSheet.create({
-  topTabsNav: {
-    position: 'absolute',
-    width: windowWidth,
-    top: windowWidth * 0.85,
-    height: 50,
-    borderRadius: 10,
-    color: '#ffffff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    elevation: 0,
-  },
-
   container: {
-    flex: 1,
-    backgroundColor: 'white',
-    bottom: windowWidth * 0.12,
+    //...StyleSheet.absoluteFillObject,
+    bottom: windowWidth * 0.05,
     width: windowWidth,
     height: 'auto',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    marginBottom: windowHeight * 0.05,
     /* borderColor: 'black',
     borderWidth: 1, */
   },
@@ -179,26 +154,27 @@ const styles = StyleSheet.create({
   image: {
     width: windowWidth,
     height: windowHeight * 0.5,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    //borderBottomRightRadius: 10,
+    //borderBottomLeftRadius: 10,
+    //zIndex: 999,
   },
   txtCity: {
     position: 'absolute',
-    bottom: windowWidth * 0.25,
-    marginLeft: windowWidth * 0.08,
+    bottom: windowWidth * 0.2,
+    marginLeft: windowWidth * 0.07,
     color: 'white',
     fontSize: 25,
   },
   txtBlueLake: {
     position: 'absolute',
-    bottom: windowWidth * 0.18,
+    bottom: windowWidth * 0.14,
     marginLeft: windowWidth * 0.06,
     color: 'white',
     fontSize: 15,
   },
   arrowLeftIcon: {
     position: 'absolute',
-    marginTop: windowWidth * 0.1,
+    marginTop: windowWidth * 0.12,
     marginHorizontal: 20,
   },
   horizotalTab: {

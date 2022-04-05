@@ -1022,7 +1022,7 @@ export const Biokovo = () => {
   return (
     <>
       <SwiperTemplate
-        content={DATA.map((item, index, indexAnimated) => (
+        content={DATA.map((item, index) => (
           <>
             <View key={index}>
               <SharedElement id={`item.${item.key}.image`}>
@@ -1069,7 +1069,7 @@ export const Biokovo = () => {
               </View>
             </View>
             <Animatable.View
-              key={indexAnimated}
+              key={(index += 4)}
               animation={'bounce'}
               easing={'ease-out'}
               iterationCount={3}
@@ -1100,7 +1100,7 @@ const styles = StyleSheet.create({
     height: windowHeight,
   }, */
   image: {
-    width: '100%',
+    width: windowWidth,
     height: '100%',
   },
   txt: {
@@ -1209,13 +1209,13 @@ const styles = StyleSheet.create({
     //justifyContent: 'flex-end',
     alignSelf: 'flex-end',
     marginRight: windowWidth * 0.05,
-    marginTop: windowWidth * 0.02,
+    marginTop: windowWidth * 0.03,
   },
   alertMessage: {
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: windowWidth * 0.05,
+    bottom: windowWidth * 0.025,
   },
   alertText: {
     textAlign: 'center',
@@ -1234,7 +1234,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 10,
     shadowColor: '#1F83BB',
-    bottom: windowWidth * 0.05,
+    bottom: windowWidth * 0.025,
   },
   closeBtnTxt: {
     color: 'white',
