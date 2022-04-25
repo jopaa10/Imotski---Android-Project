@@ -71,6 +71,18 @@ export const WalkingMap = () => {
       ],
     },
     {
+      featureType: 'administrative.country',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#8a8442',
+        },
+        {
+          weight: 2,
+        },
+      ],
+    },
+    {
       featureType: 'administrative.locality',
       elementType: 'labels.text.fill',
       stylers: [

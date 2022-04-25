@@ -349,7 +349,7 @@ export const ProfilePage = () => {
         <Animated.ScrollView
           style={{
             height: 'auto',
-            backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+            backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
           }}
           scrollEventThrottle={16}
           onScroll={Animated.event(
@@ -369,17 +369,17 @@ export const ProfilePage = () => {
               <View
                 style={{
                   width: windowWidth,
-                  aspectRatio: 375 / 170,
+                  aspectRatio: 375 / 150,
                   height: 'auto',
                   //backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR,
-                  /* borderColor: 'red',
+                  /*  borderColor: 'red',
                   borderWidth: 2, */
                 }}>
                 <Svg
                   style={styles.waves}
                   width={'100%'}
                   height={'100%'}
-                  viewBox={`0 0 375 170`}
+                  viewBox={`0 0 375 150`}
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <Path
@@ -389,43 +389,47 @@ export const ProfilePage = () => {
                     fill={colors.PRIMARY_BACKGROUND_COLOR}
                   />
                 </Svg>
-              </View>
-              <View
-                style={{
-                  /*  borderColor: 'red',
-                  borderWidth: 2, */
-                  height: windowHeight * 0.05,
-                  width: windowWidth * 0.3,
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  marginHorizontal: windowWidth * 0.15,
-                  //marginTop: windowHeight * 0.05,
-                }}>
+
                 <View
                   style={{
+                    /* borderColor: 'red',
+                  borderWidth: 2, */
                     height: 'auto',
-                    width: 'auto',
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
-                    justifyContent: 'space-around',
+                    width: windowWidth * 0.3,
+                    alignItems: 'center',
+                    marginHorizontal: windowWidth * 0.15,
+                    bottom: windowHeight * 0.2,
                   }}>
-                  <Image
-                    source={{uri: userPic}}
-                    style={styles.userProfilePic}
-                  />
-                  {showUpdateBtn && (
-                    <TouchableOpacity
-                      onPress={updateProfilePic}
-                      style={styles.updateBtn}>
-                      <View>
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          size={20}
-                          color={colors.TEXT_COLOR}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  )}
+                  <View
+                    style={{
+                      height: 'auto',
+                      width: 'auto',
+                      flexDirection: 'row',
+                      alignItems: 'flex-end',
+                      justifyContent: 'space-around',
+                    }}>
+                    <Image
+                      source={{uri: userPic}}
+                      style={styles.userProfilePic}
+                    />
+                    {showUpdateBtn && (
+                      <TouchableOpacity
+                        onPress={updateProfilePic}
+                        style={styles.updateBtn}>
+                        <View
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                          }}>
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            size={20}
+                            color={colors.TEXT_COLOR}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </View>
               </View>
             </Animated.View>
@@ -441,10 +445,17 @@ export const ProfilePage = () => {
                 <View style={styles.icon}>
                   <FontAwesomeIcon icon={faUser} size={22} color={'white'} />
                 </View>
-                <Text style={styles.textUserInfo}>Name</Text>
-                <Text style={styles.textName1}>
-                  {`${userData.name} ${userData.surname}`}
-                </Text>
+                <View
+                  style={{
+                    //top: windowWidth * 0.04,
+                    marginTop: windowWidth * 0.04,
+                    marginLeft: windowWidth * 0.08,
+                  }}>
+                  <Text style={styles.textUserInfo}>Name</Text>
+                  <Text style={styles.textName1}>
+                    {`${userData.name} ${userData.surname}`}
+                  </Text>
+                </View>
               </View>
               <View style={styles.viewUserInfo}>
                 <View style={styles.icon}>
@@ -454,10 +465,17 @@ export const ProfilePage = () => {
                     color={'white'}
                   />
                 </View>
-                <Text style={styles.textUserInfo}>Place of residence</Text>
-                <Text style={styles.textName1}>
-                  {userData.placeOfResidence}
-                </Text>
+                <View
+                  style={{
+                    //top: windowWidth * 0.04,
+                    marginTop: windowWidth * 0.04,
+                    marginLeft: windowWidth * 0.08,
+                  }}>
+                  <Text style={styles.textUserInfo}>Place of residence</Text>
+                  <Text style={styles.textName1}>
+                    {userData.placeOfResidence}
+                  </Text>
+                </View>
                 <TouchableOpacity
                   style={styles.editBtn}
                   onPress={() => setDialog(true)}>
@@ -472,8 +490,18 @@ export const ProfilePage = () => {
                     color={'white'}
                   />
                 </View>
-                <Text style={styles.textUserInfo}>Days of staying</Text>
-                <Text style={styles.textName1}> {userData.daysOfStaying} </Text>
+                <View
+                  style={{
+                    //top: windowWidth * 0.04,
+                    marginLeft: windowWidth * 0.08,
+                    marginTop: windowWidth * 0.04,
+                  }}>
+                  <Text style={styles.textUserInfo}>Days of staying</Text>
+                  <Text style={styles.textName1}>
+                    {' '}
+                    {userData.daysOfStaying}{' '}
+                  </Text>
+                </View>
                 <TouchableOpacity
                   style={styles.editBtn}
                   onPress={() => setDialogDays(true)}>
@@ -488,32 +516,49 @@ export const ProfilePage = () => {
                     color={'white'}
                   />
                 </View>
-                <Text style={styles.textUserInfo}>Email</Text>
-                <Text style={styles.textName1}> {userData.email} </Text>
+                <View
+                  style={{
+                    //top: windowWidth * 0.04,
+                    marginTop: windowWidth * 0.04,
+                    marginLeft: windowWidth * 0.08,
+                  }}>
+                  <Text style={styles.textUserInfo}>Email</Text>
+                  <Text style={styles.textName1}> {userData.email} </Text>
+                </View>
               </View>
               <View style={styles.viewUserInfo}>
                 <View style={styles.icon}>
                   <FontAwesomeIcon icon={faLock} size={22} color={'white'} />
                 </View>
-                <Text style={styles.textUserInfo}>New password</Text>
-                <Text style={styles.textName1}> ****** </Text>
+                <View
+                  style={{
+                    //top: windowWidth * 0.04,
+                    marginTop: windowWidth * 0.04,
+                    marginLeft: windowWidth * 0.08,
+                  }}>
+                  <Text style={styles.textUserInfo}>New password</Text>
+                  <Text style={styles.textName1}> ****** </Text>
+                </View>
                 <View style={styles.editBtn}>
                   <FontAwesomeIcon icon={faPen} color={'white'} size={16} />
                 </View>
               </View>
             </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
-              alignItems: 'center',
-              paddingBottom: windowWidth * 0.01,
-              height: 'auto',
-            }}>
-            <View style={{paddingTop: 20}}>
-              <TouchableOpacity style={styles.btnLogout} onPress={handleLogOut}>
-                <Text style={styles.textBtnLogout}>LOGOUT</Text>
-              </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+                alignItems: 'center',
+                paddingBottom: windowWidth * 0.01,
+                height: 'auto',
+                marginTop: windowWidth * 0.1,
+              }}>
+              <View style={{paddingTop: 20}}>
+                <TouchableOpacity
+                  style={styles.btnLogout}
+                  onPress={handleLogOut}>
+                  <Text style={styles.textBtnLogout}>LOGOUT</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Animated.ScrollView>
@@ -640,8 +685,8 @@ const styles = StyleSheet.create({
     //position: 'absolute',
     width: windowWidth,
     backgroundColor: 'white',
-    height: windowHeight * 0.33,
-    justifyContent: 'center',
+    height: windowHeight * 0.4,
+    justifyContent: 'flex-end',
   },
   coverText: {
     textAlign: 'center',
@@ -652,8 +697,10 @@ const styles = StyleSheet.create({
 
   wavesView: offset => ({
     width: '100%',
-    //bottom: windowHeight * 0.2,
+    //top: windowHeight * 0.4,
     top: offset,
+    /* borderColor: 'red',
+    borderWidth: 1, */
     transform: [
       {
         translateY: offset.interpolate({
@@ -678,7 +725,7 @@ const styles = StyleSheet.create({
   waves: {
     //width: windowWidth,
     //height: windowHeight * 0.23,
-    top: windowWidth * 0.25,
+    //top: windowWidth * 0.28,
   },
 
   userProfilePic: {
@@ -690,7 +737,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   containerBlue: {
-    marginTop: windowWidth * 0.15,
+    //marginTop: windowWidth * 0.05,
     backgroundColor: '#1F83BB',
     //bottom: windowHeight * 0.014,
     //paddingTop: windowWidth * 0.15,
@@ -698,29 +745,38 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   viewUserInfo: {
-    width: 'auto',
+    width: windowWidth * 0.8,
+    marginTop: windowWidth * 0.05,
     height: 'auto',
+    display: 'flex',
+    flexDirection: 'row',
     marginBottom: 5,
     marginHorizontal: windowWidth * 0.1,
-    bottom: windowWidth * 0.05,
-    /* borderColor: 'red',
+    //bottom: windowWidth * 0.05,
+    /*  borderColor: 'red',
     borderWidth: 2, */
   },
   textUserInfo: {
-    marginLeft: windowWidth * 0.08,
+    //marginLeft: windowWidth * 0.08,
     color: 'white',
     fontSize: 12,
+    /* borderColor: 'green',
+    borderWidth: 2, */
   },
   textName1: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-    marginLeft: windowWidth * 0.075,
+    //marginLeft: windowWidth * 0.08,
   },
   editBtn: {
-    width: windowWidth * 0.82,
-    alignItems: 'flex-end',
-    bottom: windowWidth * 0.09,
+    //width: windowWidth * 0.6,
+    alignItems: 'flex-start',
+    //bottom: windowWidth * 0.09,
+    /*  borderColor: 'yellow',
+    borderWidth: 1, */
+    marginLeft: windowWidth * 0.05,
+    marginTop: windowWidth * 0.04,
   },
   btnLogout: {
     borderColor: 'white',
@@ -737,7 +793,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   updateBtn: {
-    right: windowWidth * 0.03,
+    right: windowWidth * 0.02,
     //flex: 1,
     //position: 'absolute',
     bottom: windowWidth * 0.03,
@@ -806,8 +862,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   icon: {
-    width: windowWidth * 0.85,
+    //width: windowWidth * 0.85,
     alignItems: 'flex-start',
-    top: windowWidth * 0.07,
+    //top: windowWidth * 0.14,
+    marginVertical: windowWidth * 0.04,
   },
 });

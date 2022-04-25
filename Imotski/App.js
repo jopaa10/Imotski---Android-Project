@@ -9,7 +9,14 @@
 import React, {createContext, useState, useEffect, useReducer} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {ActivityIndicator, View, Modal, StyleSheet, Text} from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  Modal,
+  StyleSheet,
+  Text,
+  useColorScheme,
+} from 'react-native';
 
 import styled, {ThemeProvider} from 'styled-components';
 import {AppDrawerScreen} from './exploreImotskiTemplate';
@@ -34,18 +41,35 @@ const store = createStore(
 export const UserContext = createContext();
 
 const AppWrapper = () => {
-  const theme = useSelector(state => state.themeReducer.theme);
-  const [themeMode, setThemeMode] = useState('');
+  //const theme = useSelector(state => state.themeReducer.theme);
+  let [themeMode, setThemeMode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  //console.log(theme.mode);
+  let themeTest = useColorScheme();
 
   useEffect(async () => {
-    const themeMode = await AsyncStorage.getItem('theme');
-    setThemeMode(themeMode);
-    setIsLoading(false);
-    SplashScreen.hide();
+    const theme = await AsyncStorage.getItem('theme');
+
+    //console.log(theme);
+    //setThemeMode(themeMode);
+
+    if (theme === null || theme === '') {
+      setThemeMode(themeTest);
+      //setTheme(themeMode);
+      setIsLoading(false);
+      SplashScreen.hide();
+    } else {
+      setThemeMode(themeMode);
+      setIsLoading(false);
+      SplashScreen.hide();
+    }
+
+    //setThemeMode(themeMode);
+    /*  setIsLoading(false);
+    SplashScreen.hide(); */
   }, []);
+
+  //console.log(themeMode);
 
   setInterval(async () => {
     const themeMode = await AsyncStorage.getItem('theme');
@@ -81,7 +105,7 @@ const AppWrapper = () => {
 
   return (
     <>
-      {themeMode === 'light' && isLoading === false ? (
+      {(themeMode === 'light' || themeMode === null) && isLoading === false ? (
         <ThemeProvider theme={lightTheme}>
           <NavigationContainer theme={lightTheme}>
             <AppDrawerScreen />

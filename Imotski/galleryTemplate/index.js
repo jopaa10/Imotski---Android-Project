@@ -12,6 +12,7 @@ import {
   Dimensions,
   Modal,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import {useTheme} from 'styled-components';
 
@@ -109,13 +110,13 @@ const GalleryTemplate = props => {
           {backgroundColor: colors.SECUNDARY_BACKGROUND_COLOR},
         ]}>
         {images.map((item, index) => (
-          <Pressable
+          <TouchableOpacity
             key={index}
             onPress={() => {
               openModal(index, item.image);
             }}>
             <Image key={index} source={item.image} style={styles.image} />
-          </Pressable>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -172,12 +173,14 @@ const styles = StyleSheet.create({
   container: {
     flexWrap: 'wrap',
     height: 'auto',
-    width: windowWidth,
+    width: windowWidth * 0.9,
     //flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     bottom: windowWidth * 0.2,
     backgroundColor: 'white',
+    /* borderColor: 'red',
+    borderWidth: 2, */
   },
 
   centeredView: {

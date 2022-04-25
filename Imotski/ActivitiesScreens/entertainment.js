@@ -24,12 +24,12 @@ import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 //event screens
-import ImotskaSila from '../eventScreens/imotskaSila';
-import CvitRazgovora from '../eventScreens/cvitRazgovora';
-import MagicTimeVinyl from '../eventScreens/magicTimeVinyl';
-import ImotaBikeAndWine from '../eventScreens/imotaBikeWine';
-import GlumciUZagvozdu from '../eventScreens/glumciUZagvozdu';
-import ZabarskaVecer from '../eventScreens/zabarskaVecer';
+import {ImotskaSilaBottomNav} from '../eventScreens/imotskaSila';
+import {CvitRazgovoraBottomNav} from '../eventScreens/cvitRazgovora';
+import {MagicTimeVinylBottomNav} from '../eventScreens/magicTimeVinyl';
+import {ImotaBikeAndWineBottomNav} from '../eventScreens/imotaBikeWine';
+import {GlumciUZagvozduBottomNav} from '../eventScreens/glumciUZagvozdu';
+import {ZabarskaVecerBottomNav} from '../eventScreens/zabarskaVecer';
 import {
   createSharedElementStackNavigator,
   SharedElement,
@@ -48,32 +48,32 @@ export const EventNavigation = () => {
       />
       <EventStack.Screen
         name="Imotska Sila"
-        component={ImotskaSila}
+        component={ImotskaSilaBottomNav}
         options={{headerShown: false}}
       />
       <EventStack.Screen
         name="Cvit Razgovora"
-        component={CvitRazgovora}
+        component={CvitRazgovoraBottomNav}
         options={{headerShown: false}}
       />
       <EventStack.Screen
         name="Magic Time Vinly Festival"
-        component={MagicTimeVinyl}
+        component={MagicTimeVinylBottomNav}
         options={{headerShown: false}}
       />
       <EventStack.Screen
         name="Imota Bike And Wine"
-        component={ImotaBikeAndWine}
+        component={ImotaBikeAndWineBottomNav}
         options={{headerShown: false}}
       />
       <EventStack.Screen
         name="Glumci U Zagvozdu"
-        component={GlumciUZagvozdu}
+        component={GlumciUZagvozduBottomNav}
         options={{headerShown: false}}
       />
       <EventStack.Screen
         name="Zabarska Vecer"
-        component={ZabarskaVecer}
+        component={ZabarskaVecerBottomNav}
         options={{headerShown: false}}
       />
     </EventStack.Navigator>
@@ -95,7 +95,7 @@ export const EntertainmentScreen = props => {
     },
     {
       key: 2,
-      title: 'Cvit razgovora',
+      title: 'Cvit Razgovora',
       image: require('../images/cvitRazgovora.jpg'),
       city: 'City Imotski',
       navigation: 'Cvit Razgovora',
@@ -188,8 +188,14 @@ export const EntertainmentScreen = props => {
             key={index}
             onPress={() =>
               navigation.navigate(item.navigation, {
-                image: item.image,
-                id: `item.${item.key}.image`,
+                screen: item.navigation,
+                params: {
+                  screen: 'Overview',
+                  params: {
+                    image: item.image,
+                    id: `item.${item.key}.image`,
+                  },
+                },
               })
             }>
             <SharedElement id={`item.${item.key}.image`}>

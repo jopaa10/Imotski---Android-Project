@@ -4,16 +4,14 @@ const router = express.Router();
 const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require('../keys');
+const {JWT_SECRET, GOOGLE_CLIENT_ID} = require('../keys');
 const requireLogin = require('../middleware/requireLogin');
 
 const ProfilePic = mongoose.model('ProfilePic');
 const Comment = mongoose.model('Comment');
 const {OAuth2Client} = require('google-auth-library');
 
-const client = new OAuth2Client(
-  '235557348041-ejo2smfsfc77lgo7prmognfevgqf8o1s.apps.googleusercontent.com',
-);
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 router.post('/signup', (req, res) => {
   console.log(req.body);

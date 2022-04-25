@@ -81,6 +81,18 @@ const MarkedPlaces = () => {
       ],
     },
     {
+      featureType: 'administrative.country',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#8a8442',
+        },
+        {
+          weight: 2,
+        },
+      ],
+    },
+    {
       featureType: 'administrative.locality',
       elementType: 'labels.text.fill',
       stylers: [
@@ -339,7 +351,7 @@ const MarkedPlaces = () => {
   return (
     <>
       <View style={styles.container}>
-        <StatusBar translucent />
+        {<StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />}
         {location !== undefined ? (
           <MapView
             testID="map"
@@ -541,6 +553,7 @@ const MarkedPlaces = () => {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,

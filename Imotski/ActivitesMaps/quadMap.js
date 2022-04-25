@@ -91,6 +91,18 @@ export const QuadMap = () => {
       ],
     },
     {
+      featureType: 'administrative.country',
+      elementType: 'geometry',
+      stylers: [
+        {
+          color: '#8a8442',
+        },
+        {
+          weight: 2,
+        },
+      ],
+    },
+    {
       featureType: 'administrative.locality',
       elementType: 'labels.text.fill',
       stylers: [
@@ -428,6 +440,7 @@ export const QuadMap = () => {
           swipeDirection="down"
           statusBarTranslucent
           deviceHeight={windowHeight}
+          onBackdropPress={() => setModalIsOpen(false)}
           style={{margin: 0}}>
           <View style={styles.centeredView}>
             <View

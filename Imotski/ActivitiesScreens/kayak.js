@@ -11,14 +11,14 @@ const KayakHorizontalStack = createStackNavigator();
 
 //fontawesome
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
+import {faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
 
 //dimensions
 import {windowWidth} from '../constants/global';
 
 //bottom nav
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {RedLakeInfo} from '../redLakeInfo';
+
 import {KayakMap} from '../ActivitesMaps/kayakMap';
 import {createStackNavigator} from '@react-navigation/stack';
 import {KayakGallery} from './kayakGallery';

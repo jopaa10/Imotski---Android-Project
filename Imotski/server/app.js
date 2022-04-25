@@ -3,9 +3,9 @@ const app = express();
 //const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const PORT = 5000;
+const {MONGO_URI} = require('./keys');
 
-const mongoUri =
-  'mongodb+srv://jopaa10:g2iMNxZkgdNmNw8A@cluster0.byqvx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const mongoUri = MONGO_URI;
 
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,

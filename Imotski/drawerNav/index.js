@@ -251,7 +251,7 @@ export const DrawerContent = props => {
                 <Divider />
                 <TouchableOpacity
                   style={[styles.container, {marginTop: windowWidth * 0.1}]}
-                  onPress={() => props.navigation.navigate('Profile Page')}>
+                  onPress={() => props.navigation.navigate('Emergency')}>
                   <FontAwesomeIcon
                     style={styles.icon}
                     icon={faPhoneAlt}

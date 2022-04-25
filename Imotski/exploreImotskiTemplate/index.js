@@ -49,11 +49,13 @@ import {DrawerActions, ThemeProvider} from '@react-navigation/native';
 import {useTheme} from 'styled-components';
 
 import * as Animatable from 'react-native-animatable';
+import {Emergency} from '../emergencyInfo';
 
 export const AppDrawerScreen = () => {
   const {colors} = useTheme();
   return (
     <AppDrawer.Navigator
+      screenOptions={{unmountOnBlur: true}}
       drawerStyle={{
         width: windowWidth * 0.7,
         height: 'auto',
@@ -61,6 +63,7 @@ export const AppDrawerScreen = () => {
       }}
       drawerContent={props => <DrawerContent {...props} />}>
       <AppDrawer.Screen name="Imotski" component={BottomTabsNav} />
+      <AppDrawer.Screen name="Emergency" component={Emergency} />
     </AppDrawer.Navigator>
   );
 };

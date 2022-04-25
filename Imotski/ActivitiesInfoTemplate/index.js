@@ -57,17 +57,13 @@ const ActivitiesInfoTemplate = props => {
           <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
           <View>
             <SharedElement id={props.id}>
-              <Image
-                style={styles.image}
-                source={props.image}
-                resizeMode="cover"
-              />
+              <Image style={styles.image} source={props.image} />
             </SharedElement>
-            <Pressable
+            <TouchableOpacity
               style={styles.arrowLeftIcon}
-              onPress={() => navigation.navigate('Explore Imotski')}>
+              onPress={() => navigation.navigate(props.navigate)}>
               <FontAwesomeIcon color="white" icon={faArrowLeft} size={20} />
-            </Pressable>
+            </TouchableOpacity>
             <Text style={styles.txtCity}>{props.city}</Text>
             <Text style={styles.txtBlueLake}>
               <FontAwesomeIcon color={'white'} icon={faMapMarkerAlt} />
@@ -82,11 +78,11 @@ const ActivitiesInfoTemplate = props => {
             <View style={styles.horizontalTabs}>
               {DATA.map((item, index) => (
                 <>
-                  <Pressable
+                  <TouchableOpacity
                     key={index}
                     onPress={() => navigation.navigate(item.navigate)}>
                     <Text style={{color: item.color}}>{item.title}</Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </>
               ))}
             </View>
