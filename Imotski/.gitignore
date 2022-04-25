@@ -62,4 +62,4 @@ buck-out/
 .env
 
 #server keys
-/server/keys
+/server/keys.js
