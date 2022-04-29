@@ -15,12 +15,12 @@ export const KayakGallery = () => {
       title={'Kayak adventures on Vrljika river'}
       details={
         <GalleryTemplate
-          image1={require('../../images/blueLakeArticle.jpg')}
-          image2={require('../../images/blueLake.jpg')}
-          image3={require('../../images/blueLakeH.jpg')}
-          image4={require('../../images/blueLakeArticle.jpg')}
-          image5={require('../../images/blueLake.jpg')}
-          image6={require('../../images/blueLakeH.jpg')}
+          image1={require('../../images/kayakAdventure.jpg')}
+          image2={require('../../images/kayak/kayakTour.jpg')}
+          image3={require('../../images/kayak/kayakTour1.jpg')}
+          image4={require('../../images/kayak/kayakTour2.jpg')}
+          image5={require('../../images/kayak/kayakTour3.jpg')}
+          image6={require('../../images/kayak/kayakTour4.jpg')}
         />
       }
     />

@@ -16,12 +16,12 @@ export const WalkingGallery = () => {
       title={'Walking Tour'}
       details={
         <GalleryTemplate
-          image1={require('../../images/blueLakeArticle.jpg')}
-          image2={require('../../images/blueLake.jpg')}
-          image3={require('../../images/blueLakeH.jpg')}
-          image4={require('../../images/blueLakeArticle.jpg')}
-          image5={require('../../images/blueLake.jpg')}
-          image6={require('../../images/blueLakeH.jpg')}
+          image1={require('../../images/redLakeWalking.jpg')}
+          image2={require('../../images/walking/walkingTour.jpg')}
+          image3={require('../../images/walking/walkingTour1.jpg')}
+          image4={require('../../images/walking/walkingTour2.jpg')}
+          image5={require('../../images/walking/walkingTour3.jpg')}
+          image6={require('../../images/walking/walkingTour4.jpg')}
         />
       }
     />

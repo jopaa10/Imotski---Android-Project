@@ -21,6 +21,7 @@ import {faHeart, faHome, faRoute} from '@fortawesome/free-solid-svg-icons';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SwimmingGallery} from './swimmingGallery';
 import {useTheme} from 'styled-components';
+import {SwimmingNavRoute} from '../ActivitesMaps/swimmingMap';
 
 //blue lake - details
 export const SwimmingBottomNav = () => {
@@ -46,7 +47,7 @@ export const SwimmingBottomNav = () => {
       />
       <SwimmingBottomTab.Screen
         name="Red Lake Info"
-        component={RedLakeInfo}
+        component={SwimmingNavRoute}
         options={{
           tabBarIcon: ({focused}) => (
             <View>
